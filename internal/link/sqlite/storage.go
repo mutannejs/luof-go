@@ -1,7 +1,7 @@
 package link_storage
 
 import (
-    "fmt"
+    "github.com/mutannejs/luof-go/pkg/llog"
     "database/sql"
 )
 
@@ -26,8 +26,6 @@ func (ls *LinkStorage) InitTable() error {
             update_at DATETIME NOT NULL
         );
     `)
-    if err != nil {
-        fmt.Println("SQL >>", err)
-    }
+    llog.PrintSQLError(err)
     return err
 }
