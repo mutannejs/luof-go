@@ -11,11 +11,11 @@ type LinkStorage struct {
 
 func NewLinkStorage (db *sql.DB) (LinkStorage, error) {
     ls := LinkStorage{db}
-    err := ls.InitTable()
+    err := InitTable(ls)
     return ls, err
 }
 
-func (ls *LinkStorage) InitTable() error {
+func InitTable(ls LinkStorage) error {
     _, err := ls.DB.Exec(`
         CREATE TABLE IF NOT EXISTS link (
             id INTEGER PRIMARY KEY,
@@ -25,6 +25,14 @@ func (ls *LinkStorage) InitTable() error {
             created_at DATETIME NOT NULL,
             update_at DATETIME NOT NULL
         );
+    `)
+    llog.PrintSQLError(err)
+    return err
+}
+
+func (ls *LinkStorage) Create(l Link) error {
+    _, err := ls.DB.Exec(`
+        IF EXISTS link THEN INSERT INTO link VALUES (?, ?, ?, ?, ?);
     `)
     llog.PrintSQLError(err)
     return err

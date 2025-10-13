@@ -59,3 +59,7 @@ func (tests *LTests) PrintAndFail (message string) {
     fmt.Println(PRINT_PREFIX, message)
     tests.T.Fail()
 }
+
+func (tests *LTests) PrintVars (vars any...) {
+    fmr.Println(vars...)
+}
