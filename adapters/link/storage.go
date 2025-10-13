@@ -9,7 +9,7 @@ type LinkStorage struct {
     DB *sql.DB
 }
 
-func NewLinkStorage (db *sql.DB) (LinkStorage, error) {
+func NewLinkStorage(db *sql.DB) (LinkStorage, error) {
     ls := LinkStorage{db}
     err := InitTable(ls)
     return ls, err

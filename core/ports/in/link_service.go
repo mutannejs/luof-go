@@ -17,19 +17,48 @@ func NewLinkService(repo out.LinkRepository) *LinkService {
     return &LinkService{repo}
 }
 
-func (ls *LinkService) Create (
+func (ls *LinkService) Create(
     url string,
     name string,
     description string,
+    useMarkdown bool,
 ) (uid uuid.UUID, err error) {
-    uid, err = luuid.New()
-    if err != nil {
+    if uid, err = luuid.New(); err != nil {
         return
     }
-
     var createdAt time.Time = time.Now()
     var updatedAt time.Time
-    link := domain.Link{uid, url, name, description, createdAt, updatedAt}
+    var link = domain.Link{uid, url, name, description, useMarkdown, createdAt, updatedAt}
     err = ls.Repo.Create(link)
+    return
+}
+
+func (ls *LinkService) Delete(
+    uid uuid.UUID,
+) (ok bool, err error) {
+    if ok, err = ls.Repo.Exists(uid); err != nil || !ok {
+        return
+    }
+    if err = ls.Repo.Delete(uid); err != nil {
+        ok = false
+    }
+    return
+}
+
+func (ls *LinkService) Update(
+    uid uuid.UUID,
+    url string,
+    name string,
+    description string,
+    useMarkdown bool,
+) (ok bool, err error) {
+    if ok, err = ls.Repo.Exists(uid); err != nil || !ok {
+        return
+    }
+    var updatedAt time.Time = time.Now()
+    var link = domain.Link{uid, url, name, description, useMarkdown, time.Time{}, updatedAt}
+    if err = ls.Repo.Update(uid, link); err != nil {
+        ok = false
+    }
     return
 }

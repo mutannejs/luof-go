@@ -10,6 +10,7 @@ type Link struct {
     Url string
     Name string
     Description string
+    UseMarkdown bool
     CreatedAt time.Time
     UpdatedAt time.Time
 }

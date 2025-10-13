@@ -19,7 +19,11 @@ type LTests struct {
     DB *sql.DB
 }
 
-func NewDataBaseTest (t *testing.T) (*LTests, *sql.DB) {
+func NewTest(t *testing.T) (*LTests) {
+    return &LTests{t, nil}
+}
+
+func NewDataBaseTest(t *testing.T) (*LTests, *sql.DB) {
     const PERMISSIONS = 0666
     var content []byte
     err := os.WriteFile(DB_PATH, content, PERMISSIONS)
@@ -35,19 +39,19 @@ func NewDataBaseTest (t *testing.T) (*LTests, *sql.DB) {
     return &LTests{t, db}, db
 }
 
-func (tests *LTests) CloseDataBaseTest () {
+func (tests *LTests) CloseDataBaseTest() {
     tests.DB.Close()
     os.Remove(DB_PATH)
 }
 
-func (tests *LTests) FailIfError (err error) {
+func (tests *LTests) FailIfError(err error) {
     if err != nil {
         fmt.Println(PRINT_PREFIX, err)
         tests.T.Fail()
     }
 }
 
-func (tests *LTests) ExistsTable (tableName string) (bool, error) {
+func (tests *LTests) ExistsTable(tableName string) (bool, error) {
     const EXISTS = 1
     var result int
     existsTableQuery := `SELECT EXISTS(SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?);`
@@ -55,11 +59,7 @@ func (tests *LTests) ExistsTable (tableName string) (bool, error) {
     return result == EXISTS, err
 }
 
-func (tests *LTests) PrintAndFail (message string) {
+func (tests *LTests) PrintAndFail(message string) {
     fmt.Println(PRINT_PREFIX, message)
     tests.T.Fail()
-}
-
-func (tests *LTests) PrintVars (vars any...) {
-    fmr.Println(vars...)
 }

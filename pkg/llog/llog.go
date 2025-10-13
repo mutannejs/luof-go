@@ -10,7 +10,7 @@ const (
     UUID_ERROR_MESSAGE = "error generating uuid"
 )
 
-func PrintSQLError (err error) {
+func PrintSQLError(err error) {
     if err != nil {
         fmt.Println(SQL_PREFIX, err)
     }
