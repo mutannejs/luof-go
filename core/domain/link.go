@@ -1,16 +1,15 @@
 package domain
 
 import (
-    "time"
     "github.com/google/uuid"
+    "time"
 )
 
 type Link struct {
     Uid uuid.UUID
     Url string
     Name string
-    Description string
-    UseMarkdown bool
+    Description Description
     CreatedAt time.Time
     UpdatedAt time.Time
 }

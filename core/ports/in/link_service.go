@@ -20,15 +20,16 @@ func NewLinkService(repo out.LinkRepository) *LinkService {
 func (ls *LinkService) Create(
     url string,
     name string,
-    description string,
+    contentDescription string,
     useMarkdown bool,
 ) (uid uuid.UUID, err error) {
     if uid, err = luuid.New(); err != nil {
         return
     }
+    var description = domain.Description{contentDescription, useMarkdown}
     var createdAt time.Time = time.Now()
     var updatedAt time.Time
-    var link = domain.Link{uid, url, name, description, useMarkdown, createdAt, updatedAt}
+    var link = domain.Link{uid, url, name, description, createdAt, updatedAt}
     err = ls.Repo.Create(link)
     return
 }
@@ -49,14 +50,15 @@ func (ls *LinkService) Update(
     uid uuid.UUID,
     url string,
     name string,
-    description string,
+    contentDescription string,
     useMarkdown bool,
 ) (ok bool, err error) {
     if ok, err = ls.Repo.Exists(uid); err != nil || !ok {
         return
     }
+    var description = domain.Description{contentDescription, useMarkdown}
     var updatedAt time.Time = time.Now()
-    var link = domain.Link{uid, url, name, description, useMarkdown, time.Time{}, updatedAt}
+    var link = domain.Link{uid, url, name, description, time.Time{}, updatedAt}
     if err = ls.Repo.Update(uid, link); err != nil {
         ok = false
     }

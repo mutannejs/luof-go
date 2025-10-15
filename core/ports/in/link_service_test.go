@@ -63,7 +63,7 @@ func TestCreateLinkService(t *testing.T) {
     for _, link := range repoRM.Links {
         fmt.Printf(
             "url: %v\nname: %v\nuseMarkdown: %v\ncreatedAt: %v\nupdateAt: %v\n\n",
-            link.Url, link.Name, link.UseMarkdown, link.CreatedAt, link.UpdatedAt,
+            link.Url, link.Name, link.Description.UseMarkdown, link.CreatedAt, link.UpdatedAt,
         )
     }
 }
