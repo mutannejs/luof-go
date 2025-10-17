@@ -6,9 +6,18 @@ import (
     "github.com/google/uuid"
 )
 
+type CategoryRead interface {
+    Exists(uuid.UUID) (bool, error)
+    GetById(uuid.UUID) (domain.Category, error)
+}
+
+type CategoryWrite interface {
+    Create(domain.Category) error
+    Delete(uuid.UUID) error
+    Update(uuid.UUID, domain.Category) error
+}
+
 type CategoryRepository interface {
-    Create (domain.Category) error
-    Delete (uuid.UUID) error
-    Update (uuid.UUID, domain.Category) error
-    Exists (uuid.UUID) (bool, error)
+    CategoryRead
+    CategoryWrite
 }

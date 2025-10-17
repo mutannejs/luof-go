@@ -12,3 +12,18 @@ type Category struct {
     CreatedAt time.Time
     UpdatedAt time.Time
 }
+
+type CategoryDMService interface {
+    Create(string, string, bool) (uuid.UUID, error)
+    Delete(uuid.UUID) (bool, error)
+    Update(uuid.UUID, string, string, bool) (bool, error)
+}
+
+type CategoryQueryService interface {
+    GetById(uuid.UUID) (domain.Category, error)
+}
+
+type CategoryService interface {
+    CategoryDMService
+    CategoryQueryService
+}
