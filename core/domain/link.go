@@ -14,18 +14,21 @@ type Link struct {
     UpdatedAt time.Time
 }
 
-type LinkDMService interface {
-    Create(string, string, string, bool, uuid.UUID, bool) (uuid.UUID, error)
-    Delete(uuid.UUID) (bool, error)
-    Update(uuid.UUID, string, string, string, bool) (bool, error)
-}
+func NewLink(
+    url string,
+    name string,
+    contentDescription string,
+    useMarkdown bool,
+) (Link, error) {
+    if uid, err = uuid.New(); err != nil {
+        return nil, err
+    }
 
-type LinkQueryService interface {
-    GetByCategory(uuid.UUID) ([]domain.Link, error)
-    GetById(uuid.UUID) (domain.Link, error)
-}
+    var createdAt time.Time = time.Now()
+    var insertedAt time.Time = createdAt
+    var updatedAt time.Time
+    var description = domain.Description{contentDescription, useMarkdown}
+    var link = domain.Link{uid, url, name, description, createdAt, updatedAt}
 
-type LinkService interface {
-    LinkDMService
-    LinkQueryService
+    return link, nil
 }

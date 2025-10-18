@@ -18,3 +18,11 @@ func TestIsZero(t *testing.T) {
         t.Fail()
     }
 }
+
+func TestZero(t *testing.T) {
+    var zero = Zero()
+    if !IsZero(zero) {
+        fmt.Println("Zero não retornou corretamente")
+        t.Fail()
+    }
+}

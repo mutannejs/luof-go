@@ -13,17 +13,19 @@ type Category struct {
     UpdatedAt time.Time
 }
 
-type CategoryDMService interface {
-    Create(string, string, bool) (uuid.UUID, error)
-    Delete(uuid.UUID) (bool, error)
-    Update(uuid.UUID, string, string, bool) (bool, error)
-}
+func NewCategory(
+    name string,
+    contentDescription string,
+    useMarkdown bool,
+) (Category, error) {
+    if uid, err = uuid.New(); err != nil {
+        return nil, err
+    }
 
-type CategoryQueryService interface {
-    GetById(uuid.UUID) (domain.Category, error)
-}
+    var createdAt time.Time = time.Now()
+    var updatedAt time.Time
+    var description = domain.Description{contentDescription, useMarkdown}
+    var category = domain.Category{uid, name, description, createdAt, updatedAt}
 
-type CategoryService interface {
-    CategoryDMService
-    CategoryQueryService
+    return category, nil
 }

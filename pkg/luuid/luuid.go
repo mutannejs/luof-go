@@ -20,6 +20,11 @@ func New() (uid uuid.UUID, err error) {
     return
 }
 
+func Zero() uuid.UUID {
+    var zero uuid.UUID
+    return zero
+}
+
 func IsZero(uid uuid.UUID) bool {
     var zero uuid.UUID
     return reflect.DeepEqual(uid, zero)
