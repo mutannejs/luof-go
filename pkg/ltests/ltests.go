@@ -94,5 +94,6 @@ func (repo *MockCRUDRepository[T]) Delete(uid uuid.UUID) error {
 }
 
 func (repo *MockCRUDRepository[T]) Update(uid uuid.UUID, item T) error {
+    repo.items[uid] = item
     return nil
 }

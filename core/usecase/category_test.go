@@ -17,7 +17,11 @@ var (
     )
     mockUid = mockCategory.GetUid()
     invalidUid = uuid.New()
-    updatedName = "Dev Web"
+    mockUpdated, _ = domain.NewCategory(
+        "dev web",
+        "*links about web development*",
+        true,
+    )
 )
 
 type CategoryRepository struct {
@@ -88,5 +92,30 @@ func TestGetCategoryByUid(t *testing.T) {
 
     if (category != domain.Category{}) || err != nil {
         ltests.PrintAndFail(t, "Insucesso na execução de GetCategoryByUid para um uid inválido", err)
+    }
+}
+
+func TestUpdateCategory(t *testing.T) {
+    var repo = NewMockCategoryRepository(t, true, "UpdateCategory")
+    var uc = NewUpdateCategory(repo)
+    var gcbu = NewGetCategoryByUid(repo)
+
+    exists, err := uc.Execute(
+        mockUid,
+        mockUpdated.Name,
+        mockUpdated.Description.Content,
+        mockUpdated.Description.UseMarkdown,
+    )
+
+    updatedCategory, _ := gcbu.Execute(mockUid)
+
+    if err != nil ||
+            /*updatedCategory.CreatedAt.Compare(category.CreatedAt) == 0 ||
+            updatedCategory.UpdatedAt.Compare(category.UpdatedAt) <= 0 */
+            !exists ||
+            strings.Compare(updatedCategory.Name, mockUpdated.Name) != 0 ||
+            strings.Compare(updatedCategory.Description.Content, mockUpdated.Description.Content) != 0 ||
+            updatedCategory.Description.UseMarkdown != mockUpdated.Description.UseMarkdown {
+        ltests.PrintAndFail(t, "Insucesso na execução de UpdateCategory para um uid válido", err)
     }
 }
