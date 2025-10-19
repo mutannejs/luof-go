@@ -1,4 +1,4 @@
-package use_case
+package usecase
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
@@ -6,15 +6,15 @@ import (
     "github.com/google/uuid"
 )
 
-type CreateCategoryUseCase struct {
+type CreateCategory struct {
     Repo repository.Category
 }
 
-func CreateCategory(repo repository.Category) CreateCategoryUseCase {
-    return CreateCategoryUseCase{repo}
+func NewCreateCategory(repo repository.Category) CreateCategory {
+    return CreateCategory{repo}
 }
 
-func (ccUseCase *CreateCategoryUseCase) Execute(
+func (ccUseCase *CreateCategory) Execute(
     name string,
     description string,
     useMarkdown bool,
@@ -25,7 +25,7 @@ func (ccUseCase *CreateCategoryUseCase) Execute(
 
     if err == nil {
         err = ccUseCase.Repo.Create(category)
-        uid = category.Uid
+        uid = category.GetUid()
     }
 
     return

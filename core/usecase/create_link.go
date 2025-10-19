@@ -1,4 +1,4 @@
-package use_case
+package usecase
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
@@ -6,15 +6,15 @@ import (
     "github.com/google/uuid"
 )
 
-type CreateLinkUseCase struct {
+type CreateLink struct {
     Repo repository.Link
 }
 
-func CreateLink(repo repository.Link) CreateLinkUseCase {
-    return CreateLinkUseCase{repo}
+func NewCreateLink(repo repository.Link) CreateLink {
+    return CreateLink{repo}
 }
 
-func (clUseCase *CreateLinkUseCase) Execute(
+func (clUseCase *CreateLink) Execute(
     url string,
     name string,
     description string,
@@ -26,7 +26,7 @@ func (clUseCase *CreateLinkUseCase) Execute(
 
     if err == nil {
         err = clUseCase.Repo.Create(link)
-        uid = link.Uid
+        uid = link.GetUid()
     }
 
     return

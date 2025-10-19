@@ -35,7 +35,7 @@ func TestNewCategory(t *testing.T) {
     )
 
     if err != nil ||
-            luuid.IsZero(category.Uid) ||
+            luuid.IsZero(category.GetUid()) ||
             category.Name != categoryMock["name"] ||
             category.Description.Content != categoryMock["description"] ||
             category.Description.UseMarkdown != categoryMock["useMarkdown"] ||
@@ -55,7 +55,7 @@ func TestNewLink(t *testing.T) {
     )
 
     if err != nil ||
-            luuid.IsZero(link.Uid) ||
+            luuid.IsZero(link.GetUid()) ||
             link.Url != linkMock["url"] ||
             link.Name != linkMock["name"] ||
             link.Description.Content != linkMock["description"] ||

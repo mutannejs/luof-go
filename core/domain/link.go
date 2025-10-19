@@ -7,12 +7,16 @@ import (
 )
 
 type Link struct {
-    Uid uuid.UUID
+    uid uuid.UUID
     Url string
     Name string
     Description Description
     CreatedAt time.Time
     UpdatedAt time.Time
+}
+
+func (l Link) GetUid() uuid.UUID {
+    return l.uid
 }
 
 func NewLink(

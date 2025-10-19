@@ -1,4 +1,4 @@
-package use_case
+package usecase
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
@@ -6,16 +6,16 @@ import (
     "github.com/google/uuid"
 )
 
-type GetLinksByCategoryUseCase struct {
+type GetLinksByCategory struct {
     BelongsToRepo repository.BelongsTo
     CategoryRepo repository.Category
 }
 
-func GetLinksByCategory(btRepo repository.BelongsTo, cRepo repository.Category) GetLinksByCategoryUseCase {
-    return GetLinksByCategoryUseCase{btRepo, cRepo}
+func NewGetLinksByCategory(btRepo repository.BelongsTo, cRepo repository.Category) GetLinksByCategory {
+    return GetLinksByCategory{btRepo, cRepo}
 }
 
-func (glbcUseCase *GetLinksByCategoryUseCase) Execute(
+func (glbcUseCase *GetLinksByCategory) Execute(
     uid uuid.UUID,
 ) (links []domain.Link, err error) {
     var exists bool

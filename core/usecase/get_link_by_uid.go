@@ -1,4 +1,4 @@
-package use_case
+package usecase
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
@@ -6,15 +6,15 @@ import (
     "github.com/google/uuid"
 )
 
-type GetLinkByUidUseCase struct {
+type GetLinkByUid struct {
     Repo repository.Link
 }
 
-func GetLinkByUid(repo repository.Link) GetLinkByUidUseCase {
-    return GetLinkByUidUseCase{repo}
+func NewGetLinkByUid(repo repository.Link) GetLinkByUid {
+    return GetLinkByUid{repo}
 }
 
-func (glbuUseCase *GetLinkByUidUseCase) Execute(
+func (glbuUseCase *GetLinkByUid) Execute(
     uid uuid.UUID,
 ) (link domain.Link, err error) {
     var exists bool

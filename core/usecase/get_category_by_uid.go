@@ -1,4 +1,4 @@
-package use_case
+package usecase
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
@@ -6,15 +6,15 @@ import (
     "github.com/google/uuid"
 )
 
-type GetCategoryByUidUseCase struct {
+type GetCategoryByUid struct {
     Repo repository.Category
 }
 
-func GetCategoryByUid(repo repository.Category) GetCategoryByUidUseCase {
-    return GetCategoryByUidUseCase{repo}
+func NewGetCategoryByUid(repo repository.Category) GetCategoryByUid {
+    return GetCategoryByUid{repo}
 }
 
-func (gcbuUseCase *GetCategoryByUidUseCase) Execute(
+func (gcbuUseCase *GetCategoryByUid) Execute(
     uid uuid.UUID,
 ) (category domain.Category, err error) {
     var exists bool

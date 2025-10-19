@@ -7,11 +7,15 @@ import (
 )
 
 type Category struct {
-    Uid uuid.UUID
+    uid uuid.UUID
     Name string
     Description Description
     CreatedAt time.Time
     UpdatedAt time.Time
+}
+
+func (c Category) GetUid() uuid.UUID {
+    return c.uid
 }
 
 func NewCategory(

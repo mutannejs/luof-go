@@ -1,4 +1,4 @@
-package use_case
+package usecase
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
@@ -6,15 +6,15 @@ import (
     "github.com/google/uuid"
 )
 
-type UpdateLinkUseCase struct {
+type UpdateLink struct {
     Repo repository.Link
 }
 
-func UpdateLink(repo repository.Link) UpdateLinkUseCase {
-    return UpdateLinkUseCase{repo}
+func NewUpdateLink(repo repository.Link) UpdateLink {
+    return UpdateLink{repo}
 }
 
-func (ulUseCase *UpdateLinkUseCase) Execute(
+func (ulUseCase *UpdateLink) Execute(
     uid uuid.UUID,
     url string,
     name string,

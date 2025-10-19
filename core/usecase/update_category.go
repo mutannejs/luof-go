@@ -1,4 +1,4 @@
-package use_case
+package usecase
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
@@ -6,15 +6,15 @@ import (
     "github.com/google/uuid"
 )
 
-type UpdateCategoryUseCase struct {
+type UpdateCategory struct {
     Repo repository.Category
 }
 
-func UpdateCategory(repo repository.Category) UpdateCategoryUseCase {
-    return UpdateCategoryUseCase{repo}
+func NewUpdateCategory(repo repository.Category) UpdateCategory {
+    return UpdateCategory{repo}
 }
 
-func (ucUseCase *UpdateCategoryUseCase) Execute(
+func (ucUseCase *UpdateCategory) Execute(
     uid uuid.UUID,
     name string,
     description string,

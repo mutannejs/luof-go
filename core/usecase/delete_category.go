@@ -1,19 +1,19 @@
-package use_case
+package usecase
 
 import (
     "github.com/mutannejs/luof-go/core/repository"
     "github.com/google/uuid"
 )
 
-type DeleteCategoryUseCase struct {
+type DeleteCategory struct {
     Repo repository.Category
 }
 
-func DeleteCategory(repo repository.Category) DeleteCategoryUseCase {
-    return DeleteCategoryUseCase{repo}
+func NewDeleteCategory(repo repository.Category) DeleteCategory {
+    return DeleteCategory{repo}
 }
 
-func (dcUseCase *DeleteCategoryUseCase) Execute(
+func (dcUseCase *DeleteCategory) Execute(
     uid uuid.UUID,
 ) (exists bool, err error) {
     exists, err = dcUseCase.Repo.Exists(uid)

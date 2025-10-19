@@ -1,19 +1,19 @@
-package use_case
+package usecase
 
 import (
     "github.com/mutannejs/luof-go/core/repository"
     "github.com/google/uuid"
 )
 
-type DeleteLinkUseCase struct {
+type DeleteLink struct {
     Repo repository.Link
 }
 
-func DeleteLink(repo repository.Link) DeleteLinkUseCase {
-    return DeleteLinkUseCase{repo}
+func NewDeleteLink(repo repository.Link) DeleteLink {
+    return DeleteLink{repo}
 }
 
-func (dlUseCase *DeleteLinkUseCase) Execute(
+func (dlUseCase *DeleteLink) Execute(
     uid uuid.UUID,
 ) (exists bool, err error) {
     exists, err = dlUseCase.Repo.Exists(uid)
