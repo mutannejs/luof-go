@@ -15,9 +15,9 @@ var (
         "links about development",
         false,
     )
-    mockUid = mockCategory.GetUid()
-    invalidUid = uuid.New()
-    mockUpdated, _ = domain.NewCategory(
+    mockUidCategory = mockCategory.GetUid()
+    invalidUidCategory = uuid.New()
+    mockUpdatedCategory, _ = domain.NewCategory(
         "dev web",
         "*links about web development*",
         true,
@@ -58,7 +58,7 @@ func TestDeleteCategory(t *testing.T) {
     var repo = NewMockCategoryRepository(t, true, "DeleteCategory")
     var dc = NewDeleteCategory(repo)
 
-    exists, err := dc.Execute(mockUid)
+    exists, err := dc.Execute(mockUidCategory)
 
     if !exists ||
             err != nil ||
@@ -66,7 +66,7 @@ func TestDeleteCategory(t *testing.T) {
         ltests.PrintAndFail(t, "Insucesso na execução de DeleteCategory para um uid válido", err)
     }
 
-    exists, err = dc.Execute(invalidUid)
+    exists, err = dc.Execute(invalidUidCategory)
 
     if exists || err != nil {
         ltests.PrintAndFail(t, "Insucesso na execução de DeleteCategory para um uid inválido", err)
@@ -77,7 +77,7 @@ func TestGetCategoryByUid(t *testing.T) {
     var repo = NewMockCategoryRepository(t, true, "GetCategoryByUid")
     var gcbu = NewGetCategoryByUid(repo)
 
-    category, err := gcbu.Execute(mockUid)
+    category, err := gcbu.Execute(mockUidCategory)
 
     if err != nil ||
             strings.Compare(mockCategory.Name, category.Name) != 0 ||
@@ -88,7 +88,7 @@ func TestGetCategoryByUid(t *testing.T) {
         ltests.PrintAndFail(t, "Insucesso na execução de GetCategoryByUid para um uid válido", err)
     }
 
-    category, err = gcbu.Execute(invalidUid)
+    category, err = gcbu.Execute(invalidUidCategory)
 
     if (category != domain.Category{}) || err != nil {
         ltests.PrintAndFail(t, "Insucesso na execução de GetCategoryByUid para um uid inválido", err)
@@ -101,21 +101,21 @@ func TestUpdateCategory(t *testing.T) {
     var gcbu = NewGetCategoryByUid(repo)
 
     exists, err := uc.Execute(
-        mockUid,
-        mockUpdated.Name,
-        mockUpdated.Description.Content,
-        mockUpdated.Description.UseMarkdown,
+        mockUidCategory,
+        mockUpdatedCategory.Name,
+        mockUpdatedCategory.Description.Content,
+        mockUpdatedCategory.Description.UseMarkdown,
     )
 
-    updatedCategory, _ := gcbu.Execute(mockUid)
+    updatedCategory, _ := gcbu.Execute(mockUidCategory)
 
     if err != nil ||
             /*updatedCategory.CreatedAt.Compare(category.CreatedAt) == 0 ||
             updatedCategory.UpdatedAt.Compare(category.UpdatedAt) <= 0 */
             !exists ||
-            strings.Compare(updatedCategory.Name, mockUpdated.Name) != 0 ||
-            strings.Compare(updatedCategory.Description.Content, mockUpdated.Description.Content) != 0 ||
-            updatedCategory.Description.UseMarkdown != mockUpdated.Description.UseMarkdown {
+            strings.Compare(updatedCategory.Name, mockUpdatedCategory.Name) != 0 ||
+            strings.Compare(updatedCategory.Description.Content, mockUpdatedCategory.Description.Content) != 0 ||
+            updatedCategory.Description.UseMarkdown != mockUpdatedCategory.Description.UseMarkdown {
         ltests.PrintAndFail(t, "Insucesso na execução de UpdateCategory para um uid válido", err)
     }
 }
