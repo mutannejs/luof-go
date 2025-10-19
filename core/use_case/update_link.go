@@ -1,8 +1,8 @@
 package use_case
 
 import (
-    "github.com/mutannejs/luof-go/domain"
-    "github.com/mutannejs/luof-go/repository"
+    "github.com/mutannejs/luof-go/core/domain"
+    "github.com/mutannejs/luof-go/core/repository"
     "github.com/google/uuid"
 )
 
@@ -15,21 +15,22 @@ func UpdateLink(repo repository.Link) UpdateLinkUseCase {
 }
 
 func (ulUseCase *UpdateLinkUseCase) Execute(
+    uid uuid.UUID,
     url string,
     name string,
     description string,
     useMarkdown bool,
 ) (exists bool, err error) {
-    exists = ulUseCase.Repo.Exists(uid)
+    exists, err = ulUseCase.Repo.Exists(uid)
 
-    if !exists {
+    if !exists || err != nil {
         return
     }
 
     var link domain.Link
     link, err = domain.NewLink(url, name, description, useMarkdown)
 
-    if link != nil {
+    if err == nil {
         err = ulUseCase.Repo.Update(uid, link)
     }
 

@@ -1,6 +1,7 @@
 package domain
 
 import (
+    "github.com/mutannejs/luof-go/pkg/luuid"
     "github.com/google/uuid"
     "time"
 )
@@ -18,14 +19,18 @@ func NewCategory(
     contentDescription string,
     useMarkdown bool,
 ) (Category, error) {
-    if uid, err = uuid.New(); err != nil {
-        return nil, err
+    var uid uuid.UUID
+    var err error
+
+    uid, err = luuid.New()
+    if err != nil {
+        return Category{}, err
     }
 
     var createdAt time.Time = time.Now()
     var updatedAt time.Time
-    var description = domain.Description{contentDescription, useMarkdown}
-    var category = domain.Category{uid, name, description, createdAt, updatedAt}
+    var description = Description{contentDescription, useMarkdown}
+    var category = Category{uid, name, description, createdAt, updatedAt}
 
     return category, nil
 }

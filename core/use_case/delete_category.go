@@ -1,8 +1,7 @@
 package use_case
 
 import (
-    "github.com/mutannejs/luof-go/domain"
-    "github.com/mutannejs/luof-go/repository"
+    "github.com/mutannejs/luof-go/core/repository"
     "github.com/google/uuid"
 )
 
@@ -15,9 +14,9 @@ func DeleteCategory(repo repository.Category) DeleteCategoryUseCase {
 }
 
 func (dcUseCase *DeleteCategoryUseCase) Execute(
-    uid uuid.UUID
+    uid uuid.UUID,
 ) (exists bool, err error) {
-    exists = dcUseCase.Repo.Exists(uid)
+    exists, err = dcUseCase.Repo.Exists(uid)
 
     if exists {
         err = dcUseCase.Repo.Delete(uid)

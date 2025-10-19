@@ -1,8 +1,8 @@
 package use_case
 
 import (
-    "github.com/mutannejs/luof-go/domain"
-    "github.com/mutannejs/luof-go/repository"
+    "github.com/mutannejs/luof-go/core/domain"
+    "github.com/mutannejs/luof-go/core/repository"
     "github.com/google/uuid"
 )
 
@@ -15,9 +15,11 @@ func GetCategoryByUid(repo repository.Category) GetCategoryByUidUseCase {
 }
 
 func (gcbuUseCase *GetCategoryByUidUseCase) Execute(
-    uid uuid.UUID
+    uid uuid.UUID,
 ) (category domain.Category, err error) {
-    exists = gcbuUseCase.Repo.Exists(uid)
+    var exists bool
+
+    exists, err = gcbuUseCase.Repo.Exists(uid)
 
     if exists {
         category, err = gcbuUseCase.Repo.GetByUid(uid)

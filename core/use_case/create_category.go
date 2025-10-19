@@ -1,8 +1,8 @@
 package use_case
 
 import (
-    "github.com/mutannejs/luof-go/domain"
-    "github.com/mutannejs/luof-go/repository"
+    "github.com/mutannejs/luof-go/core/domain"
+    "github.com/mutannejs/luof-go/core/repository"
     "github.com/google/uuid"
 )
 
@@ -23,7 +23,7 @@ func (ccUseCase *CreateCategoryUseCase) Execute(
 
     category, err = domain.NewCategory(name, description, useMarkdown)
 
-    if category != nil {
+    if err == nil {
         err = ccUseCase.Repo.Create(category)
         uid = category.Uid
     }

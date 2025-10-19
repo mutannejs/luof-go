@@ -1,14 +1,14 @@
-package out
+package repository
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
     "github.com/google/uuid"
 )
 
-type Read interface {
+type ReadBelongsTo interface {
     GetLinksByCategory(uuid.UUID) ([]domain.Link, error)
 }
 
-type Link interface {
-    Read
+type BelongsTo interface {
+    ReadBelongsTo
 }

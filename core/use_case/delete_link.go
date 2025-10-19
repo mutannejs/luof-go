@@ -1,8 +1,7 @@
 package use_case
 
 import (
-    "github.com/mutannejs/luof-go/domain"
-    "github.com/mutannejs/luof-go/repository"
+    "github.com/mutannejs/luof-go/core/repository"
     "github.com/google/uuid"
 )
 
@@ -15,9 +14,9 @@ func DeleteLink(repo repository.Link) DeleteLinkUseCase {
 }
 
 func (dlUseCase *DeleteLinkUseCase) Execute(
-    uid uuid.UUID
+    uid uuid.UUID,
 ) (exists bool, err error) {
-    exists = dlUseCase.Repo.Exists(uid)
+    exists, err = dlUseCase.Repo.Exists(uid)
 
     if exists {
         err = dlUseCase.Repo.Delete(uid)

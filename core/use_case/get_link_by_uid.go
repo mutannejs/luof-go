@@ -1,8 +1,8 @@
 package use_case
 
 import (
-    "github.com/mutannejs/luof-go/domain"
-    "github.com/mutannejs/luof-go/repository"
+    "github.com/mutannejs/luof-go/core/domain"
+    "github.com/mutannejs/luof-go/core/repository"
     "github.com/google/uuid"
 )
 
@@ -15,9 +15,11 @@ func GetLinkByUid(repo repository.Link) GetLinkByUidUseCase {
 }
 
 func (glbuUseCase *GetLinkByUidUseCase) Execute(
-    uid uuid.UUID
+    uid uuid.UUID,
 ) (link domain.Link, err error) {
-    exists = glbuUseCase.Repo.Exists(uid)
+    var exists bool
+
+    exists, err = glbuUseCase.Repo.Exists(uid)
 
     if exists {
         link, err = glbuUseCase.Repo.GetByUid(uid)

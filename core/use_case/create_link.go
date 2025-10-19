@@ -1,8 +1,8 @@
 package use_case
 
 import (
-    "github.com/mutannejs/luof-go/domain"
-    "github.com/mutannejs/luof-go/repository"
+    "github.com/mutannejs/luof-go/core/domain"
+    "github.com/mutannejs/luof-go/core/repository"
     "github.com/google/uuid"
 )
 
@@ -24,7 +24,7 @@ func (clUseCase *CreateLinkUseCase) Execute(
 
     link, err = domain.NewLink(url, name, description, useMarkdown)
 
-    if link != nil {
+    if err == nil {
         err = clUseCase.Repo.Create(link)
         uid = link.Uid
     }

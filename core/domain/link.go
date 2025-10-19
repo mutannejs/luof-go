@@ -1,6 +1,7 @@
 package domain
 
 import (
+    "github.com/mutannejs/luof-go/pkg/luuid"
     "github.com/google/uuid"
     "time"
 )
@@ -20,15 +21,18 @@ func NewLink(
     contentDescription string,
     useMarkdown bool,
 ) (Link, error) {
-    if uid, err = uuid.New(); err != nil {
-        return nil, err
+    var uid uuid.UUID
+    var err error
+
+    uid, err = luuid.New()
+    if err != nil {
+        return Link{}, err
     }
 
     var createdAt time.Time = time.Now()
-    var insertedAt time.Time = createdAt
     var updatedAt time.Time
-    var description = domain.Description{contentDescription, useMarkdown}
-    var link = domain.Link{uid, url, name, description, createdAt, updatedAt}
+    var description = Description{contentDescription, useMarkdown}
+    var link = Link{uid, url, name, description, createdAt, updatedAt}
 
     return link, nil
 }
