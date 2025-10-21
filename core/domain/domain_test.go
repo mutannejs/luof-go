@@ -1,11 +1,9 @@
 package domain
 
 import (
-    "github.com/mutannejs/luof-go/pkg/luuid"
-    "fmt"
-    "reflect"
     "testing"
-    "time"
+
+    "github.com/stretchr/testify/assert"
 )
 
 var (
@@ -22,11 +20,6 @@ var (
     }
 )
 
-func isTimeZero(value time.Time) bool {
-    var zero time.Time
-    return reflect.DeepEqual(value, zero)
-}
-
 func TestNewCategory(t *testing.T) {
     category, err := NewCategory(
         categoryMock["name"].(string),
@@ -34,16 +27,13 @@ func TestNewCategory(t *testing.T) {
         categoryMock["useMarkdown"].(bool),
     )
 
-    if err != nil ||
-            luuid.IsZero(category.GetUid()) ||
-            category.Name != categoryMock["name"] ||
-            category.Description.Content != categoryMock["description"] ||
-            category.Description.UseMarkdown != categoryMock["useMarkdown"] ||
-            isTimeZero(category.CreatedAt) ||
-            !isTimeZero(category.UpdatedAt) {
-        fmt.Println(err)
-        t.Fail()
-    }
+    assert.NoError(t, err, "criação com dados válidos não deveria falhar")
+    assert.NotZero(t, category.GetUid(), "uid deveria ser um uuid diferente de zero")
+    assert.Equal(t, category.Name, categoryMock["name"], "o nome deveria ser igual ao argumento do construtor")
+    assert.Equal(t, category.Description.Content, categoryMock["description"], "a descrição deveria ser igual ao argumento do construtor")
+    assert.Equal(t, category.Description.UseMarkdown, categoryMock["useMarkdown"], "o valor useMarkdown deveria ser igual ao argumento do construtor")
+    assert.NotZero(t, category.CreatedAt, "createdAt deveria ser diferente de zero")
+    assert.Zero(t, category.UpdatedAt, "updatedAt deveria ser diferente de zero")
 }
 
 func TestNewLink(t *testing.T) {
@@ -54,15 +44,12 @@ func TestNewLink(t *testing.T) {
         linkMock["useMarkdown"].(bool),
     )
 
-    if err != nil ||
-            luuid.IsZero(link.GetUid()) ||
-            link.Url != linkMock["url"] ||
-            link.Name != linkMock["name"] ||
-            link.Description.Content != linkMock["description"] ||
-            link.Description.UseMarkdown != linkMock["useMarkdown"] ||
-            isTimeZero(link.CreatedAt) ||
-            !isTimeZero(link.UpdatedAt) {
-        fmt.Println(err)
-        t.Fail()
-    }
+    assert.NoError(t, err, "criação com dados válidos não deveria falhar")
+    assert.NotZero(t, link.GetUid(), "uid deveria ser um uuid diferente de zero")
+    assert.Equal(t, link.Url, linkMock["url"], "a url deveria ser igual ao argumento do construtor")
+    assert.Equal(t, link.Name, linkMock["name"], "o nome deveria ser igual ao argumento do construtor")
+    assert.Equal(t, link.Description.Content, linkMock["description"], "a descrição deveria ser igual ao argumento do construtor")
+    assert.Equal(t, link.Description.UseMarkdown, linkMock["useMarkdown"], "o valor useMarkdown deveria ser igual ao argumento do construtor")
+    assert.NotZero(t, link.CreatedAt, "createdAt deveria ser diferente de zero")
+    assert.Zero(t, link.UpdatedAt, "updatedAt deveria ser diferente de zero")
 }
