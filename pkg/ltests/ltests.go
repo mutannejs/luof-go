@@ -4,6 +4,7 @@ import (
     "errors"
     "fmt"
     "github.com/google/uuid"
+    "github.com/stretchr/testify/mock"
     "testing"
     _ "github.com/mattn/go-sqlite3"
 )
@@ -96,4 +97,35 @@ func (repo *MockCRUDRepository[T]) Delete(uid uuid.UUID) error {
 func (repo *MockCRUDRepository[T]) Update(uid uuid.UUID, item T) error {
     repo.items[uid] = item
     return nil
+}
+
+
+
+type MockTestifyRepository[T Identifiable] struct {
+    mock.Mock
+}
+
+func (repo *MockTestifyRepository[T]) Exists(uid uuid.UUID) (bool, error) {
+    args := repo.Called(uid)
+    return args.Bool(0), args.Error(1)
+}
+
+func (repo *MockTestifyRepository[T]) GetByUid(uid uuid.UUID) (T, error) {
+    args := repo.Called(uid)
+    return args.Get(0).(T), args.Error(1)
+}
+
+func (repo *MockTestifyRepository[T]) Create(item T) error {
+    args := repo.Called(item)
+    return args.Error(0)
+}
+
+func (repo *MockTestifyRepository[T]) Delete(uid uuid.UUID) error {
+    args := repo.Called(uid)
+    return args.Error(0)
+}
+
+func (repo *MockTestifyRepository[T]) Update(uid uuid.UUID, item T) error {
+    args := repo.Called(uid, item)
+    return args.Error(0)
 }

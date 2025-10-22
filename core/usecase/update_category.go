@@ -4,6 +4,7 @@ import (
     "github.com/mutannejs/luof-go/core/domain"
     "github.com/mutannejs/luof-go/core/repository"
     "github.com/google/uuid"
+    "time"
 )
 
 type UpdateCategory struct {
@@ -30,6 +31,7 @@ func (ucUseCase *UpdateCategory) Execute(
     category, err = domain.NewCategory(name, description, useMarkdown)
 
     if err == nil {
+        category.UpdatedAt = time.Now()
         err = ucUseCase.Repo.Update(uid, category)
     }
 
