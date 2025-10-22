@@ -1,28 +1,28 @@
 package luuid
 
 import (
-    "fmt"
-    "github.com/google/uuid"
     "testing"
+
+    "github.com/google/uuid"
+    "github.com/stretchr/testify/assert"
 )
 
 func TestIsZero(t *testing.T) {
     var uid uuid.UUID
-    if !IsZero(uid) {
-        fmt.Println("Zero não reconhecido")
-        t.Fail()
-    }
-    uid, _ = New()
-    if IsZero(uid) {
-        fmt.Println("Valor diferente de zero reconhecido como zero")
-        t.Fail()
-    }
+    assert.True(t, IsZero(uid), "um zero deveria ser reconhecido pela função IsZero")
+    assert.False(t, IsZero(uuid.New()), "um uuid válido não deveria ser reconhecido pela função IsZero")
 }
 
 func TestZero(t *testing.T) {
     var zero = Zero()
-    if !IsZero(zero) {
-        fmt.Println("Zero não retornou corretamente")
-        t.Fail()
+    assert.Zero(t, zero, "a função Zero deveria retornar um zero do tipo uuid.UUID")
+}
+
+func TestNew(t *testing.T) {
+    var uid, err = New()
+    if err == nil {
+        assert.NotZero(t, uid, "a função New deveria retornar um uuid válido")
+    } else {
+        assert.EqualError(t, err, UUID_ERROR_NEW.Error(), "o erro retornado por New deveria ser " + UUID_ERROR_NEW.Error())
     }
 }

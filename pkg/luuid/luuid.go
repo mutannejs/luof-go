@@ -1,19 +1,19 @@
 package luuid
 
 import (
-    "github.com/mutannejs/luof-go/pkg/llog"
-
     "errors"
-    "fmt"
     "github.com/google/uuid"
     "reflect"
+)
+
+var (
+    UUID_ERROR_NEW = errors.New("error generating new uuid")
 )
 
 func New() (uid uuid.UUID, err error) {
     defer func() {
         if r := recover(); r != nil {
-            fmt.Println(llog.UUID_PREFIX, llog.UUID_ERROR_MESSAGE)
-            err = errors.New(llog.UUID_ERROR_MESSAGE)
+            err = UUID_ERROR_NEW
         }
     }()
     uid = uuid.New()
