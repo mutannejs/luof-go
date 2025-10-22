@@ -52,6 +52,13 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 * Operações de CRUD sobre **categorias**
 * Operações e agrupamentos simples de **links** por **categorias**
 
+### Próximas etapas
+
+- [X] Testes para link e category use cases
+- [ ] Testes para belongs to use cases
+- [ ] Adaptador SQLite
+- [ ] API
+
 ### Projeto inicial
 
 Esse repositório é parte de uma reformulação do projeto de mesmo nome disponibilizado no repositório https://github.com/mutannejs/luof, projeto implementando em **C** e somente com CLI.
