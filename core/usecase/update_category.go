@@ -1,10 +1,12 @@
 package usecase
 
 import (
+    "time"
+
     "github.com/mutannejs/luof-go/core/domain"
     "github.com/mutannejs/luof-go/core/repository"
+
     "github.com/google/uuid"
-    "time"
 )
 
 type UpdateCategory struct {

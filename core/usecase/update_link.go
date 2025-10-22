@@ -1,8 +1,11 @@
 package usecase
 
 import (
+    "time"
+
     "github.com/mutannejs/luof-go/core/domain"
     "github.com/mutannejs/luof-go/core/repository"
+
     "github.com/google/uuid"
 )
 
@@ -31,6 +34,7 @@ func (ulUseCase *UpdateLink) Execute(
     link, err = domain.NewLink(url, name, description, useMarkdown)
 
     if err == nil {
+        link.UpdatedAt = time.Now()
         err = ulUseCase.Repo.Update(uid, link)
     }
 

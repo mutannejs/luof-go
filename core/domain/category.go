@@ -1,9 +1,11 @@
 package domain
 
 import (
-    "github.com/mutannejs/luof-go/pkg/luuid"
-    "github.com/google/uuid"
     "time"
+
+    "github.com/mutannejs/luof-go/pkg/luuid"
+
+    "github.com/google/uuid"
 )
 
 type Category struct {
