@@ -1,3 +1,5 @@
+//go:build !luuid_error
+
 package domain
 
 import (
@@ -33,7 +35,7 @@ func TestNewCategory(t *testing.T) {
     assert.Equal(t, category.Description.Content, categoryMock["description"], "a descrição deveria ser igual ao argumento do construtor")
     assert.Equal(t, category.Description.UseMarkdown, categoryMock["useMarkdown"], "o valor useMarkdown deveria ser igual ao argumento do construtor")
     assert.NotZero(t, category.CreatedAt, "createdAt deveria ser diferente de zero")
-    assert.Zero(t, category.UpdatedAt, "updatedAt deveria ser diferente de zero")
+    assert.Zero(t, category.UpdatedAt, "updatedAt deveria ser zero")
 }
 
 func TestNewLink(t *testing.T) {
@@ -51,5 +53,5 @@ func TestNewLink(t *testing.T) {
     assert.Equal(t, link.Description.Content, linkMock["description"], "a descrição deveria ser igual ao argumento do construtor")
     assert.Equal(t, link.Description.UseMarkdown, linkMock["useMarkdown"], "o valor useMarkdown deveria ser igual ao argumento do construtor")
     assert.NotZero(t, link.CreatedAt, "createdAt deveria ser diferente de zero")
-    assert.Zero(t, link.UpdatedAt, "updatedAt deveria ser diferente de zero")
+    assert.Zero(t, link.UpdatedAt, "updatedAt deveria ser zero")
 }

@@ -1,11 +1,16 @@
 package domain
 
 import (
+    "errors"
     "time"
 
     "github.com/mutannejs/luof-go/pkg/luuid"
 
     "github.com/google/uuid"
+)
+
+var (
+    LINK_ERROR_NEW = errors.New("error creating new link")
 )
 
 type Link struct {
@@ -32,7 +37,7 @@ func NewLink(
 
     uid, err = luuid.New()
     if err != nil {
-        return Link{}, err
+        return Link{}, errors.Join(LINK_ERROR_NEW, err)
     }
 
     var createdAt time.Time = time.Now()

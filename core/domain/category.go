@@ -1,11 +1,16 @@
 package domain
 
 import (
+    "errors"
     "time"
 
     "github.com/mutannejs/luof-go/pkg/luuid"
 
     "github.com/google/uuid"
+)
+
+var (
+    CATEGORY_ERROR_NEW = errors.New("error creating new category")
 )
 
 type Category struct {
@@ -30,7 +35,7 @@ func NewCategory(
 
     uid, err = luuid.New()
     if err != nil {
-        return Category{}, err
+        return Category{}, errors.Join(CATEGORY_ERROR_NEW, err)
     }
 
     var createdAt time.Time = time.Now()
