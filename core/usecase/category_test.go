@@ -5,6 +5,7 @@ import (
     "testing"
 
     "github.com/mutannejs/luof-go/core/domain"
+    "github.com/mutannejs/luof-go/core/repository"
     "github.com/mutannejs/luof-go/pkg/ltests"
 
     "github.com/stretchr/testify/assert"
@@ -12,7 +13,7 @@ import (
 )
 
 var (
-    CATEGORY_NOT_EXISTS = errors.New("not exists")
+    categoryNotExists = errors.New(repository.CATEGORY_NOT_EXISTS)
     mockCategory, _ = domain.NewCategory(
         "development",
         "links about development",
@@ -27,17 +28,14 @@ func NewCategoryMockRepository() *ltests.MockCrudRepository[domain.Category] {
 
 func TestCreateCategory(t *testing.T) {
     var assert = assert.New(t)
+    var category domain.Category
+
     var repo = NewCategoryMockRepository()
     var cc = NewCreateCategory(repo)
 
     repo.On("Create", mock.MatchedBy(func(c domain.Category) bool {
-        return assert.True(
-            assert.Equal(c.Name, mockCategory.Name),
-            assert.Equal(c.Description.Content, mockCategory.Description.Content),
-            assert.Equal(c.Description.UseMarkdown, mockCategory.Description.UseMarkdown),
-            assert.NotZero(c.CreatedAt),
-            assert.Zero(c.UpdatedAt),
-        )
+        category = c
+        return true
     })).Return(nil)
 
     uid, err := cc.Execute(
@@ -46,25 +44,47 @@ func TestCreateCategory(t *testing.T) {
         mockCategory.Description.UseMarkdown,
     )
 
-    assert.NotZero(uid, "criação com dados válidos deveria retornar um uuid diferente de zero")
-    assert.NoError(err, "criação com dados válidos não deveria retornar erro")
+    // Testa se a categoria enviada para Repository.Create está de acordo
+    // com os argumentos passados à função
+    // ! Pode estar errada, mesmo que NewCategory tenha sido corretamente
+    // implementada
+    assert.Equal(category.Name, mockCategory.Name)
+    assert.Equal(category.Description.Content, mockCategory.Description.Content)
+    assert.Equal(category.Description.UseMarkdown, mockCategory.Description.UseMarkdown)
+    assert.NotZero(category.CreatedAt)
+    assert.Zero(category.UpdatedAt)
+
+    // Testa o retorno da função
+    assert.NotZero(
+                    uid,
+                    "Criação com dados válidos deveria retornar um uuid diferente de zero")
+    assert.NoError(
+                    err,
+                    "Criação com dados válidos não deveria retornar erro")
 }
 
 func TestDeleteCategory_NotExists(t *testing.T) {
     var assert = assert.New(t)
+
     var repo = NewCategoryMockRepository()
     var dc = NewDeleteCategory(repo)
 
-    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, CATEGORY_NOT_EXISTS)
+    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, categoryNotExists)
 
     exists, err := dc.Execute(mockUidCategory)
 
-    assert.False(exists, "não deveria ser possível deletar uma categoria que não existe")
-    assert.EqualError(err, CATEGORY_NOT_EXISTS.Error(), "tentativa de deletar uma categoria que não existe deveria retornar erro")
+    assert.False(
+                    exists,
+                    "Não deveria ser possível deletar uma categoria que não existe")
+    assert.ErrorIs(
+                    err,
+                    categoryNotExists,
+                    "Tentativa de deletar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
 func TestDeleteCategory_Exists(t *testing.T) {
     var assert = assert.New(t)
+
     var repo = NewCategoryMockRepository()
     var dc = NewDeleteCategory(repo)
 
@@ -73,25 +93,36 @@ func TestDeleteCategory_Exists(t *testing.T) {
 
     exists, err := dc.Execute(mockUidCategory)
 
-    assert.True(exists, "deveria ser possível deletar uma categoria válida")
-    assert.NoError(err, "deletar uma categoria válida não deveria retornar erro")
+    assert.True(
+                    exists,
+                    "Deveria ser possível deletar uma categoria válida")
+    assert.NoError(
+                    err,
+                    "Deletar uma categoria válida não deveria retornar erro")
 }
 
 func TestGetCategoryByUid_NotExists(t *testing.T) {
     var assert = assert.New(t)
+
     var repo = NewCategoryMockRepository()
     var gcbu = NewGetCategoryByUid(repo)
 
-    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, CATEGORY_NOT_EXISTS)
+    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, categoryNotExists)
 
     category, err := gcbu.Execute(mockUidCategory)
 
-    assert.Zero(category, "deveria ser retornado zero para um uid inválido")
-    assert.EqualError(err, CATEGORY_NOT_EXISTS.Error(), "buscar uma categoria que não existe deveria retornar erro")
+    assert.Zero(
+                    category,
+                    "Deveria ser retornado zero para um uid inválido")
+    assert.ErrorIs(
+                    err,
+                    categoryNotExists,
+                    "Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
 func TestGetCategoryByUid_Exists(t *testing.T) {
     var assert = assert.New(t)
+
     var repo = NewCategoryMockRepository()
     var gcbu = NewGetCategoryByUid(repo)
 
@@ -100,20 +131,22 @@ func TestGetCategoryByUid_Exists(t *testing.T) {
 
     category, err := gcbu.Execute(mockUidCategory)
 
-    assert.Equal(category.Name, mockCategory.Name)
-    assert.Equal(category.Description.Content, mockCategory.Description.Content)
-    assert.Equal(category.Description.UseMarkdown, mockCategory.Description.UseMarkdown)
-    assert.Equal(category.CreatedAt, mockCategory.CreatedAt)
-    assert.Equal(category.UpdatedAt, mockCategory.UpdatedAt)
-    assert.NoError(err, "buscar uma categoria válida não deveria retornar erro")
+    assert.Equal(
+                    category,
+                    mockCategory,
+                    "A categoria retornada pela função deve ser a mesma retornada pelo repositório")
+    assert.NoError(
+                    err,
+                    "Buscar uma categoria válida não deveria retornar erro")
 }
 
 func TestUpdateCategory_NotExists(t *testing.T) {
     var assert = assert.New(t)
+
     var repo = NewCategoryMockRepository()
     var uc = NewUpdateCategory(repo)
 
-    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, CATEGORY_NOT_EXISTS)
+    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, categoryNotExists)
 
     exists, err := uc.Execute(
         mockUidCategory,
@@ -122,24 +155,26 @@ func TestUpdateCategory_NotExists(t *testing.T) {
         mockCategory.Description.UseMarkdown,
     )
 
-    assert.False(exists, "não deveria ser possível atualizar uma categoria que não existe")
-    assert.EqualError(err, CATEGORY_NOT_EXISTS.Error(), "tentar atualizar uma categoria que não existe deveria retornar erro")
+    assert.False(
+                    exists,
+                    "Não deveria ser possível atualizar uma categoria que não existe")
+    assert.ErrorIs(
+                    err,
+                    categoryNotExists,
+                    "Tentar atualizar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
 func TestUpdateCategory_Exists(t *testing.T) {
     var assert = assert.New(t)
+    var category domain.Category
+
     var repo = NewCategoryMockRepository()
     var uc = NewUpdateCategory(repo)
 
     repo.On("Exists", mockUidCategory).Return(true, nil)
     repo.On("Update", mockUidCategory, mock.MatchedBy(func(c domain.Category) bool {
-        return assert.True(
-            assert.Equal(c.Name, mockCategory.Name),
-            assert.Equal(c.Description.Content, mockCategory.Description.Content),
-            assert.Equal(c.Description.UseMarkdown, mockCategory.Description.UseMarkdown),
-            assert.NotZero(c.CreatedAt),
-            assert.NotZero(c.UpdatedAt),
-        )
+        category = c
+        return true
     })).Return(nil)
 
     exists, err := uc.Execute(
@@ -149,6 +184,26 @@ func TestUpdateCategory_Exists(t *testing.T) {
         mockCategory.Description.UseMarkdown,
     )
 
-    assert.True(exists, "deveria ser possível atualizar uma categoria válida")
-    assert.NoError(err, "atualizar uma categoria válida não deveria retornar erro")
+    // Testa se a categoria enviada para Repository.Update está de acordo
+    // com os argumentos passados à função
+    // ! Pode estar errada, mesmo que NewCategory tenha sido corretamente
+    // implementada
+    assert.Equal(category.Name, mockCategory.Name)
+    assert.Equal(category.Description.Content, mockCategory.Description.Content)
+    assert.Equal(category.Description.UseMarkdown, mockCategory.Description.UseMarkdown)
+    assert.NotZero(category.CreatedAt)
+
+    // Testa o valor de UpdatedAt
+    assert.Less(
+                    category.CreatedAt,
+                    category.UpdatedAt,
+                    "O valor de UpdatedAt deve ser maior que o valor de CreatedAt")
+
+    // Testa o retorno da função
+    assert.True(
+                    exists,
+                    "Deveria ser possível atualizar uma categoria válida")
+    assert.NoError(
+                    err,
+                    "Atualizar uma categoria válida não deveria retornar erro")
 }

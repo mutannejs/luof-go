@@ -55,8 +55,8 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 ### Próximas etapas
 
 - [X] Testes para link e category use cases
-- [ ] Melhorar tratamento de erros (usando Wraps)
-- [ ] Documentar código
+- [X] Melhorar tratamento de erros (usando Wraps)
+- [X] Documentar código
 - [ ] Testes para belongs to use cases
 - [ ] Adaptador SQLite
 - [ ] API

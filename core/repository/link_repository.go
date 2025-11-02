@@ -21,3 +21,7 @@ type Link interface {
     ReadLink
     WriteLink
 }
+
+var (
+    LINK_NOT_EXISTS = "the searched link does not exist"
+)

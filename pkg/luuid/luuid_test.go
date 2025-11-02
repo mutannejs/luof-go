@@ -9,20 +9,34 @@ import (
 
 func TestIsZero(t *testing.T) {
     var uid uuid.UUID
-    assert.True(t, IsZero(uid), "um zero deveria ser reconhecido pela função IsZero")
-    assert.False(t, IsZero(uuid.New()), "um uuid válido não deveria ser reconhecido pela função IsZero")
+
+    assert.True(t,
+                    IsZero(uid),
+                    "Um zero deveria ser reconhecido pela função IsZero")
+    assert.False(t,
+                    IsZero(uuid.New()),
+                    "Um uuid válido não deveria ser reconhecido pela função IsZero")
 }
 
 func TestZero(t *testing.T) {
     var zero = Zero()
-    assert.Zero(t, zero, "a função Zero deveria retornar um zero do tipo uuid.UUID")
+
+    assert.Zero(t,
+                    zero,
+                    "A função Zero deveria retornar um zero do tipo uuid.UUID")
 }
 
 func TestNew(t *testing.T) {
     var uid, err = New()
+
     if err == nil {
-        assert.NotZero(t, uid, "a função New deveria retornar um uuid válido")
+        assert.NotZero(t,
+                    uid,
+                    "A função New deveria retornar um uuid válido se nenhum erro ocorrer")
     } else {
-        assert.EqualError(t, err, UUID_ERROR_NEW.Error(), "o erro retornado por New deveria ser " + UUID_ERROR_NEW.Error())
+        assert.EqualError(t,
+                    err,
+                    UUID_ERROR_NEW.Error(),
+                    "O erro retornado por New deveria ser " + UUID_ERROR_NEW.Error())
     }
 }

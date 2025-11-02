@@ -10,7 +10,7 @@ import (
 )
 
 var (
-    LINK_ERROR_NEW = errors.New("error creating new link")
+    LINK_ERROR_NEW = errors.New("error instantiate new link")
 )
 
 type Link struct {

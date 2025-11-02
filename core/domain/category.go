@@ -10,7 +10,7 @@ import (
 )
 
 var (
-    CATEGORY_ERROR_NEW = errors.New("error creating new category")
+    CATEGORY_ERROR_NEW = errors.New("error instantiate new category")
 )
 
 type Category struct {
