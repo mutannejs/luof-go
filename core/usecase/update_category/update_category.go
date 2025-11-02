@@ -1,4 +1,4 @@
-package usecase
+package update_category
 
 import (
     "time"
@@ -13,7 +13,7 @@ type UpdateCategory struct {
     Repo repository.Category
 }
 
-func NewUpdateCategory(repo repository.Category) UpdateCategory {
+func New(repo repository.Category) UpdateCategory {
     return UpdateCategory{repo}
 }
 

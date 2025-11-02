@@ -5,10 +5,6 @@ import (
     "github.com/stretchr/testify/mock"
 )
 
-type Identifiable interface {
-    GetUid() uuid.UUID
-}
-
 type MockCrudRepository[T Identifiable] struct {
     mock.Mock
 }

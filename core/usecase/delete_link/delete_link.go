@@ -1,4 +1,4 @@
-package usecase
+package delete_link
 
 import (
     "github.com/mutannejs/luof-go/core/repository"
@@ -10,7 +10,7 @@ type DeleteLink struct {
     Repo repository.Link
 }
 
-func NewDeleteLink(repo repository.Link) DeleteLink {
+func New(repo repository.Link) DeleteLink {
     return DeleteLink{repo}
 }
 

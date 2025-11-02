@@ -1,4 +1,4 @@
-package usecase
+package update_link
 
 import (
     "time"
@@ -13,7 +13,7 @@ type UpdateLink struct {
     Repo repository.Link
 }
 
-func NewUpdateLink(repo repository.Link) UpdateLink {
+func New(repo repository.Link) UpdateLink {
     return UpdateLink{repo}
 }
 

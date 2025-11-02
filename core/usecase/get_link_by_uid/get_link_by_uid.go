@@ -1,4 +1,4 @@
-package usecase
+package get_link_by_uid
 
 import (
     "github.com/mutannejs/luof-go/core/domain"

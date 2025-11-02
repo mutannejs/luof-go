@@ -1,4 +1,4 @@
-package usecase
+package get_category_by_uid
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
@@ -11,7 +11,7 @@ type GetCategoryByUid struct {
     Repo repository.Category
 }
 
-func NewGetCategoryByUid(repo repository.Category) GetCategoryByUid {
+func New(repo repository.Category) GetCategoryByUid {
     return GetCategoryByUid{repo}
 }
 

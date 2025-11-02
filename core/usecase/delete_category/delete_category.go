@@ -1,4 +1,4 @@
-package usecase
+package delete_category
 
 import (
     "github.com/mutannejs/luof-go/core/repository"
@@ -10,7 +10,7 @@ type DeleteCategory struct {
     Repo repository.Category
 }
 
-func NewDeleteCategory(repo repository.Category) DeleteCategory {
+func New(repo repository.Category) DeleteCategory {
     return DeleteCategory{repo}
 }
 

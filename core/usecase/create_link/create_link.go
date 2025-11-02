@@ -1,4 +1,4 @@
-package usecase
+package create_link
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
@@ -11,7 +11,7 @@ type CreateLink struct {
     Repo repository.Link
 }
 
-func NewCreateLink(repo repository.Link) CreateLink {
+func New(repo repository.Link) CreateLink {
     return CreateLink{repo}
 }
 

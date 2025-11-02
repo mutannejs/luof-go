@@ -1,4 +1,4 @@
-package usecase
+package create_category
 
 import (
     "github.com/mutannejs/luof-go/core/domain"
@@ -11,7 +11,7 @@ type CreateCategory struct {
     Repo repository.Category
 }
 
-func NewCreateCategory(repo repository.Category) CreateCategory {
+func New(repo repository.Category) CreateCategory {
     return CreateCategory{repo}
 }
 
