@@ -1,1 +1,3 @@
 testdata/
+luof-go*.sqlite
+.env

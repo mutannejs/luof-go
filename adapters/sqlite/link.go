@@ -1,39 +1,35 @@
-package link_storage
+package sqlite
 
-import (
-    "github.com/mutannejs/luof-go/pkg/llog"
-    "database/sql"
-)
+// import (
+// 	"database/sql"
+// 	"log"
 
-type LinkStorage struct {
-    DB *sql.DB
-}
+// 	"github.com/mutannejs/luof-go/pkg/llog"
 
-func NewLinkStorage(db *sql.DB) (LinkStorage, error) {
-    ls := LinkStorage{db}
-    err := InitTable(ls)
-    return ls, err
-}
+// 	_ "github.com/mattn/go-sqlite3"
+// )
 
-func InitTable(ls LinkStorage) error {
-    _, err := ls.DB.Exec(`
-        CREATE TABLE IF NOT EXISTS link (
-            id INTEGER PRIMARY KEY,
-            url TEXT,
-            name VARCHAR(200) NOT NULL,
-            description TEXT,
-            created_at DATETIME NOT NULL,
-            update_at DATETIME NOT NULL
-        );
-    `)
-    llog.PrintSQLError(err)
-    return err
-}
+// type Link struct {
+//     DB *sql.DB
+// }
 
-func (ls *LinkStorage) Create(l Link) error {
-    _, err := ls.DB.Exec(`
-        IF EXISTS link THEN INSERT INTO link VALUES (?, ?, ?, ?, ?);
-    `)
-    llog.PrintSQLError(err)
-    return err
-}
+// func New(db *sql.DB) (LinkStorage, error) {
+//     ls := LinkStorage{db}
+//     err := InitTable(ls)
+//     return ls, err
+// }
+
+// func Connection(db) {
+//     conn.DB, err = sql.Open("sqlite3", "./goexample.db")
+//     if err != nil {
+//         log.Fatal(err)
+//     }
+// }
+
+// func (ls *LinkStorage) Create(l Link) error {
+//     _, err := ls.DB.Exec(`
+//         IF EXISTS link THEN INSERT INTO link VALUES (?, ?, ?, ?, ?);
+//     `)
+//     llog.PrintSQLError(err)
+//     return err
+// }

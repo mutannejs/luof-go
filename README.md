@@ -57,9 +57,27 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 - [X] Testes para link e category use cases
 - [X] Melhorar tratamento de erros (usando Wraps)
 - [X] Documentar código
-- [ ] Testes para belongs to use cases
+- [X] Testes para belongs to use cases
 - [ ] Adaptador SQLite
 - [ ] API
+
+### Testes
+
+Os testes foram implementados utilizando o Testify. Para executar os testes definidos em um pacote, basta entrar na pasta do pacote e executar:
+
+```sh
+go test
+```
+
+Pode-se passar o argumento `-v` para incluir na saída todos os testes executados e seu resultado, não somente um resumo dos resultados (como ocorre por padrão).
+
+Alguns pacotes possuem possibilidades de testes para ser executados, por exemplo:
+
+* O `TestNew` do pacote `luuid` testa a função `luuid.New`, que pode falhar de forma imprevisível, por isso, pode-se passar a tag `luuid_error` para testar o caso em que `luuid.New` falha, ou não passar nehuma tag para testar o fluxo padrão:
+
+```sh
+go test -tags luuid_error
+```
 
 ### Projeto inicial
 
