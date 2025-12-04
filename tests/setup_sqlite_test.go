@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"database/sql"
 	"testing"
 
 	"github.com/mutannejs/luof-go/adapters/sqlite"
@@ -22,13 +23,12 @@ func TestSetupSqlite(t *testing.T) {
     err = lmigration.Up(db, sqlite.GetMigration)
     assert.NoError(err, "As migrations deveriam ser executadas sem que ocorressem erros")
 
-    var name string
-    db.QueryRow(`
-            SELECT name FROM sqlite_master WHERE type='table' AND name='link';
+    err = db.QueryRow(`
+            SELECT 1 FROM sqlite_master WHERE type='table' AND name='link';
         `).
-        Scan(&name)
+        Scan(new(int))
 
-    assert.Equal("link", name, "A tabela `link` deveria ter sido criada após executar as migrations")
+    assert.NoError(err, "A tabela `link` deveria ter sido criada após executar as migrations")
 }
 
 func TestDownSqlite(t *testing.T) {
@@ -43,11 +43,10 @@ func TestDownSqlite(t *testing.T) {
     err = lmigration.Down(db, sqlite.GetMigration)
     assert.NoError(err, "As migrations deveriam ser executadas sem que ocorressem erros")
 
-    var name string
-    db.QueryRow(`
+    err = db.QueryRow(`
             SELECT name FROM sqlite_master WHERE type='table' AND name='link';
         `).
-        Scan(&name)
+        Scan()
 
-    assert.Equal("", name, "A tabela `link` deveria ter sido dropada após executar as migrations")
+    assert.ErrorIs(sql.ErrNoRows, err, "A tabela `link` deveria ter sido dropada após executar as migrations")
 }

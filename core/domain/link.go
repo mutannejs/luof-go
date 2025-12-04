@@ -1,12 +1,12 @@
 package domain
 
 import (
-    "errors"
-    "time"
+	"errors"
+	"time"
 
-    "github.com/mutannejs/luof-go/pkg/luuid"
+	"github.com/mutannejs/luof-go/pkg/luuid"
 
-    "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 var (
@@ -24,6 +24,10 @@ type Link struct {
 
 func (l Link) GetUid() uuid.UUID {
     return l.uid
+}
+
+func (l *Link) SetUid(uid uuid.UUID) {
+    l.uid = uid
 }
 
 func NewLink(
