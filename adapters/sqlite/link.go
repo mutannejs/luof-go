@@ -40,12 +40,12 @@ func (lr *Link) GetByUid(uid uuid.UUID) (l domain.Link, err error) {
             FROM link WHERE uid_link = ?`,
             uid).
         Scan(
-            l.Url,
-            l.Name,
-            l.Description.Content,
-            l.Description.UseMarkdown,
-            l.CreatedAt,
-            l.UpdatedAt)
+            &l.Url,
+            &l.Name,
+            &l.Description.Content,
+            &l.Description.UseMarkdown,
+            &l.CreatedAt,
+            &l.UpdatedAt)
 
     if err == nil {
         l.SetUid(uid)
@@ -66,7 +66,7 @@ func (lr *Link) Create(l domain.Link) (err error) {
                 created_at,
                 update_at
             ) VALUES (
-                ?, ?, ?, ?, ?
+                ?, ?, ?, ?, ?, ?, ?
             )
         `,
         l.GetUid(),
