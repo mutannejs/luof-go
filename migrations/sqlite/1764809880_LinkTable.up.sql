@@ -5,5 +5,5 @@ CREATE TABLE link (
     description TEXT,
     use_markdown BOOLEAN,
     created_at DATETIME NOT NULL,
-    update_at DATETIME NOT NULL
+    updated_at DATETIME NOT NULL
 );

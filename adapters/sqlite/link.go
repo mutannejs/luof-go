@@ -21,9 +21,13 @@ func New(db *sql.DB) Link {
 func (lr *Link) Exists(uid uuid.UUID) (exists bool, err error) {
     err = lr.DB.QueryRow(
         `SELECT name FROM link WHERE uid_link = ?`,
-        uid).Scan()
+        uid).Scan(new(string))
 
-    exists = errors.Is(err, sql.ErrNoRows)
+    exists = !errors.Is(err, sql.ErrNoRows)
+
+    if errors.Is(err, sql.ErrNoRows) {
+        err = nil
+    }
 
     return
 }
@@ -36,7 +40,7 @@ func (lr *Link) GetByUid(uid uuid.UUID) (l domain.Link, err error) {
                 description,
                 use_markdown,
                 created_at,
-                update_at
+                updated_at
             FROM link WHERE uid_link = ?`,
             uid).
         Scan(
@@ -64,7 +68,7 @@ func (lr *Link) Create(l domain.Link) (err error) {
                 description,
                 use_markdown,
                 created_at,
-                update_at
+                updated_at
             ) VALUES (
                 ?, ?, ?, ?, ?, ?, ?
             )
@@ -93,11 +97,11 @@ func (lr *Link) Update(uid uuid.UUID, l domain.Link) (err error) {
         `
             UPDATE link
             SET url = ?,
-            SET name = ?,
-            SET description = ?,
-            SET use_markdown = ?,
-            SET created_at = ?,
-            SET update_at = ?
+            name = ?,
+            description = ?,
+            use_markdown = ?,
+            created_at = ?,
+            updated_at = ?
             WHERE uid_link = ?
         `,
         l.Url,
@@ -106,7 +110,7 @@ func (lr *Link) Update(uid uuid.UUID, l domain.Link) (err error) {
         l.Description.UseMarkdown,
         l.CreatedAt,
         l.UpdatedAt,
-        l.GetUid())
+        uid)
 
     return
 }
