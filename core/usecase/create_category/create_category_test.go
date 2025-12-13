@@ -1,21 +1,21 @@
 package create_category
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/mutannejs/luof-go/core/domain"
-    "github.com/mutannejs/luof-go/core/usecase"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestCreateCategory(t *testing.T) {
     var assert = assert.New(t)
-    var mockCategory = usecase.MockCategory
+    var mockCategory = domain.MockCategory
     var category domain.Category
 
-    var repo = usecase.NewCategoryMockRepository()
+    var repo = repository.NewCategoryMockRepository()
     var cc = New(repo)
 
     repo.On("Create", mock.MatchedBy(func(c domain.Category) bool {

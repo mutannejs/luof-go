@@ -1,23 +1,24 @@
 package delete_link
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/mutannejs/luof-go/core/usecase"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 var (
-    linkNotExists = usecase.LinkNotExists
-    mockUidLink = usecase.MockUidLink
+    linkNotExists = repository.LinkNotExists
+    mockUidLink = domain.MockUidLink
 )
 
 func TestDeleteLink_NotExists(t *testing.T) {
     var assert = assert.New(t)
 
-    var repo = usecase.NewLinkMockRepository()
+    var repo = repository.NewLinkMockRepository()
     var dl = New(repo)
 
     repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, linkNotExists)
@@ -36,7 +37,7 @@ func TestDeleteLink_NotExists(t *testing.T) {
 func TestDeleteLink_Exists(t *testing.T) {
     var assert = assert.New(t)
 
-    var repo = usecase.NewLinkMockRepository()
+    var repo = repository.NewLinkMockRepository()
     var dl = New(repo)
 
     repo.On("Exists", mockUidLink).Return(true, nil)

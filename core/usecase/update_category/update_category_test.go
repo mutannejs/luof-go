@@ -1,25 +1,25 @@
 package update_category
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/mutannejs/luof-go/core/domain"
-    "github.com/mutannejs/luof-go/core/usecase"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 var (
-    categoryNotExists = usecase.CategoryNotExists
-    mockCategory = usecase.MockCategory
-    mockUidCategory = usecase.MockUidCategory
+    categoryNotExists = repository.CategoryNotExists
+    mockCategory = domain.MockCategory
+    mockUidCategory = domain.MockUidCategory
 )
 
 func TestUpdateCategory_NotExists(t *testing.T) {
     var assert = assert.New(t)
 
-    var repo = usecase.NewCategoryMockRepository()
+    var repo = repository.NewCategoryMockRepository()
     var uc = New(repo)
 
     repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, categoryNotExists)
@@ -44,7 +44,7 @@ func TestUpdateCategory_Exists(t *testing.T) {
     var assert = assert.New(t)
     var category domain.Category
 
-    var repo = usecase.NewCategoryMockRepository()
+    var repo = repository.NewCategoryMockRepository()
     var uc = New(repo)
 
     repo.On("Exists", mockUidCategory).Return(true, nil)

@@ -1,24 +1,25 @@
 package get_category_by_uid
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/mutannejs/luof-go/core/usecase"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 var (
-    categoryNotExists = usecase.CategoryNotExists
-    mockCategory = usecase.MockCategory
-    mockUidCategory = usecase.MockUidCategory
+    categoryNotExists = repository.CategoryNotExists
+    mockCategory = domain.MockCategory
+    mockUidCategory = domain.MockUidCategory
 )
 
 func TestGetCategoryByUid_NotExists(t *testing.T) {
     var assert = assert.New(t)
 
-    var repo = usecase.NewCategoryMockRepository()
+    var repo = repository.NewCategoryMockRepository()
     var gcbu = New(repo)
 
     repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, categoryNotExists)
@@ -37,7 +38,7 @@ func TestGetCategoryByUid_NotExists(t *testing.T) {
 func TestGetCategoryByUid_Exists(t *testing.T) {
     var assert = assert.New(t)
 
-    var repo = usecase.NewCategoryMockRepository()
+    var repo = repository.NewCategoryMockRepository()
     var gcbu = New(repo)
 
     repo.On("Exists", mockUidCategory).Return(true, nil)

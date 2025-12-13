@@ -1,23 +1,24 @@
 package delete_category
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/mutannejs/luof-go/core/usecase"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 var (
-    categoryNotExists = usecase.CategoryNotExists
-    mockUidCategory = usecase.MockUidCategory
+    categoryNotExists = repository.CategoryNotExists
+    mockUidCategory = domain.MockUidCategory
 )
 
 func TestDeleteCategory_NotExists(t *testing.T) {
     var assert = assert.New(t)
 
-    var repo = usecase.NewCategoryMockRepository()
+    var repo = repository.NewCategoryMockRepository()
     var dc = New(repo)
 
     repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, categoryNotExists)
@@ -36,7 +37,7 @@ func TestDeleteCategory_NotExists(t *testing.T) {
 func TestDeleteCategory_Exists(t *testing.T) {
     var assert = assert.New(t)
 
-    var repo = usecase.NewCategoryMockRepository()
+    var repo = repository.NewCategoryMockRepository()
     var dc = New(repo)
 
     repo.On("Exists", mockUidCategory).Return(true, nil)

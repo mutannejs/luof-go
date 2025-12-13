@@ -3,25 +3,11 @@
 package domain
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/mutannejs/luof-go/pkg/luuid"
+	"github.com/mutannejs/luof-go/pkg/luuid"
 
-    "github.com/stretchr/testify/assert"
-)
-
-var (
-    linkMock = map[string]any{
-        "url": "github.com/mutannejs/luof-go",
-        "name": "luof",
-        "description": "### luof-go repository",
-        "useMarkdown": true,
-    }
-    categoryMock = map[string]any{
-        "name": "development",
-        "description": "links about development",
-        "useMarkdown": false,
-    }
+	"github.com/stretchr/testify/assert"
 )
 
 // Testa a instanciação de uma nova Categoria para casos onde ocorrem erros de UUID
@@ -29,9 +15,9 @@ func TestNewCategory(t *testing.T) {
     assert := assert.New(t)
 
     category, err := NewCategory(
-        categoryMock["name"].(string),
-        categoryMock["description"].(string),
-        categoryMock["useMarkdown"].(bool),
+        categoryMockMap["name"].(string),
+        categoryMockMap["description"].(string),
+        categoryMockMap["useMarkdown"].(bool),
     )
 
     assert.ErrorIs(
@@ -52,10 +38,10 @@ func TestNewLink(t *testing.T) {
     assert := assert.New(t)
 
     link, err := NewLink(
-        linkMock["url"].(string),
-        linkMock["name"].(string),
-        linkMock["description"].(string),
-        linkMock["useMarkdown"].(bool),
+        linkMockMap["url"].(string),
+        linkMockMap["name"].(string),
+        linkMockMap["description"].(string),
+        linkMockMap["useMarkdown"].(bool),
     )
 
     assert.ErrorIs(

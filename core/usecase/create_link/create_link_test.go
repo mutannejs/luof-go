@@ -1,21 +1,21 @@
 package create_link
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/mutannejs/luof-go/core/domain"
-    "github.com/mutannejs/luof-go/core/usecase"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestCreateLink(t *testing.T) {
     var assert = assert.New(t)
-    var mockLink = usecase.MockLink
+    var mockLink = domain.MockLink
     var link domain.Link
 
-    var repo = usecase.NewLinkMockRepository()
+    var repo = repository.NewLinkMockRepository()
     var cl = New(repo)
 
     repo.On("Create", mock.MatchedBy(func(l domain.Link) bool {

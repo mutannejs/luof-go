@@ -1,25 +1,25 @@
 package update_link
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/mutannejs/luof-go/core/domain"
-    "github.com/mutannejs/luof-go/core/usecase"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 var (
-    linkNotExists = usecase.LinkNotExists
-    mockLink = usecase.MockLink
-    mockUidLink = usecase.MockUidLink
+    linkNotExists = repository.LinkNotExists
+    mockLink = domain.MockLink
+    mockUidLink = domain.MockUidLink
 )
 
 func TestUpdateLink_NotExists(t *testing.T) {
     var assert = assert.New(t)
 
-    var repo = usecase.NewLinkMockRepository()
+    var repo = repository.NewLinkMockRepository()
     var ul = New(repo)
 
     repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, linkNotExists)
@@ -45,7 +45,7 @@ func TestUpdateLink_Exists(t *testing.T) {
     var assert = assert.New(t)
     var link domain.Link
 
-    var repo = usecase.NewLinkMockRepository()
+    var repo = repository.NewLinkMockRepository()
     var ul = New(repo)
 
     repo.On("Exists", mockUidLink).Return(true, nil)

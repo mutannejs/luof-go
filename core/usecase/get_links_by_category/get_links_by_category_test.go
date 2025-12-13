@@ -1,25 +1,26 @@
 package usecase
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/mutannejs/luof-go/core/usecase"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 var (
-    categoryNotExists = usecase.CategoryNotExists
-    mockLinks = usecase.MockLinks
-    mockUidCategory = usecase.MockUidCategory
+    categoryNotExists = repository.CategoryNotExists
+    mockLinks = domain.MockLinks
+    mockUidCategory = domain.MockUidCategory
 )
 
 func TestGetLinksByCategory_NotExists(t *testing.T) {
     var assert = assert.New(t)
 
-    var btRepo = usecase.NewBelongsToMockRepository()
-    var cRepo = usecase.NewCategoryMockRepository()
+    var btRepo = repository.NewBelongsToMockRepository()
+    var cRepo = repository.NewCategoryMockRepository()
     var glbc = NewGetLinksByCategory(btRepo, cRepo)
 
     cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, categoryNotExists)
@@ -38,8 +39,8 @@ func TestGetLinksByCategory_NotExists(t *testing.T) {
 func TestGetLinksByCategory_Exists(t *testing.T) {
     var assert = assert.New(t)
 
-    var btRepo = usecase.NewBelongsToMockRepository()
-    var cRepo = usecase.NewCategoryMockRepository()
+    var btRepo = repository.NewBelongsToMockRepository()
+    var cRepo = repository.NewCategoryMockRepository()
     var glbc = NewGetLinksByCategory(btRepo, cRepo)
 
     cRepo.On("Exists", mockUidCategory).Return(true, nil)

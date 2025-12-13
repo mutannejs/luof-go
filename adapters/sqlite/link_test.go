@@ -13,19 +13,9 @@ import (
 )
 
 var (
-    MockLink, _ = domain.NewLink(
-        "github.com/mutannejs/luof",
-        "luof",
-        "luof repository",
-        false,
-    )
-    MockUidLink = MockLink.GetUid()
-    AlternativeMockLink, _ = domain.NewLink(
-        "github.com/mutannejs/luof-go",
-        "luof-go",
-        "back-end luof repository",
-        false,
-    )
+    MockLink = domain.MockLink
+    MockUidLink = domain.MockUidLink
+    AlternativeMockLink = domain.AlternativeMockLink
 )
 
 type TestSuite struct {

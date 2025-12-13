@@ -3,23 +3,9 @@
 package domain
 
 import (
-    "testing"
+	"testing"
 
-    "github.com/stretchr/testify/assert"
-)
-
-var (
-    linkMock = map[string]any{
-        "url": "github.com/mutannejs/luof-go",
-        "name": "luof",
-        "description": "### luof-go repository",
-        "useMarkdown": true,
-    }
-    categoryMock = map[string]any{
-        "name": "development",
-        "description": "links about development",
-        "useMarkdown": false,
-    }
+	"github.com/stretchr/testify/assert"
 )
 
 // Testa a instanciação de uma nova Categoria para casos onde não ocorrem erros
@@ -27,9 +13,9 @@ func TestNewCategory(t *testing.T) {
     assert := assert.New(t)
 
     category, err := NewCategory(
-        categoryMock["name"].(string),
-        categoryMock["description"].(string),
-        categoryMock["useMarkdown"].(bool),
+        categoryMockMap["name"].(string),
+        categoryMockMap["description"].(string),
+        categoryMockMap["useMarkdown"].(bool),
     )
 
     assert.NoError(
@@ -40,15 +26,15 @@ func TestNewCategory(t *testing.T) {
                     "A nova categoria deveria possuir como Uid um uuid diferente de zero")
     assert.Equal(
                     category.Name,
-                    categoryMock["name"],
+                    categoryMockMap["name"],
                     "O nome deveria ser igual ao argumento do construtor")
     assert.Equal(
                     category.Description.Content,
-                    categoryMock["description"],
+                    categoryMockMap["description"],
                     "A descrição deveria ser igual ao argumento do construtor")
     assert.Equal(
                     category.Description.UseMarkdown,
-                    categoryMock["useMarkdown"],
+                    categoryMockMap["useMarkdown"],
                     "O valor UseMarkdown deveria ser igual ao argumento do construtor")
     assert.NotZero(
                     category.CreatedAt,
@@ -63,10 +49,10 @@ func TestNewLink(t *testing.T) {
     assert := assert.New(t)
 
     link, err := NewLink(
-        linkMock["url"].(string),
-        linkMock["name"].(string),
-        linkMock["description"].(string),
-        linkMock["useMarkdown"].(bool),
+        linkMockMap["url"].(string),
+        linkMockMap["name"].(string),
+        linkMockMap["description"].(string),
+        linkMockMap["useMarkdown"].(bool),
     )
 
     assert.NoError(
@@ -77,19 +63,19 @@ func TestNewLink(t *testing.T) {
                     "O novo link deveria possui como Uid um uuid diferente de zero")
     assert.Equal(
                     link.Url,
-                    linkMock["url"],
+                    linkMockMap["url"],
                     "A url deveria ser igual ao argumento do construtor")
     assert.Equal(
                     link.Name,
-                    linkMock["name"],
+                    linkMockMap["name"],
                     "O nome deveria ser igual ao argumento do construtor")
     assert.Equal(
                     link.Description.Content,
-                    linkMock["description"],
+                    linkMockMap["description"],
                     "A descrição deveria ser igual ao argumento do construtor")
     assert.Equal(
                     link.Description.UseMarkdown,
-                    linkMock["useMarkdown"],
+                    linkMockMap["useMarkdown"],
                     "O valor UseMarkdown deveria ser igual ao argumento do construtor")
     assert.NotZero(
                     link.CreatedAt,
