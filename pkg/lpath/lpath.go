@@ -2,6 +2,7 @@ package lpath
 
 import (
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -16,12 +17,16 @@ func getRootPath() string {
     cmdOut, err = exec.Command("git", "rev-parse", "--show-toplevel").Output()
 
     if err == nil {
-        return strings.TrimSpace(string(cmdOut)) + "/"
+        return strings.TrimSpace(string(cmdOut))
     }
 
     return ""
 }
 
 func GetAbsolutetPath(relativePath string) string {
-    return ROOT_PATH + relativePath
+    return Join(ROOT_PATH, relativePath)
+}
+
+func Join(elem ...string) string {
+    return filepath.Join(elem...)
 }
