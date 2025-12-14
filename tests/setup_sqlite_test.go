@@ -29,6 +29,8 @@ func TestSetupSqlite(t *testing.T) {
         Scan(new(int))
 
     assert.NoError(err, "A tabela `link` deveria ter sido criada após executar as migrations")
+
+    db.Close()
 }
 
 func TestDownSqlite(t *testing.T) {
@@ -49,4 +51,6 @@ func TestDownSqlite(t *testing.T) {
         Scan()
 
     assert.ErrorIs(sql.ErrNoRows, err, "A tabela `link` deveria ter sido dropada após executar as migrations")
+
+    db.Close()
 }

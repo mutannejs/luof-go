@@ -30,6 +30,11 @@ var (
         "luof repository",
         false,
     )
+    AlternativeMockCategory, _ = NewCategory(
+        "design",
+        "design links",
+        true,
+    )
 
     // Conjuntos de elementos do domínio
     MockLinks = []Link{MockLink, AlternativeMockLink}

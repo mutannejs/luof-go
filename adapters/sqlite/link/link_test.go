@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"testing"
 
+	"github.com/mutannejs/luof-go/adapters/sqlite"
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/lmigration"
@@ -13,9 +14,10 @@ import (
 )
 
 var (
-    MockLink = domain.MockLink
-    MockUidLink = domain.MockUidLink
-    AlternativeMockLink = domain.AlternativeMockLink
+    linkTableMigration uint = 1764809880
+    mockLink = domain.MockLink
+    mockUidLink = domain.MockUidLink
+    alternativeMockLink = domain.AlternativeMockLink
 )
 
 type TestSuite struct {
@@ -27,8 +29,8 @@ type TestSuite struct {
 
 func (ts *TestSuite) SetupSuite() {
     env, _ := lenv.Load(true)
-    db, _ := GetConnection(env)
-    lmigration.Migrate(db, 1764809880, GetMigration)
+    db, _ := sqlite.GetConnection(env)
+    lmigration.Migrate(db, linkTableMigration, sqlite.GetMigration)
     lr := New(db)
 
     ts.env = env
@@ -41,26 +43,27 @@ func (ts *TestSuite) TearDownTest() {
 }
 
 func (ts *TestSuite) TearDownSuite() {
-    lmigration.Down(ts.db, GetMigration)
+    lmigration.Down(ts.db, sqlite.GetMigration)
+    ts.db.Close()
 }
 
 func (ts *TestSuite) TestCreate() {
-    err := ts.lr.Create(MockLink)
+    err := ts.lr.Create(mockLink)
 
     ts.NoError(err, "Tentar criar um link válido não deveria retornar erro")
 }
 
 func (ts *TestSuite) TestGetByUid_Exists() {
-    ts.lr.Create(MockLink)
+    ts.lr.Create(mockLink)
 
-    link, err := ts.lr.GetByUid(MockUidLink)
+    link, err := ts.lr.GetByUid(mockUidLink)
 
     ts.NoError(err, "Tentar recuperar um link informando um uid válido não deveria retornar erro")
-    ts.Equal(MockUidLink, link.GetUid())
-    ts.Equal(MockLink.Url, link.Url)
-    ts.Equal(MockLink.Name, link.Name)
-    ts.Equal(MockLink.Description.Content, link.Description.Content)
-    ts.Equal(MockLink.Description.UseMarkdown, link.Description.UseMarkdown)
+    ts.Equal(mockUidLink, link.GetUid())
+    ts.Equal(mockLink.Url, link.Url)
+    ts.Equal(mockLink.Name, link.Name)
+    ts.Equal(mockLink.Description.Content, link.Description.Content)
+    ts.Equal(mockLink.Description.UseMarkdown, link.Description.UseMarkdown)
     ts.NotZero(link.CreatedAt)
     ts.Zero(link.UpdatedAt)
 }
@@ -79,9 +82,9 @@ func (ts *TestSuite) TestGetByUid_NotExists() {
 }
 
 func (ts *TestSuite) TestExists() {
-    ts.lr.Create(MockLink)
+    ts.lr.Create(mockLink)
 
-    exists, err := ts.lr.Exists(MockUidLink)
+    exists, err := ts.lr.Exists(mockUidLink)
 
     ts.NoError(err, "Exists se informado um uid válido não deveria retornar erro")
     ts.Equal(true, exists, "Exists deveria retornar verdadeiro para um uid válido")
@@ -101,28 +104,28 @@ func (ts *TestSuite) TestNotExists() {
 }
 
 func (ts *TestSuite) TestUpdate() {
-    ts.lr.Create(MockLink)
+    ts.lr.Create(mockLink)
 
-    err := ts.lr.Update(MockUidLink, AlternativeMockLink)
+    err := ts.lr.Update(mockUidLink, alternativeMockLink)
 
     ts.NoError(err, "Tentar atualizar um link com uid válido não deveria retornar erro")
 
-    link, _ := ts.lr.GetByUid(MockUidLink)
+    link, _ := ts.lr.GetByUid(mockUidLink)
 
-    ts.Equal(AlternativeMockLink.Url, link.Url)
-    ts.Equal(AlternativeMockLink.Name, link.Name)
-    ts.Equal(AlternativeMockLink.Description.Content, link.Description.Content)
-    ts.Equal(AlternativeMockLink.Description.UseMarkdown, link.Description.UseMarkdown)
+    ts.Equal(alternativeMockLink.Url, link.Url)
+    ts.Equal(alternativeMockLink.Name, link.Name)
+    ts.Equal(alternativeMockLink.Description.Content, link.Description.Content)
+    ts.Equal(alternativeMockLink.Description.UseMarkdown, link.Description.UseMarkdown)
 }
 
 func (ts *TestSuite) TestDelete() {
-    ts.lr.Create(MockLink)
+    ts.lr.Create(mockLink)
 
-    err := ts.lr.Delete(MockUidLink)
+    err := ts.lr.Delete(mockUidLink)
 
     ts.NoError(err, "Tentar deletar um link válido não deveria retornar erro")
 
-    _, err = ts.lr.GetByUid(MockUidLink)
+    _, err = ts.lr.GetByUid(mockUidLink)
 
     ts.ErrorIs(sql.ErrNoRows, err, "Tentar recuperar um link previamente deletado deveria retornar " + sql.ErrNoRows.Error())
 }

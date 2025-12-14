@@ -1,12 +1,12 @@
 package domain
 
 import (
-    "errors"
-    "time"
+	"errors"
+	"time"
 
-    "github.com/mutannejs/luof-go/pkg/luuid"
+	"github.com/mutannejs/luof-go/pkg/luuid"
 
-    "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 var (
@@ -23,6 +23,10 @@ type Category struct {
 
 func (c Category) GetUid() uuid.UUID {
     return c.uid
+}
+
+func (l *Category) SetUid(uid uuid.UUID) {
+    l.uid = uid
 }
 
 func NewCategory(

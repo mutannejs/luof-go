@@ -1,8 +1,8 @@
 package lpath
 
 import (
-	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -11,16 +11,12 @@ var (
 )
 
 func getRootPath() string {
-    var cmdOut []byte
-    var err error
+    var currentFileRelativePath = "/pkg/lpath/lpath.go"
 
-    cmdOut, err = exec.Command("git", "rev-parse", "--show-toplevel").Output()
+    _, file, _, _ := runtime.Caller(0)
+    index := strings.LastIndex(file, currentFileRelativePath)
 
-    if err == nil {
-        return strings.TrimSpace(string(cmdOut))
-    }
-
-    return ""
+    return file[:index]
 }
 
 func GetAbsolutetPath(relativePath string) string {
