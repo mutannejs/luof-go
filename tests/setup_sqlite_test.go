@@ -9,7 +9,6 @@ import (
 	"github.com/mutannejs/luof-go/pkg/lmigration"
 
 	"github.com/stretchr/testify/assert"
-	_ "modernc.org/sqlite"
 )
 
 func TestSetupSqlite(t *testing.T) {
@@ -31,7 +30,7 @@ func TestSetupSqlite(t *testing.T) {
 
     assert.NoError(err, "A tabela `link` deveria ter sido criada após executar as migrations")
 
-    // db.Close()
+    db.Close()
 }
 
 func TestDownSqlite(t *testing.T) {
@@ -43,15 +42,15 @@ func TestDownSqlite(t *testing.T) {
     db, err := sqlite.GetConnection(env)
     assert.NoError(err, "Tentar se conectar com o sqlite não deveria retornar erro")
 
-    err = lmigration.Down(db, sqlite.GetMigration)
+    err = lmigration.Migrate(db, 0, sqlite.GetMigration)
     assert.NoError(err, "As migrations deveriam ser executadas sem que ocorressem erros")
 
     err = db.QueryRow(`
-            SELECT name FROM sqlite_master WHERE type='table' AND name='link';
+            SELECT 1 FROM sqlite_master WHERE type='table' AND name='link';
         `).
-        Scan()
+        Scan(new(int))
 
     assert.ErrorIs(sql.ErrNoRows, err, "A tabela `link` deveria ter sido dropada após executar as migrations")
 
-    // db.Close()
+    db.Close()
 }

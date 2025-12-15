@@ -62,6 +62,7 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 - ~~[ ] Documentar testes adapter/sqlite/link~~
 - [X] Remover duplicidade de dados mockados
 - [ ] Adaptador SQLite Categoria e BelongsTo
+- [ ] Adicionar logs
 - [ ] API
 
 ### Testes

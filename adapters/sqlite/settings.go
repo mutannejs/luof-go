@@ -27,7 +27,7 @@ func GetConnection(env map[string]string) (db *sql.DB, err error) {
         return
     }
 
-    return sql.Open("sqlite", absolutePath)
+    return sql.Open("sqlite", absolutePath + "?_pragma=foreign_keys=true")
 }
 
 func GetMigration(db *sql.DB) (m *migrate.Migrate, err error) {

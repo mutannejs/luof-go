@@ -27,6 +27,16 @@ func Up(db *sql.DB, getMigration func (*sql.DB) (*migrate.Migrate, error)) (err 
     return m.Up()
 }
 
+func Drop(db *sql.DB, getMigration func (*sql.DB) (*migrate.Migrate, error)) (err error) {
+    var m *migrate.Migrate
+
+    if m, err = getMigration(db); err != nil {
+        return err
+    }
+
+    return m.Drop()
+}
+
 func Down(db *sql.DB, getMigration func (*sql.DB) (*migrate.Migrate, error)) (err error) {
     var m *migrate.Migrate
 
@@ -35,4 +45,15 @@ func Down(db *sql.DB, getMigration func (*sql.DB) (*migrate.Migrate, error)) (er
     }
 
     return m.Down()
+}
+
+func Version(db *sql.DB, getMigration func (*sql.DB) (*migrate.Migrate, error)) (uint, bool, error) {
+    var m *migrate.Migrate
+    var err error
+
+    if m, err = getMigration(db); err != nil {
+        return 0, false, err
+    }
+
+    return m.Version()
 }

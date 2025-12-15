@@ -1,4 +1,4 @@
-package sqlite
+package link
 
 import (
 	"database/sql"
@@ -43,7 +43,7 @@ func (ts *TestSuite) TearDownTest() {
 }
 
 func (ts *TestSuite) TearDownSuite() {
-    lmigration.Down(ts.db, sqlite.GetMigration)
+    lmigration.Drop(ts.db, sqlite.GetMigration)
     ts.db.Close()
 }
 

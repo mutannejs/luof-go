@@ -36,10 +36,12 @@ var (
         true,
     )
 
-    // Conjuntos de elementos do domínio
-    MockLinks = []Link{MockLink, AlternativeMockLink}
-
     // Identificadores dos elementos
     MockUidCategory = MockCategory.GetUid()
     MockUidLink = MockLink.GetUid()
+    AlternativeMockUidLink = AlternativeMockLink.GetUid()
+    AlternativeMockUidCategory = AlternativeMockCategory.GetUid()
+
+    // Conjuntos de elementos do domínio
+    MockLinks = []Link{MockLink, AlternativeMockLink}
 )
