@@ -9,6 +9,7 @@ import (
 	"github.com/mutannejs/luof-go/pkg/lmigration"
 
 	"github.com/stretchr/testify/assert"
+	_ "modernc.org/sqlite"
 )
 
 func TestSetupSqlite(t *testing.T) {
@@ -30,7 +31,7 @@ func TestSetupSqlite(t *testing.T) {
 
     assert.NoError(err, "A tabela `link` deveria ter sido criada após executar as migrations")
 
-    db.Close()
+    // db.Close()
 }
 
 func TestDownSqlite(t *testing.T) {
@@ -52,5 +53,5 @@ func TestDownSqlite(t *testing.T) {
 
     assert.ErrorIs(sql.ErrNoRows, err, "A tabela `link` deveria ter sido dropada após executar as migrations")
 
-    db.Close()
+    // db.Close()
 }
