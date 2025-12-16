@@ -2,12 +2,9 @@ package belongs_to
 
 import (
 	"database/sql"
-	"errors"
 	"time"
 
-	"github.com/mutannejs/luof-go/adapters/sqlite/category"
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
@@ -15,11 +12,10 @@ import (
 
 type BelongsTo struct {
     DB *sql.DB
-    Cr repository.Category
 }
 
 func New(db *sql.DB) *BelongsTo {
-    return &BelongsTo{db, category.New(db)}
+    return &BelongsTo{db}
 }
 
 func (btr *BelongsTo) Exists(
@@ -46,14 +42,6 @@ func (btr *BelongsTo) Exists(
 
 func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, err error) {
     var rows *sql.Rows
-
-    if exists, errExists := btr.Cr.Exists(uid); errExists != nil {
-        err = errExists
-        return
-    } else if !exists {
-        err = errors.New(repository.CATEGORY_NOT_EXISTS)
-        return
-    }
 
     rows, err = btr.DB.Query(
         `
@@ -116,14 +104,6 @@ func (btr *BelongsTo) Create(
     insertedAt time.Time,
     isMain bool,
 ) (err error) {
-    var exists bool
-
-    if exists, err = btr.Exists(linkUid, categoryUid); exists {
-        return errors.New(repository.ALREADY_BELONGS)
-    } else if err != nil {
-        return
-    }
-
     _, err = btr.DB.Exec(
         `
             INSERT INTO belongs_to (
@@ -139,6 +119,38 @@ func (btr *BelongsTo) Create(
         categoryUid,
         insertedAt,
         isMain)
+
+    return
+}
+
+func (btr *BelongsTo) Delete(
+    linkUid uuid.UUID,
+    categoryUid uuid.UUID,
+) (err error) {
+    _, err = btr.DB.Exec(
+        `
+            DELETE FROM belongs_to WHERE uid_link = ? AND uid_category = ?
+        `,
+        linkUid,
+        categoryUid)
+
+    return
+}
+
+func (btr *BelongsTo) Update(
+    linkUid uuid.UUID,
+    categoryUid uuid.UUID,
+    isMain bool,
+) (err error) {
+    _, err = btr.DB.Exec(
+        `
+            UPDATE belongs_to
+            SET is_main = ?
+            WHERE uid_link = ? AND uid_Category = ?
+        `,
+        isMain,
+        linkUid,
+        categoryUid)
 
     return
 }

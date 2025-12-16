@@ -92,10 +92,10 @@ func (lr *Category) Update(uid uuid.UUID, l domain.Category) (err error) {
         `
             UPDATE category
             SET name = ?,
-            description = ?,
-            use_markdown = ?,
-            created_at = ?,
-            updated_at = ?
+                description = ?,
+                use_markdown = ?,
+                created_at = ?,
+                updated_at = ?
             WHERE uid_category = ?
         `,
         l.Name,

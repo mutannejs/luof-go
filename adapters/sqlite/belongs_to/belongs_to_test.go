@@ -9,10 +9,8 @@ import (
 	"github.com/mutannejs/luof-go/adapters/sqlite/category"
 	"github.com/mutannejs/luof-go/adapters/sqlite/link"
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/lmigration"
-	"github.com/mutannejs/luof-go/pkg/luuid"
 
 	"github.com/stretchr/testify/suite"
 )
@@ -25,8 +23,6 @@ var (
     mockUidCategory = domain.MockUidCategory
     alternativeMockLink = domain.AlternativeMockLink
     alternativeMockUidLink = domain.AlternativeMockUidLink
-    alternativeMockCategory = domain.AlternativeMockCategory
-    alternativeMockUidCategory = domain.AlternativeMockUidCategory
 )
 
 type TestSuite struct {
@@ -51,7 +47,6 @@ func (ts *TestSuite) SetupSuite() {
     lr.Create(mockLink)
     lr.Create(alternativeMockLink)
     cr.Create(mockCategory)
-    cr.Create(alternativeMockCategory)
 }
 
 func (ts *TestSuite) TearDownTest() {
@@ -66,26 +61,7 @@ func (ts *TestSuite) TearDownSuite() {
 func (ts *TestSuite) TestCreate() {
     err := ts.btr.Create(mockUidLink, mockUidCategory, time.Now(), false)
 
-    ts.NoError(err, "Tentar relacionar um link a uma categoria, ainda não relacionados e ambos válidos, não deveria retornar erro")
-}
-
-func (ts *TestSuite) TestCreate_Exists() {
-    ts.btr.Create(mockUidLink, mockUidCategory, time.Now(), false)
-    err := ts.btr.Create(mockUidLink, mockUidCategory, time.Now(), true)
-
-    ts.EqualError(err, repository.ALREADY_BELONGS, "Tentar relacionar um link já pertencente a uma categoria novamente, deveria retornar o erro " + repository.ALREADY_BELONGS)
-}
-
-func (ts *TestSuite) TestCreate_Invalid() {
-    uid, err := luuid.New()
-
-    if err != nil {
-        ts.Fail(err.Error())
-    }
-
-    err = ts.btr.Create(uid, mockUidCategory, time.Now(), false)
-
-    ts.Error(err, "Tentar relacionar um link a uma categoria, sendo um deles inválido, deveria retornar erro")
+    ts.NoError(err, "Tentar relacionar um link a uma categoria, ambos válidos, não deveria retornar erro")
 }
 
 func (ts *TestSuite) TestExists() {
@@ -98,29 +74,17 @@ func (ts *TestSuite) TestExists() {
 }
 
 func (ts *TestSuite) TestNotExists() {
-    exists, err := ts.btr.Exists(alternativeMockUidLink, mockUidCategory)
+    exists, err := ts.btr.Exists(mockUidLink, mockUidCategory)
 
-    ts.NoError(err, "Exists se informado uma chave inválida não deveria retornar erro")
+    ts.NoError(err, "Exists, se informado uma chave inválida não deveria retornar erro")
     ts.Equal(false, exists, "Exists deveria retornar falso para uma chave inválida")
 }
 
 func (ts *TestSuite) TestGetLinksByCategory_Empty() {
-    links, err := ts.btr.GetLinksByCategory(alternativeMockUidCategory)
+    links, err := ts.btr.GetLinksByCategory(mockUidCategory)
 
     ts.Empty(links, "Tentar recuperar links de uma categoria vazia deveria retornar uma lista de links vazia")
     ts.NoError(err, "Tentar recuperar links de uma categoria vazia não deveria retornar erro")
-}
-
-func (ts *TestSuite) TestGetLinksByCategory_NotExists() {
-    uid, err := luuid.New()
-
-    if err != nil {
-        ts.Fail(err.Error())
-    }
-
-    _, err = ts.btr.GetLinksByCategory(uid)
-
-    ts.Error(err, "Tentar recuperar links de uma categoria informando um uid inválido deveria retornar o erro ", repository.CATEGORY_NOT_EXISTS)
 }
 
 func (ts *TestSuite) TestGetLinksByCategory_Exists() {
