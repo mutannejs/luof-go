@@ -11,7 +11,7 @@ import (
 )
 
 var (
-    linkNotExists = repository.LinkNotExists
+    linkNotExists = domain.LINK_NOT_EXISTS
     mockUidLink = domain.MockUidLink
 )
 
@@ -21,7 +21,7 @@ func TestDeleteLink_NotExists(t *testing.T) {
     var repo = repository.NewLinkMockRepository()
     var dl = New(repo)
 
-    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, linkNotExists)
+    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
     exists, err := dl.Execute(mockUidLink)
 
@@ -31,7 +31,7 @@ func TestDeleteLink_NotExists(t *testing.T) {
     assert.ErrorIs(
                     err,
                     linkNotExists,
-                    "Tentativa de deletar um link que não existe deveria retornar erro")
+                    "Tentativa de deletar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
 }
 
 func TestDeleteLink_Exists(t *testing.T) {

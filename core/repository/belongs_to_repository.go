@@ -22,7 +22,3 @@ type WriteBelongsTo interface {
 type BelongsTo interface {
     ReadBelongsTo
 }
-
-var (
-    ALREADY_BELONGS = "the link already belongs to the category"
-)

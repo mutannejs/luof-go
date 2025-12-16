@@ -11,7 +11,7 @@ import (
 )
 
 var (
-    categoryNotExists = repository.CategoryNotExists
+    categoryNotExists = domain.CATEGORY_NOT_EXISTS
     mockCategory = domain.MockCategory
     mockUidCategory = domain.MockUidCategory
 )
@@ -22,7 +22,7 @@ func TestGetCategoryByUid_NotExists(t *testing.T) {
     var repo = repository.NewCategoryMockRepository()
     var gcbu = New(repo)
 
-    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, categoryNotExists)
+    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
     category, err := gcbu.Execute(mockUidCategory)
 

@@ -21,7 +21,3 @@ type Category interface {
     ReadCategory
     WriteCategory
 }
-
-var (
-    CATEGORY_NOT_EXISTS = "the searched category does not exist"
-)

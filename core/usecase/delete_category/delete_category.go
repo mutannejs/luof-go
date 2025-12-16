@@ -1,9 +1,10 @@
 package delete_category
 
 import (
-    "github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 type DeleteCategory struct {
@@ -19,7 +20,13 @@ func (dcUseCase *DeleteCategory) Execute(
 ) (exists bool, err error) {
     exists, err = dcUseCase.Repo.Exists(uid)
 
-    if exists {
+    if err != nil {
+        return
+    }
+
+    if !exists {
+        err = domain.CATEGORY_NOT_EXISTS
+    } else {
         err = dcUseCase.Repo.Delete(uid)
     }
 

@@ -11,7 +11,7 @@ import (
 )
 
 var (
-    linkNotExists = repository.LinkNotExists
+    linkNotExists = domain.LINK_NOT_EXISTS
     mockLink = domain.MockLink
     mockUidLink = domain.MockUidLink
 )
@@ -22,7 +22,7 @@ func TestUpdateLink_NotExists(t *testing.T) {
     var repo = repository.NewLinkMockRepository()
     var ul = New(repo)
 
-    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, linkNotExists)
+    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
     exists, err := ul.Execute(
         mockUidLink,
@@ -38,7 +38,7 @@ func TestUpdateLink_NotExists(t *testing.T) {
     assert.EqualError(
                     err,
                     linkNotExists.Error(),
-                    "Tentar atualizar um link que não existe deveria retornar erro")
+                    "Tentar atualizar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
 }
 
 func TestUpdateLink_Exists(t *testing.T) {

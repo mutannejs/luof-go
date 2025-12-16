@@ -11,7 +11,7 @@ import (
 )
 
 var (
-    linkNotExists = repository.LinkNotExists
+    linkNotExists = domain.LINK_NOT_EXISTS
     mockLink = domain.MockLink
     mockUidLink = domain.MockUidLink
 )
@@ -22,7 +22,7 @@ func TestGetLinkByUid_NotExists(t *testing.T) {
     var repo = repository.NewLinkMockRepository()
     var glbu = NewGetLinkByUid(repo)
 
-    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, linkNotExists)
+    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
     link, err := glbu.Execute(mockUidLink)
 
@@ -32,7 +32,7 @@ func TestGetLinkByUid_NotExists(t *testing.T) {
     assert.EqualError(
                     err,
                     linkNotExists.Error(),
-                    "Buscar um link que não existe deveria retornar erro")
+                    "Buscar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
 }
 
 func TestGetLinkByUid_Exists(t *testing.T) {

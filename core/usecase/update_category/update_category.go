@@ -1,12 +1,12 @@
 package update_category
 
 import (
-    "time"
+	"time"
 
-    "github.com/mutannejs/luof-go/core/domain"
-    "github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 type UpdateCategory struct {
@@ -25,8 +25,10 @@ func (ucUseCase *UpdateCategory) Execute(
 ) (exists bool, err error) {
     exists, err = ucUseCase.Repo.Exists(uid)
 
-    if !exists || err != nil {
+    if err != nil {
         return
+    } else if !exists {
+        return exists, domain.CATEGORY_NOT_EXISTS
     }
 
     var category domain.Category

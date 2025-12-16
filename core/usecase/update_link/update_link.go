@@ -1,12 +1,12 @@
 package update_link
 
 import (
-    "time"
+	"time"
 
-    "github.com/mutannejs/luof-go/core/domain"
-    "github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 type UpdateLink struct {
@@ -26,8 +26,10 @@ func (ulUseCase *UpdateLink) Execute(
 ) (exists bool, err error) {
     exists, err = ulUseCase.Repo.Exists(uid)
 
-    if !exists || err != nil {
+    if err != nil {
         return
+    } else if !exists {
+        return exists, domain.LINK_NOT_EXISTS
     }
 
     var link domain.Link

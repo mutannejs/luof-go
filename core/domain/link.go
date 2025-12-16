@@ -11,6 +11,7 @@ import (
 
 var (
     LINK_ERROR_NEW = errors.New("error instantiate new link")
+    LINK_NOT_EXISTS = errors.New("the searched link does not exist")
 )
 
 type Link struct {

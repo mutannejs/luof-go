@@ -1,9 +1,10 @@
 package delete_link
 
 import (
-    "github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 type DeleteLink struct {
@@ -19,7 +20,13 @@ func (dlUseCase *DeleteLink) Execute(
 ) (exists bool, err error) {
     exists, err = dlUseCase.Repo.Exists(uid)
 
-    if exists {
+    if err != nil {
+        return
+    }
+
+    if !exists {
+        err = domain.LINK_NOT_EXISTS
+    } else {
         err = dlUseCase.Repo.Delete(uid)
     }
 

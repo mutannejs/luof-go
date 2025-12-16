@@ -11,19 +11,19 @@ import (
 )
 
 var (
-    categoryNotExists = repository.CategoryNotExists
+    categoryNotExists = domain.CATEGORY_NOT_EXISTS
     mockLinks = domain.MockLinks
     mockUidCategory = domain.MockUidCategory
 )
 
-func TestGetLinksByCategory_NotExists(t *testing.T) {
+func TestGetLinksByCategory_CategoryNotExists(t *testing.T) {
     var assert = assert.New(t)
 
     var btRepo = repository.NewBelongsToMockRepository()
     var cRepo = repository.NewCategoryMockRepository()
     var glbc = NewGetLinksByCategory(btRepo, cRepo)
 
-    cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, categoryNotExists)
+    cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
     links, err := glbc.Execute(mockUidCategory)
 
@@ -36,7 +36,7 @@ func TestGetLinksByCategory_NotExists(t *testing.T) {
                     "Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
-func TestGetLinksByCategory_Exists(t *testing.T) {
+func TestGetLinksByCategory_CategoryExists(t *testing.T) {
     var assert = assert.New(t)
 
     var btRepo = repository.NewBelongsToMockRepository()

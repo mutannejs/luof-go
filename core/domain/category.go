@@ -11,6 +11,7 @@ import (
 
 var (
     CATEGORY_ERROR_NEW = errors.New("error instantiate new category")
+    CATEGORY_NOT_EXISTS = errors.New("the searched category does not exist")
 )
 
 type Category struct {

@@ -11,7 +11,7 @@ import (
 )
 
 var (
-    categoryNotExists = repository.CategoryNotExists
+    categoryNotExists = domain.CATEGORY_NOT_EXISTS
     mockUidCategory = domain.MockUidCategory
 )
 
@@ -21,7 +21,7 @@ func TestDeleteCategory_NotExists(t *testing.T) {
     var repo = repository.NewCategoryMockRepository()
     var dc = New(repo)
 
-    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, categoryNotExists)
+    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
     exists, err := dc.Execute(mockUidCategory)
 
