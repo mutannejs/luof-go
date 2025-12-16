@@ -1,9 +1,9 @@
 package repository
 
 import (
-    "github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/domain"
 
-    "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 type ReadCategory interface {

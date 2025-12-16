@@ -14,8 +14,8 @@ type Link struct {
     DB *sql.DB
 }
 
-func New(db *sql.DB) Link {
-    return Link{db}
+func New(db *sql.DB) *Link {
+    return &Link{db}
 }
 
 func (lr *Link) Exists(uid uuid.UUID) (exists bool, err error) {

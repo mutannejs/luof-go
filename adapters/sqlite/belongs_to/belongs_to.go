@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/mutannejs/luof-go/adapters/sqlite/category"
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lerror"
@@ -14,10 +15,11 @@ import (
 
 type BelongsTo struct {
     DB *sql.DB
+    Cr repository.Category
 }
 
-func New(db *sql.DB) BelongsTo {
-    return BelongsTo{db}
+func New(db *sql.DB) *BelongsTo {
+    return &BelongsTo{db, category.New(db)}
 }
 
 func (btr *BelongsTo) Exists(
@@ -44,6 +46,14 @@ func (btr *BelongsTo) Exists(
 
 func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, err error) {
     var rows *sql.Rows
+
+    if exists, errExists := btr.Cr.Exists(uid); errExists != nil {
+        err = errExists
+        return
+    } else if !exists {
+        err = errors.New(repository.CATEGORY_NOT_EXISTS)
+        return
+    }
 
     rows, err = btr.DB.Query(
         `

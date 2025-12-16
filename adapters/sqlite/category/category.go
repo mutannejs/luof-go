@@ -13,8 +13,8 @@ type Category struct {
     DB *sql.DB
 }
 
-func New(db *sql.DB) Category {
-    return Category{db}
+func New(db *sql.DB) *Category {
+    return &Category{db}
 }
 
 func (lr *Category) Exists(uid uuid.UUID) (exists bool, err error) {

@@ -24,7 +24,7 @@ type TestSuite struct {
     suite.Suite
     env map[string]string
     db *sql.DB
-    lr Link
+    lr *Link
 }
 
 func (ts *TestSuite) SetupSuite() {
