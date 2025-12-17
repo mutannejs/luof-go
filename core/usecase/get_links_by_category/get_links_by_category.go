@@ -1,4 +1,4 @@
-package usecase
+package get_links_by_category
 
 import (
 	"github.com/mutannejs/luof-go/core/domain"
@@ -12,7 +12,7 @@ type GetLinksByCategory struct {
     CategoryRepo repository.Category
 }
 
-func NewGetLinksByCategory(btRepo repository.BelongsTo, cRepo repository.Category) GetLinksByCategory {
+func New(btRepo repository.BelongsTo, cRepo repository.Category) GetLinksByCategory {
     return GetLinksByCategory{btRepo, cRepo}
 }
 

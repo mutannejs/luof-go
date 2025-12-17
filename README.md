@@ -54,16 +54,10 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 
 ### Próximas etapas
 
-- [X] Testes para link e category use cases
-- [X] Melhorar tratamento de erros (usando Wraps)
-- [X] Documentar código
-- [X] Testes para belongs to use cases
-- [X] Adaptador SQLite Link
-- ~~[ ] Documentar testes adapter/sqlite/link~~
-- [X] Remover duplicidade de dados mockados
-- [ ] Adaptador SQLite Categoria e BelongsTo
+- [X] Casos de uso BelongsTo
 - [ ] Adicionar logs
 - [ ] API
+- [ ] Documentar
 
 ### Testes
 

@@ -20,7 +20,7 @@ func TestGetLinkByUid_NotExists(t *testing.T) {
     var assert = assert.New(t)
 
     var repo = repository.NewLinkMockRepository()
-    var glbu = NewGetLinkByUid(repo)
+    var glbu = New(repo)
 
     repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
@@ -39,7 +39,7 @@ func TestGetLinkByUid_Exists(t *testing.T) {
     var assert = assert.New(t)
 
     var repo = repository.NewLinkMockRepository()
-    var glbu = NewGetLinkByUid(repo)
+    var glbu = New(repo)
 
     repo.On("Exists", mockUidLink).Return(true, nil)
     repo.On("GetByUid", mockUidLink).Return(mockLink, nil)

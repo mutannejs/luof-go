@@ -11,7 +11,7 @@ type GetLinkByUid struct {
     Repo repository.Link
 }
 
-func NewGetLinkByUid(repo repository.Link) GetLinkByUid {
+func New(repo repository.Link) GetLinkByUid {
     return GetLinkByUid{repo}
 }
 

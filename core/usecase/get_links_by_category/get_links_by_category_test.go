@@ -1,4 +1,4 @@
-package usecase
+package get_links_by_category
 
 import (
 	"testing"
@@ -21,7 +21,7 @@ func TestGetLinksByCategory_CategoryNotExists(t *testing.T) {
 
     var btRepo = repository.NewBelongsToMockRepository()
     var cRepo = repository.NewCategoryMockRepository()
-    var glbc = NewGetLinksByCategory(btRepo, cRepo)
+    var glbc = New(btRepo, cRepo)
 
     cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
@@ -41,7 +41,7 @@ func TestGetLinksByCategory_CategoryExists(t *testing.T) {
 
     var btRepo = repository.NewBelongsToMockRepository()
     var cRepo = repository.NewCategoryMockRepository()
-    var glbc = NewGetLinksByCategory(btRepo, cRepo)
+    var glbc = New(btRepo, cRepo)
 
     cRepo.On("Exists", mockUidCategory).Return(true, nil)
     btRepo.On("GetLinksByCategory", mockUidCategory).Return(mockLinks, nil)

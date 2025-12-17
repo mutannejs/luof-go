@@ -21,4 +21,5 @@ type WriteBelongsTo interface {
 
 type BelongsTo interface {
     ReadBelongsTo
+    WriteBelongsTo
 }
