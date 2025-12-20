@@ -2,11 +2,14 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	"errors"
 
 	"github.com/mutannejs/luof-go/adapters"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/lmigration"
+
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 func main() {
@@ -18,36 +21,56 @@ func main() {
         apiSettings adapters.APISettings
     )
 
-    env, err = lenv.Load(true)
+    zerolog.TimeFieldFormat = zerolog.TimestampFunc().Format("HH:mm:ss")
+    env, err = lenv.Load(false)
 
-    fmt.Println(env, err)
-
-    if err == nil {
-        repoSettings, err = adapters.GetRepositorySettings(env)
+    if err != nil {
+        log.Error().Err(err).Msg("error loading env")
+        return
+    } else {
+        log.Info().Msg("env loaded successfully")
     }
 
-    fmt.Println(repoSettings, err)
+    repoSettings, err = adapters.GetRepositorySettings(env)
 
-    if err == nil {
-        db, err = repoSettings.GetConnection(env)
-        if err == nil {
-            defer db.Close()
-        }
+    if err != nil {
+        log.Error().Err(err).Msg("error loading repository")
+        return
+    } else {
+        log.Info().Msg("repository loaded successfully")
     }
 
-    fmt.Println(db, err)
+    db, err = repoSettings.GetConnection(env)
 
-    if err == nil {
-        lmigration.Up(db, repoSettings.GetMigration)
+    if err != nil {
+        log.Error().Err(err).Msg("error loading db")
+        return
+    } else {
+        log.Info().Msg("db loaded successfully")
     }
 
-    if err == nil {
-        apiSettings, err = adapters.GetAPISettings(env)
+    defer db.Close()
+
+    log.Info().Msg("running migrations...")
+    err = lmigration.Up(db, repoSettings.GetMigration)
+
+    if err != nil && !errors.Is(err, lmigration.ErrNoChange) {
+        log.Error().Err(err).Msg("error running migrations")
+        return
+    } else {
+        log.Info().Msg("migrations completed successfully")
     }
 
-    fmt.Println(apiSettings, err)
+    apiSettings, err = adapters.GetAPISettings(env)
+
+    if err != nil {
+        log.Error().Err(err).Msg("error loading api")
+        return
+    } else {
+        log.Info().Msg("api loaded successfully")
+    }
 
     if apiSettings.StartServer(env) != nil {
-        fmt.Println("Ocorreu um erro");
+        log.Error().Err(err).Msg("error start server api")
     }
 }

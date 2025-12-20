@@ -10,6 +10,7 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database"
 	"github.com/golang-migrate/migrate/v4/database/sqlite"
+	"github.com/rs/zerolog/log"
 	_ "modernc.org/sqlite"
 )
 
@@ -18,15 +19,17 @@ var (
 )
 
 func GetConnection(env map[string]string) (db *sql.DB, err error) {
-    var path, exists = env["SQLITE_DB_PATH"]
+    path, exists := env["SQLITE_DB_PATH"]
 
     if !exists {
         err = SQLITE_DB_PATH_NOT_FOUND
         return
     }
 
-    if env["ENV"] == "test" {
-        path += ".test"
+    environmet, exists := env["ENV"]
+
+    if exists {
+        path += "." + environmet
     }
 
     path += ".sqlite"
@@ -36,6 +39,8 @@ func GetConnection(env map[string]string) (db *sql.DB, err error) {
     if _, err = os.OpenFile(absolutePath, os.O_CREATE, 0644); err != nil {
         return
     }
+
+    log.Info().Str("sqlite_db_path", path).Msg("loading db")
 
     return sql.Open("sqlite", absolutePath + "?_pragma=foreign_keys=true")
 }
