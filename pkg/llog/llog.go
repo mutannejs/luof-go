@@ -1,15 +1,22 @@
 package llog
 
 import (
-    "fmt"
+	"time"
+
+	"go.uber.org/zap"
 )
 
-const (
-    SQL_PREFIX  = "SQL >>"
-)
+func LogTeste() {
+    url := "http://localhost:8080/teste"
 
-func PrintSQLError(err error) {
-    if err != nil {
-        fmt.Println(SQL_PREFIX, err)
-    }
+    logger, _ := zap.NewProduction()
+    defer logger.Sync() // flushes buffer, if any
+    sugar := logger.Sugar()
+    sugar.Infow(
+        "failed to fetch URL",
+        // Structured context as loosely typed key-value pairs.
+        "url", url,
+        "attempt", 3,
+        "backoff", time.Second)
+    sugar.Infof("Failed to fetch URL: %s", url)
 }

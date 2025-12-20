@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"database/sql"
+	"errors"
 	"os"
 
 	"github.com/mutannejs/luof-go/pkg/lpath"
@@ -12,8 +13,17 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+var (
+    SQLITE_DB_PATH_NOT_FOUND = errors.New("the 'SQLITE_DB_PATH' env var not found")
+)
+
 func GetConnection(env map[string]string) (db *sql.DB, err error) {
-    var path = env["SQLITE_DB_PATH"]
+    var path, exists = env["SQLITE_DB_PATH"]
+
+    if !exists {
+        err = SQLITE_DB_PATH_NOT_FOUND
+        return
+    }
 
     if env["ENV"] == "test" {
         path += ".test"

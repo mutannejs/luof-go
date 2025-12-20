@@ -55,8 +55,8 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 ### Próximas etapas
 
 - [X] Casos de uso BelongsTo
-- [ ] Adicionar logs
 - [ ] API
+- [ ] Adicionar logs
 - [ ] Documentar
 
 ### Testes
