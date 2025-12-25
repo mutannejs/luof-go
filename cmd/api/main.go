@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"time"
 
 	"github.com/mutannejs/luof-go/adapters"
 	"github.com/mutannejs/luof-go/pkg/lenv"
@@ -21,7 +22,7 @@ func main() {
         apiSettings adapters.APISettings
     )
 
-    zerolog.TimeFieldFormat = zerolog.TimestampFunc().Format("HH:mm:ss")
+    zerolog.TimeFieldFormat = time.DateTime
     env, err = lenv.Load(false)
 
     if err != nil {
@@ -47,9 +48,8 @@ func main() {
         return
     } else {
         log.Info().Msg("db loaded successfully")
+        defer db.Close()
     }
-
-    defer db.Close()
 
     log.Info().Msg("running migrations...")
     err = lmigration.Up(db, repoSettings.GetMigration)
@@ -70,7 +70,7 @@ func main() {
         log.Info().Msg("api loaded successfully")
     }
 
-    if apiSettings.StartServer(env) != nil {
+    if apiSettings.StartServer(env, repoSettings.GetRepositories(db)) != nil {
         log.Error().Err(err).Msg("error start server api")
     }
 }

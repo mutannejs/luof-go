@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/adapters/echo"
 	"github.com/mutannejs/luof-go/adapters/sqlite"
+	"github.com/mutannejs/luof-go/adapters/sqlite/get_repositories"
 )
 
 var (
@@ -29,6 +30,7 @@ func GetRepositorySettings(env map[string]string) (values RepositorySettings, er
             values = RepositorySettings{
                 GetConnection: sqlite.GetConnection,
                 GetMigration: sqlite.GetMigration,
+                GetRepositories: get_repositories.GetRepositories,
             }
         default: err = ENV_DB_INVALID
     }
