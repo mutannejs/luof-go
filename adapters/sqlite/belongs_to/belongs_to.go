@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -31,9 +30,9 @@ func (btr *BelongsTo) Exists(
         categoryUid,
         linkUid).Scan(new(string))
 
-    exists = !lerror.Equals(err, sql.ErrNoRows)
+    exists = err != sql.ErrNoRows
 
-    if lerror.Equals(err, sql.ErrNoRows) {
+    if err == sql.ErrNoRows {
         err = nil
     }
 

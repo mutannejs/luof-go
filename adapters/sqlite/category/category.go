@@ -4,7 +4,6 @@ import (
 	"database/sql"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -22,9 +21,9 @@ func (lr *Category) Exists(uid uuid.UUID) (exists bool, err error) {
         `SELECT name FROM category WHERE uid_category = ?`,
         uid).Scan(new(string))
 
-    exists = !lerror.Equals(err, sql.ErrNoRows)
+    exists = err != sql.ErrNoRows
 
-    if lerror.Equals(err, sql.ErrNoRows) {
+    if err == sql.ErrNoRows {
         err = nil
     }
 
