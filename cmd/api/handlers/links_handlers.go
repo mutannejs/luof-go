@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/mutannejs/luof-go/adapters/echo/types"
+	"github.com/mutannejs/luof-go/cmd/api/types"
 	"github.com/mutannejs/luof-go/core/usecase/create_link"
 
 	"github.com/labstack/echo/v4"
@@ -14,16 +14,12 @@ func GetLink(c echo.Context) error {
 }
 
 func CreateLink(c echo.Context) (err error) {
+    var cc = c.(*types.CustomContext)
     var l types.SaveLink
 
-    if err = c.Bind(l); err != nil {
-      return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+    if err = cc.BindAndValidate(&l); err != nil {
+        return err
     }
-    if err = c.Validate(l); err != nil {
-      return err
-    }
-
-    cc := c.(*types.CustomContext)
 
     cl := create_link.New(cc.Repositories.Link)
     uid, err := cl.Execute(
@@ -32,7 +28,7 @@ func CreateLink(c echo.Context) (err error) {
         l.Description,
         l.UseMarkdown)
 
-    return c.String(http.StatusOK, uid.String())
+    return cc.String(http.StatusOK, uid.String())
 }
 
 func DeleteLink(c echo.Context) error {

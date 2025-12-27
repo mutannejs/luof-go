@@ -1,7 +1,7 @@
-package echo
+package config
 
 import (
-	"github.com/mutannejs/luof-go/adapters/echo/types"
+	"github.com/mutannejs/luof-go/cmd/api/types"
 	"github.com/mutannejs/luof-go/core/repository"
 
 	"github.com/go-playground/validator/v10"
@@ -12,7 +12,7 @@ const (
     DEFAULT_PORT = "8123"
 )
 
-func StartServer (env map[string]string, repositories repository.Repositories) error {
+func StartServer(env map[string]string, repositories repository.Repositories) error {
     var address string
 
     if envPort, exists := env["SERVER_PORT"]; exists {

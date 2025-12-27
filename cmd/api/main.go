@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/mutannejs/luof-go/adapters"
+	"github.com/mutannejs/luof-go/cmd/api/config"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/lmigration"
 
@@ -19,7 +20,6 @@ func main() {
         err error
         db *sql.DB
         repoSettings adapters.RepositorySettings
-        apiSettings adapters.APISettings
     )
 
     zerolog.TimeFieldFormat = time.DateTime
@@ -61,16 +61,7 @@ func main() {
         log.Info().Msg("migrations completed successfully")
     }
 
-    apiSettings, err = adapters.GetAPISettings(env)
-
-    if err != nil {
-        log.Error().Err(err).Msg("error loading api")
-        return
-    } else {
-        log.Info().Msg("api loaded successfully")
-    }
-
-    if apiSettings.StartServer(env, repoSettings.GetRepositories(db)) != nil {
+    if config.StartServer(env, repoSettings.GetRepositories(db)) != nil {
         log.Error().Err(err).Msg("error start server api")
     }
 }

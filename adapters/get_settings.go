@@ -3,7 +3,6 @@ package adapters
 import (
 	"errors"
 
-	"github.com/mutannejs/luof-go/adapters/echo"
 	"github.com/mutannejs/luof-go/adapters/sqlite"
 	"github.com/mutannejs/luof-go/adapters/sqlite/get_repositories"
 )
@@ -33,25 +32,6 @@ func GetRepositorySettings(env map[string]string) (values RepositorySettings, er
                 GetRepositories: get_repositories.GetRepositories,
             }
         default: err = ENV_DB_INVALID
-    }
-
-    return
-}
-
-func GetAPISettings(env map[string]string) (values APISettings, err error) {
-    var api, exists = env["API"]
-
-    if !exists {
-        err = ENV_API_NOT_FOUND
-        return
-    }
-
-    switch api {
-        case "echo":
-            values = APISettings{
-                StartServer: echo.StartServer,
-            }
-        default: err = ENV_API_INVALID
     }
 
     return

@@ -1,7 +1,7 @@
-package echo
+package config
 
 import (
-	"github.com/mutannejs/luof-go/adapters/echo/handlers"
+	"github.com/mutannejs/luof-go/cmd/api/handlers"
 
 	"github.com/labstack/echo/v4"
 )
