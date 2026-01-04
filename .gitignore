@@ -1,3 +1,4 @@
+sql_queries/
 testdata/
 luof-go*.sqlite
 .env

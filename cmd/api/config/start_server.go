@@ -1,10 +1,8 @@
 package config
 
 import (
-	"github.com/mutannejs/luof-go/cmd/api/types"
 	"github.com/mutannejs/luof-go/core/repository"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
@@ -23,7 +21,6 @@ func StartServer(env map[string]string, repositories repository.Repositories) er
 
     var e *echo.Echo = echo.New()
 
-    e.Validator = &types.CustomValidator{Validator: validator.New()}
     e.HideBanner = true
 
     setRootRoutes(e)

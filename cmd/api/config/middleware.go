@@ -17,7 +17,7 @@ func setMiddleware(e *echo.Echo, repositories repository.Repositories) {
 func customContextMiddleware(repositories repository.Repositories) echo.MiddlewareFunc {
     return func(next echo.HandlerFunc) echo.HandlerFunc {
         return func(c echo.Context) error {
-            cc := &types.CustomContext{c, repositories, make([]string, 0)}
+            cc := &types.CustomContext{Context: c, Repositories: repositories}
             return next(cc)
         }
     }
