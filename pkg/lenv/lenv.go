@@ -12,14 +12,18 @@ var (
     LENV_ERROR_LOAD = errors.New("error load enviroment variables")
 )
 
-func Load(isTest bool) (env map[string]string, err error) {
+func Load() (env map[string]string, err error) {
     if lpath.ROOT_PATH == "" {
         err = LENV_ERROR_LOAD
     } else {
         env, err = godotenv.Read(lpath.ROOT_PATH + "/.env")
     }
 
-    if isTest {
+    return
+}
+
+func LoadTest() (env map[string]string, err error) {
+    if env, err = Load(); err == nil {
         env["ENV"] = "test"
     }
 

@@ -2,30 +2,30 @@ package domain
 
 var (
     // Elementos do domínio
-    linkMockMap = map[string]any{
-        "url": "github.com/mutannejs/luof-go",
+    LinkMockMap = map[string]any{
+        "url": "http://github.com/mutannejs/luof-go",
         "name": "luof",
         "description": "### luof-go repository",
         "useMarkdown": true,
     }
-    categoryMockMap = map[string]any{
+    CategoryMockMap = map[string]any{
         "name": "development",
         "description": "links about development",
         "useMarkdown": false,
     }
     MockLink, _ = NewLink(
-        linkMockMap["url"].(string),
-        linkMockMap["name"].(string),
-        linkMockMap["description"].(string),
-        linkMockMap["useMarkdown"].(bool),
+        LinkMockMap["url"].(string),
+        LinkMockMap["name"].(string),
+        LinkMockMap["description"].(string),
+        LinkMockMap["useMarkdown"].(bool),
     )
     MockCategory, _ = NewCategory(
-        categoryMockMap["name"].(string),
-        categoryMockMap["description"].(string),
-        categoryMockMap["useMarkdown"].(bool),
+        CategoryMockMap["name"].(string),
+        CategoryMockMap["description"].(string),
+        CategoryMockMap["useMarkdown"].(bool),
     )
     AlternativeMockLink, _ = NewLink(
-        "github.com/mutannejs/luof",
+        "http://github.com/mutannejs/luof",
         "luof",
         "luof repository",
         false,

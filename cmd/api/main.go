@@ -23,7 +23,7 @@ func main() {
     )
 
     zerolog.TimeFieldFormat = time.DateTime
-    env, err = lenv.Load(false)
+    env, err = lenv.Load()
 
     if err != nil {
         log.Error().Err(err).Msg("error loading env")

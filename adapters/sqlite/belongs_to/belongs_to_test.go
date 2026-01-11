@@ -33,7 +33,7 @@ type TestSuite struct {
 }
 
 func (ts *TestSuite) SetupSuite() {
-    env, _ := lenv.Load(true)
+    env, _ := lenv.LoadTest()
     db, _ := sqlite.GetConnection(env)
     lmigration.Migrate(db, belongsToTableMigration, sqlite.GetMigration)
     lr := link.New(db)

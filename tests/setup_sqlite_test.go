@@ -14,7 +14,7 @@ import (
 func TestSetupSqlite(t *testing.T) {
     var assert = assert.New(t)
 
-    env, err := lenv.Load(true)
+    env, err := lenv.LoadTest()
     assert.NoError(err, "Tentar carregar as variáveis de ambiente não deveria retornar erro")
 
     db, err := sqlite.GetConnection(env)
@@ -36,7 +36,7 @@ func TestSetupSqlite(t *testing.T) {
 func TestDownSqlite(t *testing.T) {
     var assert = assert.New(t)
 
-    env, err := lenv.Load(true)
+    env, err := lenv.LoadTest()
     assert.NoError(err, "Tentar carregar as variáveis de ambiente não deveria retornar erro")
 
     db, err := sqlite.GetConnection(env)

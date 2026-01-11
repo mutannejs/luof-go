@@ -15,9 +15,9 @@ func TestNewCategory(t *testing.T) {
     assert := assert.New(t)
 
     category, err := NewCategory(
-        categoryMockMap["name"].(string),
-        categoryMockMap["description"].(string),
-        categoryMockMap["useMarkdown"].(bool),
+        CategoryMockMap["name"].(string),
+        CategoryMockMap["description"].(string),
+        CategoryMockMap["useMarkdown"].(bool),
     )
 
     assert.ErrorIs(
@@ -38,10 +38,10 @@ func TestNewLink(t *testing.T) {
     assert := assert.New(t)
 
     link, err := NewLink(
-        linkMockMap["url"].(string),
-        linkMockMap["name"].(string),
-        linkMockMap["description"].(string),
-        linkMockMap["useMarkdown"].(bool),
+        LinkMockMap["url"].(string),
+        LinkMockMap["name"].(string),
+        LinkMockMap["description"].(string),
+        LinkMockMap["useMarkdown"].(bool),
     )
 
     assert.ErrorIs(
