@@ -3,20 +3,23 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/google/uuid"
 	"github.com/mutannejs/luof-go/cmd/api/types"
 	"github.com/mutannejs/luof-go/core/usecase/create_link"
 	"github.com/mutannejs/luof-go/core/usecase/get_link_by_uid"
-	"github.com/rs/zerolog/log"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/rs/zerolog/log"
 )
 
-func GetLink(c echo.Context) (err error) {
+func GetLink(c echo.Context) error {
     var cc = c.(*types.CustomContext)
     var gl types.GetLink
 
-    if err = cc.InitReqStruct(&gl); err != nil {
+    if err := cc.ExecRequetParamsOperations(
+        &gl,
+        &types.GetLinkSchema,
+    ); err != nil {
         return err
     }
 
@@ -37,11 +40,14 @@ func GetLink(c echo.Context) (err error) {
     return cc.JSON(http.StatusOK, l)
 }
 
-func CreateLink(c echo.Context) (err error) {
+func CreateLink(c echo.Context) error {
     var cc = c.(*types.CustomContext)
-    var l types.SaveLink
+    var l = types.SaveLink{}
 
-    if err = cc.InitReqStruct(&l); err != nil {
+    if err := cc.ExecRequetJSONOperations(
+        &l,
+        &types.SaveLinkSchema,
+    ); err != nil {
         return err
     }
 

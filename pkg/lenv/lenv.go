@@ -1,7 +1,8 @@
 package lenv
 
 import (
-	"errors"
+    "errors"
+	"flag"
 
 	"github.com/mutannejs/luof-go/pkg/lpath"
 
@@ -17,6 +18,19 @@ func Load() (env map[string]string, err error) {
         err = LENV_ERROR_LOAD
     } else {
         env, err = godotenv.Read(lpath.ROOT_PATH + "/.env")
+    }
+
+    var environment string
+    var isTest bool
+
+    flag.StringVar(&environment, "env", "", "execution environment")
+    flag.BoolVar(&isTest, "test", false, "is test environment")
+    flag.Parse()
+
+    if isTest || environment == "test" {
+        env["ENV"] = "test"
+    } else if environment != "" {
+        env["ENV"] = environment
     }
 
     return

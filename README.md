@@ -82,6 +82,14 @@ go test -tags luuid_error
 
 Esse repositório é parte de uma reformulação do projeto de mesmo nome disponibilizado no repositório https://github.com/mutannejs/luof, projeto implementando em **C** e somente com CLI.
 
+### Comandos Úteis
+
+* `go vet ./...`: valida todos os arquivos go do projeto
+* `go mod tidy`: reorganiza os arquivos go.mod e go.sum
+* `go run ./cmd/api/main.go`: executa o projeto api no ambiente definido em `.env`, ou `dev` se não definido
+* `go run ./cmd/api/main.go -test`: executa o projeto api no ambiente de `test`
+* `go run ./cmd/api/main.go -env=dev`: executa o projeto api no ambiente de `dev`
+
 ### Principais referências
 
 * Ports & Adapters Examples: https://github.com/nrjohnstone/ports-adapters-examples

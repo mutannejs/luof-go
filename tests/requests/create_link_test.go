@@ -34,7 +34,7 @@ func (ts *TestSuite) SetupSuite() {
     urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
 
     ts.c = resty.New()
-    ts.post = ltests.GetPost(ts.c, urlBase)
+    ts.post = ltests.GetJSONPost(ts.c, urlBase)
 }
 
 func (ts *TestSuite) TestCreateLink() {
