@@ -1,6 +1,8 @@
 package ltests
 
 import (
+    "encoding/json"
+
     "github.com/go-resty/resty/v2"
 )
 
@@ -20,4 +22,18 @@ func GetJSONPost(c *resty.Client, urlBase string) PostFuncType {
             SetBody(dataMap).
             Post(urlBase)
     }
+}
+
+func GetErrorKeys(res []byte) (keys []string) {
+    var errors map[string]any
+
+    if err := json.Unmarshal(res, &errors); err != nil {
+        return nil
+    }
+
+    for key, _ := range errors["Errors"].(map[string]any) {
+        keys = append(keys, key)
+    }
+
+    return
 }

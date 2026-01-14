@@ -2,7 +2,6 @@ package requests
 
 import (
 	"database/sql"
-	"regexp"
 	"strconv"
 	"testing"
 
@@ -46,7 +45,7 @@ func (ts *TestSuite) TestCreateLink() {
 	})
 
 	ts.Regexp(
-		regexp.MustCompile("[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}"),
+		ltests.UidRegex,
 		res,
 		"Tentar criar um link passando parâmetros válidos deveria retornar um uuid válido")
 }
@@ -59,10 +58,7 @@ func (ts *TestSuite) TestCreateLink_Error() {
 		"useMarkdown": mockLink.Name, // não é boolean
 	})
 
-	ts.Regexp(
-		regexp.MustCompile("[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}"),
-		res,
-		"Tentar criar um link passando parâmetros válidos deveria retornar um uuid válido")
+	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"url", "name", "useMarkdown"}) 
 }
 
 func TestSqliteCategory(t *testing.T) {
