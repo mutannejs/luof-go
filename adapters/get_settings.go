@@ -11,9 +11,6 @@ var (
     // DB var
     ENV_DB_NOT_FOUND = errors.New("the 'DB' env var not found")
     ENV_DB_INVALID = errors.New("the 'DB' env var is invalid, it should be: sqlite")
-    // API var
-    ENV_API_NOT_FOUND = errors.New("the 'API' env var not found")
-    ENV_API_INVALID = errors.New("the 'API' env var is invalid, it should be: echo")
 )
 
 func GetRepositorySettings(env map[string]string) (values RepositorySettings, err error) {
