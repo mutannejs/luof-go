@@ -2,10 +2,12 @@ package custom
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strings"
 
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/luuid"
 
     "github.com/Oudwins/zog"
 	"github.com/labstack/echo/v4"
@@ -35,13 +37,28 @@ type Context struct {
     Repositories repository.Repositories
     Rv RequestValues
     errorResp *ResponseError
+    logUid string
 }
 
 const (
+	LOG_UID_ERR = "error generating new log_uid"
 	JSON_BODY_ERR = "the request body could not be interpreted in JSON format"
 	PARAMS_ERR = "the path params could not be converted in JSON format"
 	VALIDATE_ERR = "errors occurred during the validation of the request parameters"
 )
+
+func (cc *Context) ErrLog() *zerolog.Event {
+	return log.Error().Str("log_uid", cc.logUid)
+}
+
+func (cc *Context) InfoLog() *zerolog.Event {
+	return log.Info().Str("log_uid", cc.logUid)
+}
+
+func (cc *Context) LogAndReturnErr(err error) error {
+    cc.ErrLog().Err(err).Send()
+    return echo.NewHTTPError(http.StatusBadRequest, err)
+}
 
 func (cc *Context) ExecRequetParamsOperations(
 	paramsValue any,
@@ -170,15 +187,21 @@ func (cc *Context) logRequest(
 ) {
 	var logReq *zerolog.Event
 
+    if uid, err := luuid.New(); err != nil {
+		cc.LogAndReturnErr(errors.New(LOG_UID_ERR))
+	} else {
+		cc.logUid = uid.String()
+	}
+
     if cc.errorResp != nil {
-    	logReq = log.Error()
+    	logReq = cc.ErrLog()
     } else {
-    	logReq = log.Info()
+    	logReq = cc.InfoLog()
     }
 
     logReq = logReq.
-        Str("path", cc.Request().URL.Path).
-        Str("method", cc.Request().Method)
+        Str("method", cc.Request().Method).
+        Str("path", cc.Request().URL.Path)
 
     if len(bodyByteSlice) != 0 {
     	logReq = logReq.RawJSON("json_body", bodyByteSlice)

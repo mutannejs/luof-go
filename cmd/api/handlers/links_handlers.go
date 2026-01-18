@@ -10,7 +10,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/rs/zerolog/log"
 )
 
 func GetLink(c echo.Context) error {
@@ -26,16 +25,13 @@ func GetLink(c echo.Context) error {
 
     uid, err := uuid.Parse(gl.LinkUid)
     if err != nil {
-        log.Error().Err(err).Send()
-        return err
+        return cc.LogAndReturnErr(err)
     }
 
     glbu := get_link_by_uid.New(cc.Repositories.Link)
     l, err := glbu.Execute(uid)
-
     if err != nil {
-        log.Error().Err(err).Send()
-        return echo.NewHTTPError(http.StatusBadRequest, err)
+        return cc.LogAndReturnErr(err)
     }
 
     return cc.JSON(http.StatusOK, l)
@@ -60,8 +56,7 @@ func CreateLink(c echo.Context) error {
         l.UseMarkdown)
 
     if err != nil {
-        log.Error().Err(err).Send()
-        return echo.NewHTTPError(http.StatusBadRequest, err)
+        return cc.LogAndReturnErr(err)
     }
 
     return cc.String(http.StatusOK, uid.String())
