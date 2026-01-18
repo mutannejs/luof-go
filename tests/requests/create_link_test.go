@@ -13,22 +13,14 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-const (
-    LINK_TABLE_MIGRATION uint = 1764809880
-)
-
-var (
-	mockLink = domain.MockLink
-)
-
-type TestSuite struct {
+type CreateLinkTestSuite struct {
     suite.Suite
     db *sql.DB
     c *resty.Client
     post ltests.PostFuncType
 }
 
-func (ts *TestSuite) SetupSuite() {
+func (ts *CreateLinkTestSuite) SetupSuite() {
     env, _ := lenv.LoadTest()
     urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
 
@@ -36,12 +28,12 @@ func (ts *TestSuite) SetupSuite() {
     ts.post = ltests.GetJSONPost(ts.c, urlBase)
 }
 
-func (ts *TestSuite) TestCreateLink() {
+func (ts *CreateLinkTestSuite) TestCreateLink() {
 	res, _ := ts.post(map[string]string{
-		"url": mockLink.Url,
-		"name": mockLink.Name,
-		"description": mockLink.Description.Content,
-		"useMarkdown": strconv.FormatBool(mockLink.Description.UseMarkdown),
+		"url": domain.MockLink.Url,
+		"name": domain.MockLink.Name,
+		"description": domain.MockLink.Description.Content,
+		"useMarkdown": strconv.FormatBool(domain.MockLink.Description.UseMarkdown),
 	})
 
 	ts.Regexp(
@@ -50,17 +42,17 @@ func (ts *TestSuite) TestCreateLink() {
 		"Tentar criar um link passando parâmetros válidos deveria retornar um uuid válido")
 }
 
-func (ts *TestSuite) TestCreateLink_Error() {
+func (ts *CreateLinkTestSuite) TestCreateLink_Error() {
 	res, _ := ts.post(map[string]string{
-		"url": mockLink.Name, // não é URL
+		"url": domain.MockLink.Name, // não é URL
 		// falta o parâmetro name
-		"description": mockLink.Description.Content,
-		"useMarkdown": mockLink.Name, // não é boolean
+		"description": domain.MockLink.Description.Content,
+		"useMarkdown": domain.MockLink.Name, // não é boolean
 	})
 
 	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"url", "name", "useMarkdown"}) 
 }
 
-func TestSqliteCategory(t *testing.T) {
-    suite.Run(t, new(TestSuite))
+func TestCreateLinkAllTests(t *testing.T) {
+    suite.Run(t, new(CreateLinkTestSuite))
 }

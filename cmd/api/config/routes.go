@@ -22,27 +22,27 @@ func setApiRoutes(api *echo.Group) {
 }
 
 func setApiLinksRoutes(links *echo.Group) {
-    links.GET("/:linkId/", handlers.GetLink)
+    links.GET("/:linkUid/", handlers.GetLink)
     links.POST("/", handlers.CreateLink)
-    links.DELETE("/:linkId/", handlers.DeleteLink)
-    links.PUT("/:linkId/", handlers.UpdateLink)
-    links.PATCH("/:linkId/", handlers.PartialUpdateLink)
+    links.DELETE("/:linkUid/", handlers.DeleteLink)
+    links.PUT("/:linkUid/", handlers.UpdateLink)
+    links.PATCH("/:linkUid/", handlers.PartialUpdateLink)
 }
 
 func setApiCategoriesRoutes(categories *echo.Group) {
-    categories.GET("/:categoryId/", handlers.GetCategory)
+    categories.GET("/:categoryUid/", handlers.GetCategory)
     categories.POST("/", handlers.CreateCategory)
-    categories.DELETE("/:categoryId/", handlers.DeleteCategory)
-    categories.PUT("/:categoryId/", handlers.UpdateCategory)
-    categories.PATCH("/:categoryId/", handlers.PartialUpdateCategory)
+    categories.DELETE("/:categoryUid/", handlers.DeleteCategory)
+    categories.PUT("/:categoryUid/", handlers.UpdateCategory)
+    categories.PATCH("/:categoryUid/", handlers.PartialUpdateCategory)
 
-    var belongsTo *echo.Group = categories.Group("/:categoryId/links")
+    var belongsTo *echo.Group = categories.Group("/:categoryUid/links")
     setApiBelongsToRoutes(belongsTo)
 }
 
 func setApiBelongsToRoutes(belongsTo *echo.Group) {
     belongsTo.GET("/", handlers.ListBelongsTo)
     belongsTo.POST("/", handlers.CreateBelongsTo)
-    belongsTo.DELETE("/:linkId/", handlers.DeleteBelongsTo)
+    belongsTo.DELETE("/:linkUid/", handlers.DeleteBelongsTo)
     belongsTo.PATCH("/:linxkId/", handlers.PartialUpdateBelongsTo)
 }

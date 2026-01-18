@@ -14,11 +14,7 @@ var (
 )
 
 func Load() (env map[string]string, err error) {
-    if lpath.ROOT_PATH == "" {
-        err = LENV_ERROR_LOAD
-    } else {
-        env, err = godotenv.Read(lpath.ROOT_PATH + "/.env")
-    }
+    env, err = loadEnv()
 
     var environment string
     var isTest bool
@@ -37,8 +33,20 @@ func Load() (env map[string]string, err error) {
 }
 
 func LoadTest() (env map[string]string, err error) {
-    if env, err = Load(); err == nil {
+    env, err = loadEnv()
+
+    if err == nil {
         env["ENV"] = "test"
+    }
+
+    return
+}
+
+func loadEnv() (env map[string]string, err error) {
+    if lpath.ROOT_PATH == "" {
+        err = LENV_ERROR_LOAD
+    } else {
+        env, err = godotenv.Read(lpath.ROOT_PATH + "/.env")
     }
 
     return

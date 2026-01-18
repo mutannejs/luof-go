@@ -5,7 +5,7 @@ import (
 )
 
 type GetLink struct {
-    Uid string
+    LinkUid string
 }
 
 var GetLinkSchema = z.Struct(z.Shape{
@@ -20,11 +20,8 @@ type SaveLink struct {
 }
 
 var SaveLinkSchema = z.Struct(z.Shape{
-    "url": z.String().
-        URL(z.Message("'url' is not a valid URL")),
-    "name": z.String().
-        Max(200, z.Message("'name' must be less than 200 characters")).
-        Required(),
+    "url": z.String().URL(),
+    "name": z.String().Max(200).Required(),
     "description": z.String(),
     "useMarkdown": z.Bool(),
 })

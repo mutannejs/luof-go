@@ -13,8 +13,11 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
+const (
+    linkTableMigration = lmigration.LINK_TABLE_MIGRATION
+)
+
 var (
-    linkTableMigration uint = 1764809880
     mockLink = domain.MockLink
     mockUidLink = domain.MockUidLink
     alternativeMockLink = domain.AlternativeMockLink

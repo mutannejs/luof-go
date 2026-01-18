@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+    "github.com/mutannejs/luof-go/cmd/api/custom"
 	"github.com/mutannejs/luof-go/cmd/api/types"
 	"github.com/mutannejs/luof-go/core/usecase/create_link"
 	"github.com/mutannejs/luof-go/core/usecase/get_link_by_uid"
@@ -13,7 +14,7 @@ import (
 )
 
 func GetLink(c echo.Context) error {
-    var cc = c.(*types.CustomContext)
+    var cc = c.(*custom.Context)
     var gl types.GetLink
 
     if err := cc.ExecRequetParamsOperations(
@@ -23,7 +24,7 @@ func GetLink(c echo.Context) error {
         return err
     }
 
-    uid, err := uuid.Parse(gl.Uid)
+    uid, err := uuid.Parse(gl.LinkUid)
     if err != nil {
         log.Error().Err(err).Send()
         return err
@@ -34,14 +35,14 @@ func GetLink(c echo.Context) error {
 
     if err != nil {
         log.Error().Err(err).Send()
-        return err
+        return echo.NewHTTPError(http.StatusBadRequest, err)
     }
 
     return cc.JSON(http.StatusOK, l)
 }
 
 func CreateLink(c echo.Context) error {
-    var cc = c.(*types.CustomContext)
+    var cc = c.(*custom.Context)
     var l = types.SaveLink{}
 
     if err := cc.ExecRequetJSONOperations(
@@ -59,7 +60,8 @@ func CreateLink(c echo.Context) error {
         l.UseMarkdown)
 
     if err != nil {
-        return err
+        log.Error().Err(err).Send()
+        return echo.NewHTTPError(http.StatusBadRequest, err)
     }
 
     return cc.String(http.StatusOK, uid.String())
