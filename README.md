@@ -54,8 +54,8 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 
 ### Próximas etapas
 
-- [ ] Melhorar validation
-- [ ] Possibilitar uso de JSON em requisições
+- [X] Melhorar validation
+- [X] Possibilitar uso de JSON em requisições
 - [ ] Melhorar logs
 - [ ] API
 - [ ] Documentar
