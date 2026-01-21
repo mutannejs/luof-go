@@ -6,13 +6,15 @@ import (
     "github.com/mutannejs/luof-go/cmd/api/custom"
 	"github.com/mutannejs/luof-go/cmd/api/types"
 	"github.com/mutannejs/luof-go/core/usecase/create_link"
-	"github.com/mutannejs/luof-go/core/usecase/get_link_by_uid"
+    "github.com/mutannejs/luof-go/core/usecase/delete_link"
+    "github.com/mutannejs/luof-go/core/usecase/get_link_by_uid"
+	"github.com/mutannejs/luof-go/core/usecase/update_link"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
-func GetLink(c echo.Context) error {
+func GetLinkByUid(c echo.Context) error {
     var cc = c.(*custom.Context)
     var gl types.GetLink
 
@@ -30,6 +32,7 @@ func GetLink(c echo.Context) error {
 
     glbu := get_link_by_uid.New(cc.Repositories.Link)
     l, err := glbu.Execute(uid)
+
     if err != nil {
         return cc.LogAndReturnErr(err)
     }
@@ -63,13 +66,59 @@ func CreateLink(c echo.Context) error {
 }
 
 func DeleteLink(c echo.Context) error {
-    return c.String(http.StatusOK, "OK")
+    var cc = c.(*custom.Context)
+    var gl types.GetLink
+
+    if err := cc.ExecRequetParamsOperations(
+        &gl,
+        &types.GetLinkSchema,
+    ); err != nil {
+        return err
+    }
+
+    uid, err := uuid.Parse(gl.LinkUid)
+    if err != nil {
+        return cc.LogAndReturnErr(err)
+    }
+
+    dl := delete_link.New(cc.Repositories.Link)
+    _, err = dl.Execute(uid)
+
+    if err != nil {
+        return cc.LogAndReturnErr(err)
+    }
+
+    return cc.NoContent(http.StatusOK)
 }
 
 func UpdateLink(c echo.Context) error {
-    return c.String(http.StatusOK, "OK")
-}
+    var cc = c.(*custom.Context)
+    var l = types.SaveLink{}
+    var gl = types.GetLink{}
 
-func PartialUpdateLink(c echo.Context) error {
-    return c.String(http.StatusOK, "OK")
+    if err := cc.ExecRequetOperations(
+        custom.RequestValues{ JsonBody: &l, Params: &gl },
+        custom.RequestValidations{ JsonBody: types.SaveLinkSchema, Params: types.GetLinkSchema },
+    ); err != nil {
+        return err
+    }
+
+    uid, err := uuid.Parse(gl.LinkUid)
+    if err != nil {
+        return cc.LogAndReturnErr(err)
+    }
+
+    cl := update_link.New(cc.Repositories.Link)
+    _, err = cl.Execute(
+        uid,
+        l.Url,
+        l.Name,
+        l.Description,
+        l.UseMarkdown)
+
+    if err != nil {
+        return cc.LogAndReturnErr(err)
+    }
+
+    return cc.NoContent(http.StatusOK)
 }

@@ -22,11 +22,10 @@ func setApiRoutes(api *echo.Group) {
 }
 
 func setApiLinksRoutes(links *echo.Group) {
-    links.GET("/:linkUid/", handlers.GetLink)
+    links.GET("/:linkUid/", handlers.GetLinkByUid)
     links.POST("/", handlers.CreateLink)
     links.DELETE("/:linkUid/", handlers.DeleteLink)
     links.PUT("/:linkUid/", handlers.UpdateLink)
-    links.PATCH("/:linkUid/", handlers.PartialUpdateLink)
 }
 
 func setApiCategoriesRoutes(categories *echo.Group) {
@@ -34,7 +33,6 @@ func setApiCategoriesRoutes(categories *echo.Group) {
     categories.POST("/", handlers.CreateCategory)
     categories.DELETE("/:categoryUid/", handlers.DeleteCategory)
     categories.PUT("/:categoryUid/", handlers.UpdateCategory)
-    categories.PATCH("/:categoryUid/", handlers.PartialUpdateCategory)
 
     var belongsTo *echo.Group = categories.Group("/:categoryUid/links")
     setApiBelongsToRoutes(belongsTo)
@@ -44,5 +42,4 @@ func setApiBelongsToRoutes(belongsTo *echo.Group) {
     belongsTo.GET("/", handlers.ListBelongsTo)
     belongsTo.POST("/", handlers.CreateBelongsTo)
     belongsTo.DELETE("/:linkUid/", handlers.DeleteBelongsTo)
-    belongsTo.PATCH("/:linxkId/", handlers.PartialUpdateBelongsTo)
 }

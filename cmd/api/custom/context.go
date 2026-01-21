@@ -212,10 +212,8 @@ func (cc *Context) logRequest(
     }
 
     if cc.errorResp != nil {
-    	for key, value := range cc.errorResp.Errors {
-			logReq = logReq.Str(key, value)
-		}
-
+		errorsByteSlice, _ := json.Marshal(cc.errorResp.Errors)
+    	logReq = logReq.RawJSON("errors", errorsByteSlice)
 		logReq.Msg(cc.errorResp.Message)
     } else {
 		logReq.Send()

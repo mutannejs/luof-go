@@ -3,7 +3,6 @@ package requests
 import (
 	"database/sql"
 	"encoding/json"
-	"strconv"
 	"strings"
 	"testing"
 
@@ -19,7 +18,7 @@ type GetLinkTestSuite struct {
     suite.Suite
     db *sql.DB
     c *resty.Client
-    get ltests.GetFuncType
+    get ltests.RequestFuncType
     linkUid string
 }
 
@@ -30,12 +29,7 @@ func (ts *GetLinkTestSuite) SetupSuite() {
     ts.c = resty.New()
 
     post := ltests.GetJSONPost(ts.c, urlBase)
-    res, _ := post(map[string]string{
-		"url": domain.MockLink.Url,
-		"name": domain.MockLink.Name,
-		"description": domain.MockLink.Description.Content,
-		"useMarkdown": strconv.FormatBool(domain.MockLink.Description.UseMarkdown),
-	})
+    res, _ := post(nil, domain.MockLinkMapRequest)
 
 	ts.linkUid = res.String()
     ts.get = ltests.GetGet(ts.c, urlBase + "/{linkUid}")
@@ -69,7 +63,7 @@ func (ts *GetLinkTestSuite) TestGetLink_NotExists() {
 	ts.Equal(
 		strings.TrimSpace(string(expectedJson)),
 		strings.TrimSpace(string(res.Body())),
-		"Tentar recuperar um link passando um uuid válido deveria retornar o link correspondente")
+		"Tentar recuperar um link passando um uuid inválido deveria retornar o erro " + domain.LINK_NOT_EXISTS.Error())
 }
 
 func TestGetLinkAllTests(t *testing.T) {

@@ -2,7 +2,6 @@ package requests
 
 import (
 	"database/sql"
-	"strconv"
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
@@ -17,7 +16,7 @@ type CreateLinkTestSuite struct {
     suite.Suite
     db *sql.DB
     c *resty.Client
-    post ltests.PostFuncType
+    post ltests.RequestFuncType
 }
 
 func (ts *CreateLinkTestSuite) SetupSuite() {
@@ -29,12 +28,7 @@ func (ts *CreateLinkTestSuite) SetupSuite() {
 }
 
 func (ts *CreateLinkTestSuite) TestCreateLink() {
-	res, _ := ts.post(map[string]string{
-		"url": domain.MockLink.Url,
-		"name": domain.MockLink.Name,
-		"description": domain.MockLink.Description.Content,
-		"useMarkdown": strconv.FormatBool(domain.MockLink.Description.UseMarkdown),
-	})
+	res, _ := ts.post(nil, domain.MockLinkMapRequest)
 
 	ts.Regexp(
 		ltests.UidRegex,
@@ -43,12 +37,14 @@ func (ts *CreateLinkTestSuite) TestCreateLink() {
 }
 
 func (ts *CreateLinkTestSuite) TestCreateLink_Error() {
-	res, _ := ts.post(map[string]string{
-		"url": domain.MockLink.Name, // não é URL
-		// falta o parâmetro name
-		"description": domain.MockLink.Description.Content,
-		"useMarkdown": domain.MockLink.Name, // não é boolean
-	})
+	res, _ := ts.post(
+		nil,
+		map[string]string{
+			"url": domain.MockLink.Name, // não é URL
+			// falta o parâmetro name
+			"description": domain.MockLink.Description.Content,
+			"useMarkdown": domain.MockLink.Name, // não é boolean
+		})
 
 	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"url", "name", "useMarkdown"}) 
 }

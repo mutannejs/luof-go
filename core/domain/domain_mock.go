@@ -1,5 +1,9 @@
 package domain
 
+import (
+    "strconv"
+)
+
 var (
     // Elementos do domínio
     LinkMockMap = map[string]any{
@@ -44,4 +48,12 @@ var (
 
     // Conjuntos de elementos do domínio
     MockLinks = []Link{MockLink, AlternativeMockLink}
+
+    // Corpo de requests
+    MockLinkMapRequest = map[string]string{
+        "url": MockLink.Url,
+        "name": MockLink.Name,
+        "description": MockLink.Description.Content,
+        "useMarkdown": strconv.FormatBool(MockLink.Description.UseMarkdown),
+    }
 )
