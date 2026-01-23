@@ -207,7 +207,7 @@ func (cc *Context) logRequest(
     	logReq = logReq.RawJSON("json_body", bodyByteSlice)
     }
 
-    if (len(paramsByteSlice) == 0) {
+    if (len(paramsByteSlice) != 0) {
     	logReq = logReq.RawJSON("params_path", paramsByteSlice)
     }
 

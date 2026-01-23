@@ -108,8 +108,8 @@ func UpdateLink(c echo.Context) error {
         return cc.LogAndReturnErr(err)
     }
 
-    cl := update_link.New(cc.Repositories.Link)
-    _, err = cl.Execute(
+    ul := update_link.New(cc.Repositories.Link)
+    _, err = ul.Execute(
         uid,
         l.Url,
         l.Name,
