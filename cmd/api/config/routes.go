@@ -29,7 +29,7 @@ func setApiLinksRoutes(links *echo.Group) {
 }
 
 func setApiCategoriesRoutes(categories *echo.Group) {
-    categories.GET("/:categoryUid/", handlers.GetCategory)
+    categories.GET("/:categoryUid/", handlers.GetCategoryByUid)
     categories.POST("/", handlers.CreateCategory)
     categories.DELETE("/:categoryUid/", handlers.DeleteCategory)
     categories.PUT("/:categoryUid/", handlers.UpdateCategory)
