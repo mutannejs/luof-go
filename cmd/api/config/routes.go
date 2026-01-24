@@ -39,7 +39,8 @@ func setApiCategoriesRoutes(categories *echo.Group) {
 }
 
 func setApiBelongsToRoutes(belongsTo *echo.Group) {
-    belongsTo.GET("/", handlers.ListBelongsTo)
-    belongsTo.POST("/", handlers.CreateBelongsTo)
-    belongsTo.DELETE("/:linkUid/", handlers.DeleteBelongsTo)
+    // belongsTo.GET("/", handlers.ListBelongsTo)
+    belongsTo.POST("/", handlers.InsertLinkInCategory)
+    // belongsTo.DELETE("/:linkUid/", handlers.RemoveLinkFromCategory)
+    // belongsTo.PATCH("/:linkUid/", handlers.ToggleMainCategory)
 }
