@@ -1,8 +1,6 @@
 package requests
 
 import (
-	"encoding/json"
-	"strings"
 	"testing"
 
 	"github.com/mutannejs/luof-go/adapters/sqlite"
@@ -77,12 +75,13 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_AlreadyExists(
 			"isMain": "true",
 		})
 
-	expectedMap := map[string]string{"message": domain.ALREADY_BELONGS.Error()}
-	expectedJson, _ := json.Marshal(expectedMap)
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.ALREADY_BELONGS.Error()),
+		res.Body())
 
 	ts.Equal(
-		strings.TrimSpace(string(res.Body())),
-		strings.TrimSpace(string(expectedJson)),
+		resBody,
+		expectedJson,
         "Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + domain.ALREADY_BELONGS.Error()) 
 }
 

@@ -1,9 +1,6 @@
 package requests
 
 import (
-	"database/sql"
-	"encoding/json"
-	"strings"
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
@@ -16,8 +13,6 @@ import (
 
 type UpdateLinkTestSuite struct {
     suite.Suite
-    db *sql.DB
-    c *resty.Client
     linkUid string
     put ltests.RequestFuncType
 }
@@ -26,13 +21,13 @@ func (ts *UpdateLinkTestSuite) SetupSuite() {
     env, _ := lenv.LoadTest()
     urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
 
-    ts.c = resty.New()
+    c := resty.New()
 
-    post := ltests.GetJSONPost(ts.c, urlBase)
+    post := ltests.GetJSONPost(c, urlBase)
     res, _ := post(nil, domain.MockLinkMapRequest)
 
 	ts.linkUid = res.String()
-    ts.put = ltests.GetJSONPut(ts.c, urlBase + "/{linkUid}")
+    ts.put = ltests.GetJSONPut(c, urlBase + "/{linkUid}")
 }
 
 func (ts *UpdateLinkTestSuite) TestUpdateLink() {
@@ -68,12 +63,13 @@ func (ts *UpdateLinkTestSuite) TestUpdateLink_NotExists() {
 			"linkUid": domain.MockUidLink.String()},
 		domain.MockLinkMapRequest)
 
-	expectedMap := map[string]string{"message": domain.LINK_NOT_EXISTS.Error()}
-	expectedJson, _ := json.Marshal(expectedMap)
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
+		res.Body())
 
 	ts.Equal(
-		strings.TrimSpace(string(expectedJson)),
-		strings.TrimSpace(string(res.Body())),
+		resBody,
+		expectedJson,
 		"Tentar atualizar um link passando um uuid inválido deveria retornar o erro " + domain.LINK_NOT_EXISTS.Error())
 }
 

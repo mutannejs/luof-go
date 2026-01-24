@@ -1,9 +1,6 @@
 package requests
 
 import (
-	"database/sql"
-	"encoding/json"
-	"strings"
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
@@ -16,8 +13,6 @@ import (
 
 type DeleteLinkTestSuite struct {
     suite.Suite
-    db *sql.DB
-    c *resty.Client
     delete ltests.DeleteFuncType
     post ltests.RequestFuncType
 }
@@ -26,9 +21,9 @@ func (ts *DeleteLinkTestSuite) SetupSuite() {
     env, _ := lenv.LoadTest()
     urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
 
-    ts.c = resty.New()
-    ts.post = ltests.GetJSONPost(ts.c, urlBase)
-    ts.delete = ltests.GetDelete(ts.c, urlBase + "/{linkUid}")
+    c := resty.New()
+    ts.post = ltests.GetJSONPost(c, urlBase)
+    ts.delete = ltests.GetDelete(c, urlBase + "/{linkUid}")
 
     ts.post(nil, domain.MockLinkMapRequest)
 }
@@ -53,12 +48,13 @@ func (ts *DeleteLinkTestSuite) TestDeleteLink_ParamRequired() {
 func (ts *DeleteLinkTestSuite) TestDeleteLink_NotExists() {
 	res, _ := ts.delete(map[string]string{"linkUid": domain.MockUidLink.String()})
 
-	expectedMap := map[string]string{"message": domain.LINK_NOT_EXISTS.Error()}
-	expectedJson, _ := json.Marshal(expectedMap)
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
+		res.Body())
 
 	ts.Equal(
-		strings.TrimSpace(string(expectedJson)),
-		strings.TrimSpace(string(res.Body())),
+		resBody,
+		expectedJson,
 		"Tentar deletar um link passando um uuid inválido deveria retornar o erro " + domain.LINK_NOT_EXISTS.Error())
 }
 

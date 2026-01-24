@@ -1,9 +1,6 @@
 package requests
 
 import (
-	"database/sql"
-	"encoding/json"
-	"strings"
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
@@ -16,8 +13,6 @@ import (
 
 type UpdateCategoryTestSuite struct {
     suite.Suite
-    db *sql.DB
-    c *resty.Client
     categoryUid string
     put ltests.RequestFuncType
 }
@@ -26,13 +21,13 @@ func (ts *UpdateCategoryTestSuite) SetupSuite() {
     env, _ := lenv.LoadTest()
     urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
 
-    ts.c = resty.New()
+    c := resty.New()
 
-    post := ltests.GetJSONPost(ts.c, urlBase)
+    post := ltests.GetJSONPost(c, urlBase)
     res, _ := post(nil, domain.MockCategoryMapRequest)
 
 	ts.categoryUid = res.String()
-    ts.put = ltests.GetJSONPut(ts.c, urlBase + "/{categoryUid}")
+    ts.put = ltests.GetJSONPut(c, urlBase + "/{categoryUid}")
 }
 
 func (ts *UpdateCategoryTestSuite) TestUpdateCategory() {
@@ -67,12 +62,13 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory_NotExists() {
 			"categoryUid": domain.MockUidCategory.String()},
 		domain.MockCategoryMapRequest)
 
-	expectedMap := map[string]string{"message": domain.CATEGORY_NOT_EXISTS.Error()}
-	expectedJson, _ := json.Marshal(expectedMap)
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		res.Body())
 
 	ts.Equal(
-		strings.TrimSpace(string(expectedJson)),
-		strings.TrimSpace(string(res.Body())),
+		resBody,
+		expectedJson,
 		"Tentar atualizar uma categoria passando um uuid inválido deveria retornar o erro " + domain.CATEGORY_NOT_EXISTS.Error())
 }
 

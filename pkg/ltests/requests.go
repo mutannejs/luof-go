@@ -2,6 +2,7 @@ package ltests
 
 import (
     "encoding/json"
+    "strings"
 
     "github.com/go-resty/resty/v2"
 )
@@ -90,4 +91,14 @@ func DeleteKeyInByteSlice(value []byte, key string) []byte {
     valueByteSlice, _ := json.Marshal(valueMap)
 
     return valueByteSlice
+}
+
+func GetResponseMessage(message string) (expectedJson []byte) {
+    expectedJson, _ = json.Marshal(
+        map[string]string{"message": message})
+    return
+}
+
+func TrimResponse(mes, resp []byte) (string, string) {
+    return strings.TrimSpace(string(mes)), strings.TrimSpace(string(resp))
 }

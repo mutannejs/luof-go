@@ -1,7 +1,6 @@
 package requests
 
 import (
-	"database/sql"
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
@@ -14,8 +13,6 @@ import (
 
 type CreateLinkTestSuite struct {
     suite.Suite
-    db *sql.DB
-    c *resty.Client
     post ltests.RequestFuncType
 }
 
@@ -23,8 +20,8 @@ func (ts *CreateLinkTestSuite) SetupSuite() {
     env, _ := lenv.LoadTest()
     urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
 
-    ts.c = resty.New()
-    ts.post = ltests.GetJSONPost(ts.c, urlBase)
+    c := resty.New()
+    ts.post = ltests.GetJSONPost(c, urlBase)
 }
 
 func (ts *CreateLinkTestSuite) TestCreateLink() {
