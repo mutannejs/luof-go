@@ -6,9 +6,8 @@ import (
     "github.com/mutannejs/luof-go/cmd/api/custom"
     "github.com/mutannejs/luof-go/cmd/api/types"
     "github.com/mutannejs/luof-go/core/usecase/insert_link_in_category"
-    // "github.com/mutannejs/luof-go/core/usecase/remove_link_from_category"
-    // "github.com/mutannejs/luof-go/core/usecase/toggle_main_category"
-    // "github.com/mutannejs/luof-go/core/usecase/update_category"
+    "github.com/mutannejs/luof-go/core/usecase/remove_link_from_category"
+    "github.com/mutannejs/luof-go/core/usecase/toggle_main_category"
 
     "github.com/google/uuid"
     "github.com/labstack/echo/v4"
@@ -52,52 +51,74 @@ func InsertLinkInCategory(echoContext echo.Context) error {
     return cc.NoContent(http.StatusOK)
 }
 
-// func ToggleMainCategory(echoContext echo.Context) error {
-//     var cc = echoContext.(*custom.Context)
-//     var bt = types.SaveBelongsTo{}
+func RemoveLinkFromCategory(echoContext echo.Context) error {
+    var cc = echoContext.(*custom.Context)
+    var gbt types.GetBelongsTo
 
-//     if err := cc.ExecRequetJSONOperations(
-//         &bt,
-//         &types.SaveBelongsToSchema,
-//     ); err != nil {
-//         return err
-//     }
+    if err := cc.ExecRequetParamsOperations(
+        &gbt,
+        &types.GetBelongsToSchema,
+    ); err != nil {
+        return err
+    }
 
-//     cct := create_category.New(cc.Repositories.Category)
-//     uid, err := cct.Execute(
-//         c.Name,
-//         c.Description,
-//         c.UseMarkdown)
+    categoryUid, err := uuid.Parse(gbt.CategoryUid)
+    if err != nil {
+        return cc.LogAndReturnErr(err)
+    }
 
-//     if err != nil {
-//         return cc.LogAndReturnErr(err)
-//     }
+    linkUid, err := uuid.Parse(gbt.LinkUid)
+    if err != nil {
+        return cc.LogAndReturnErr(err)
+    }
 
-//     return cc.String(http.StatusOK, uid.String())
-// }
+    rlfc := remove_link_from_category.New(cc.Repositories.BelongsTo)
+    err = rlfc.Execute(linkUid, categoryUid)
 
-// func RemoveLinkFromCategory(echoContext echo.Context) error {
-//     var cc = echoContext.(*custom.Context)
-//     var gc types.GetCategory
+    if err != nil {
+        return cc.LogAndReturnErr(err)
+    }
 
-//     if err := cc.ExecRequetParamsOperations(
-//         &gc,
-//         &types.GetCategorySchema,
-//     ); err != nil {
-//         return err
-//     }
+    return cc.NoContent(http.StatusOK)
+}
 
-//     uid, err := uuid.Parse(gc.CategoryUid)
-//     if err != nil {
-//         return cc.LogAndReturnErr(err)
-//     }
+func ToggleMainCategory(echoContext echo.Context) error {
+    var cc = echoContext.(*custom.Context)
+    var gbt types.GetBelongsTo
+    var ubt types.UpdateBelongsTo
 
-//     dc := delete_category.New(cc.Repositories.Category)
-//     _, err = dc.Execute(uid)
+    if err := cc.ExecRequetOperations(
+        custom.RequestValues{
+            Params: &gbt,
+            JsonBody: &ubt,
+        },
+        custom.RequestValidations{
+            Params : types.GetBelongsToSchema,
+            JsonBody: types.UpdateBelongsToSchema,
+        },
+    ); err != nil {
+        return err
+    }
 
-//     if err != nil {
-//         return cc.LogAndReturnErr(err)
-//     }
+    categoryUid, err := uuid.Parse(gbt.CategoryUid)
+    if err != nil {
+        return cc.LogAndReturnErr(err)
+    }
 
-//     return cc.NoContent(http.StatusOK)
-// }
+    linkUid, err := uuid.Parse(gbt.LinkUid)
+    if err != nil {
+        return cc.LogAndReturnErr(err)
+    }
+
+    tmc := toggle_main_category.New(cc.Repositories.BelongsTo)
+    err = tmc.Execute(
+        linkUid,
+        categoryUid,
+        ubt.IsMain)
+
+    if err != nil {
+        return cc.LogAndReturnErr(err)
+    }
+
+    return cc.NoContent(http.StatusOK)
+}
