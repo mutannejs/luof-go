@@ -61,4 +61,10 @@ var (
         "description": MockCategory.Description.Content,
         "useMarkdown": strconv.FormatBool(MockCategory.Description.UseMarkdown),
     }
+    AlternativeMockLinkMapRequest = map[string]string{
+        "url": AlternativeMockLink.Url,
+        "name": AlternativeMockLink.Name,
+        "description": AlternativeMockLink.Description.Content,
+        "useMarkdown": strconv.FormatBool(AlternativeMockLink.Description.UseMarkdown),
+    }
 )

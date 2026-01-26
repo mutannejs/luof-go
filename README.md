@@ -57,7 +57,7 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 - [X] Melhorar validation
 - [X] Possibilitar uso de JSON em requisições
 - [X] Melhorar logs
-- [ ] API
+- [X] API
 - [ ] Documentar
 
 ### Testes
