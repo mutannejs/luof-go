@@ -46,6 +46,18 @@ func GetJSONPut(c *resty.Client, urlBase string) RequestFuncType {
     }
 }
 
+func GetJSONPatch(c *resty.Client, urlBase string) RequestFuncType {
+    return func(
+        pathParamsMap map[string]string,
+        dataMap map[string]string,
+    ) (*resty.Response, error) {
+        return c.R().
+            SetPathParams(pathParamsMap).
+            SetBody(dataMap).
+            Patch(urlBase)
+    }
+}
+
 func GetGet(c *resty.Client, urlBase string) RequestFuncType {
     return func(
         pathParamsMap map[string]string,
