@@ -13,33 +13,33 @@ import (
 )
 
 type RemoveLinkFromCategoryTestSuite struct {
-    suite.Suite
-    post ltests.RequestFuncType
-    delete ltests.DeleteFuncType
-    linkUidString string
-    categoryUidString string
+	suite.Suite
+	post ltests.RequestFuncType
+	delete ltests.DeleteFuncType
+	linkUidString string
+	categoryUidString string
 }
 
 func (ts *RemoveLinkFromCategoryTestSuite) SetupSuite() {
-    env, _ := lenv.LoadTest()
-    db, _ := sqlite.GetConnection(env)
-    urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api"
+	env, _ := lenv.LoadTest()
+	db, _ := sqlite.GetConnection(env)
+	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api"
 
-    c := resty.New()
-    ts.post = ltests.GetJSONPost(c, urlBase + "/categories/{categoryUid}/links")
-    ts.delete = ltests.GetDelete(c, urlBase + "/categories/{categoryUid}/links/{linkUid}")
+	c := resty.New()
+	ts.post = ltests.GetJSONPost(c, urlBase + "/categories/{categoryUid}/links")
+	ts.delete = ltests.GetDelete(c, urlBase + "/categories/{categoryUid}/links/{linkUid}")
 
-    postLink := ltests.GetJSONPost(c, urlBase + "/links")
-    postCategory := ltests.GetJSONPost(c, urlBase + "/categories")
+	postLink := ltests.GetJSONPost(c, urlBase + "/links")
+	postCategory := ltests.GetJSONPost(c, urlBase + "/categories")
 
-    ltests.CleanTable(db, "belongs_to")
-    db.Close()
+	ltests.CleanTable(db, "belongs_to")
+	db.Close()
 
-    resLink, _ := postLink(nil, domain.MockLinkMapRequest)
-    ts.linkUidString = string(resLink.Body())
+	resLink, _ := postLink(nil, domain.MockLinkMapRequest)
+	ts.linkUidString = string(resLink.Body())
 
-    resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
-    ts.categoryUidString = string(resCategory.Body())
+	resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
+	ts.categoryUidString = string(resCategory.Body())
 }
 
 func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory() {
@@ -94,9 +94,9 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_NotExists(
 	ts.Equal(
 		resBody,
 		expectedJson,
-        "Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + domain.NOT_BELONGS.Error()) 
+		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + domain.NOT_BELONGS.Error()) 
 }
 
 func TestRemoveLinkFromCategoryAllTests(t *testing.T) {
-    suite.Run(t, new(RemoveLinkFromCategoryTestSuite))
+	suite.Run(t, new(RemoveLinkFromCategoryTestSuite))
 }

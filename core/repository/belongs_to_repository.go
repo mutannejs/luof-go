@@ -9,17 +9,17 @@ import (
 )
 
 type ReadBelongsTo interface {
-    Exists(uuid.UUID, uuid.UUID) (bool, error)
-    GetLinksByCategory(uuid.UUID) ([]domain.Link, error)
+	Exists(uuid.UUID, uuid.UUID) (bool, error)
+	GetLinksByCategory(uuid.UUID) ([]domain.Link, error)
 }
 
 type WriteBelongsTo interface {
-    Create(uuid.UUID, uuid.UUID, time.Time, bool) error
-    Delete(uuid.UUID, uuid.UUID) error
-    Update(uuid.UUID, uuid.UUID, bool) error
+	Create(uuid.UUID, uuid.UUID, time.Time, bool) error
+	Delete(uuid.UUID, uuid.UUID) error
+	Update(uuid.UUID, uuid.UUID, bool) error
 }
 
 type BelongsTo interface {
-    ReadBelongsTo
-    WriteBelongsTo
+	ReadBelongsTo
+	WriteBelongsTo
 }

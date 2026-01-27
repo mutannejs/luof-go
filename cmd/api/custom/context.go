@@ -9,7 +9,7 @@ import (
 	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/luuid"
 
-    "github.com/Oudwins/zog"
+	"github.com/Oudwins/zog"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -33,11 +33,11 @@ type RequestValidations struct {
 }
 
 type Context struct {
-    echo.Context
-    Repositories repository.Repositories
-    Rv RequestValues
-    errorResp *ResponseError
-    logUid string
+	echo.Context
+	Repositories repository.Repositories
+	Rv RequestValues
+	errorResp *ResponseError
+	logUid string
 }
 
 const (
@@ -56,8 +56,8 @@ func (cc *Context) InfoLog() *zerolog.Event {
 }
 
 func (cc *Context) LogAndReturnErr(err error) error {
-    cc.ErrLog().Err(err).Send()
-    return echo.NewHTTPError(http.StatusBadRequest, err)
+	cc.ErrLog().Err(err).Send()
+	return echo.NewHTTPError(http.StatusBadRequest, err)
 }
 
 func (cc *Context) ExecRequetParamsOperations(
@@ -65,9 +65,9 @@ func (cc *Context) ExecRequetParamsOperations(
 	validation **zog.StructSchema,
 ) error {
 	return cc.ExecRequetOperations(
-        RequestValues{ Params: paramsValue },
-        RequestValidations{ Params: *validation },
-    )
+		RequestValues{ Params: paramsValue },
+		RequestValidations{ Params: *validation },
+	)
 }
 
 func (cc *Context) ExecRequetJSONOperations(
@@ -75,9 +75,9 @@ func (cc *Context) ExecRequetJSONOperations(
 	validation **zog.StructSchema,
 ) error {
 	return cc.ExecRequetOperations(
-        RequestValues{ JsonBody: jsonValue },
-        RequestValidations{ JsonBody: *validation },
-    )
+		RequestValues{ JsonBody: jsonValue },
+		RequestValidations{ JsonBody: *validation },
+	)
 }
 
 func (cc *Context) ExecRequetOperations(
@@ -90,7 +90,7 @@ func (cc *Context) ExecRequetOperations(
 	cc.logRequest(bodyByteSlice, paramsByteSlice)
 
 	if cc.errorResp != nil {
-        return echo.NewHTTPError(http.StatusBadRequest, cc.errorResp)
+		return echo.NewHTTPError(http.StatusBadRequest, cc.errorResp)
 	}
 
 	cc.Rv = values
@@ -107,20 +107,20 @@ func (cc *Context) setJsonBody(
 		return
 	}
 
-    var jsonBody = make(map[string]any)
+	var jsonBody = make(map[string]any)
 
-    jsonBodyErr := json.NewDecoder(cc.Request().Body).Decode(&jsonBody)
+	jsonBodyErr := json.NewDecoder(cc.Request().Body).Decode(&jsonBody)
 	bodyByteSlice, bodyByteSliceErr := json.Marshal(jsonBody)
 
-    if jsonBodyErr != nil || bodyByteSliceErr != nil {
-    	cc.errorResp = &ResponseError{}
-    	cc.errorResp.Message = JSON_BODY_ERR
-    } else if (validations.JsonBody != nil) {
-        parseErrs := validations.JsonBody.Parse(jsonBody, values.JsonBody)
-    	cc.setValidateErr(parseErrs)
-    }
+	if jsonBodyErr != nil || bodyByteSliceErr != nil {
+		cc.errorResp = &ResponseError{}
+		cc.errorResp.Message = JSON_BODY_ERR
+	} else if (validations.JsonBody != nil) {
+		parseErrs := validations.JsonBody.Parse(jsonBody, values.JsonBody)
+		cc.setValidateErr(parseErrs)
+	}
 
-    return
+	return
 }
 
 func (cc *Context) setparamsByteSlice(
@@ -137,15 +137,15 @@ func (cc *Context) setparamsByteSlice(
 
 	paramsByteSlice, paramsByteSliceErr := json.Marshal(pathParamsMap)
 
-    if paramsByteSliceErr != nil {
-    	cc.errorResp = &ResponseError{}
-    	cc.errorResp.Message = PARAMS_ERR
-    } else if (validations.Params != nil) {
-        parseErrs := validations.Params.Parse(pathParamsMap, values.Params)
-    	cc.setValidateErr(parseErrs)
-    }
+	if paramsByteSliceErr != nil {
+		cc.errorResp = &ResponseError{}
+		cc.errorResp.Message = PARAMS_ERR
+	} else if (validations.Params != nil) {
+		parseErrs := validations.Params.Parse(pathParamsMap, values.Params)
+		cc.setValidateErr(parseErrs)
+	}
 
-    return
+	return
 }
 
 func (cc *Context) getPathParams() map[string]any {
@@ -174,11 +174,11 @@ func (cc *Context) setValidateErr(parseErrs zog.ZogIssueList) {
 
 	errs := make(map[string]string)
 
-    for _, issue := range parseErrs {
-    	errs[strings.Join(issue.Path, ".")] = issue.Message
-    }
+	for _, issue := range parseErrs {
+		errs[strings.Join(issue.Path, ".")] = issue.Message
+	}
 
-    cc.errorResp.Errors = errs
+	cc.errorResp.Errors = errs
 }
 
 func (cc *Context) logRequest(
@@ -187,35 +187,35 @@ func (cc *Context) logRequest(
 ) {
 	var logReq *zerolog.Event
 
-    if uid, err := luuid.New(); err != nil {
+	if uid, err := luuid.New(); err != nil {
 		cc.LogAndReturnErr(errors.New(LOG_UID_ERR))
 	} else {
 		cc.logUid = uid.String()
 	}
 
-    if cc.errorResp != nil {
-    	logReq = cc.ErrLog()
-    } else {
-    	logReq = cc.InfoLog()
-    }
+	if cc.errorResp != nil {
+		logReq = cc.ErrLog()
+	} else {
+		logReq = cc.InfoLog()
+	}
 
-    logReq = logReq.
-        Str("method", cc.Request().Method).
-        Str("path", cc.Request().URL.Path)
+	logReq = logReq.
+		Str("method", cc.Request().Method).
+		Str("path", cc.Request().URL.Path)
 
-    if len(bodyByteSlice) != 0 {
-    	logReq = logReq.RawJSON("json_body", bodyByteSlice)
-    }
+	if len(bodyByteSlice) != 0 {
+		logReq = logReq.RawJSON("json_body", bodyByteSlice)
+	}
 
-    if (len(paramsByteSlice) != 0) {
-    	logReq = logReq.RawJSON("params_path", paramsByteSlice)
-    }
+	if (len(paramsByteSlice) != 0) {
+		logReq = logReq.RawJSON("params_path", paramsByteSlice)
+	}
 
-    if cc.errorResp != nil {
+	if cc.errorResp != nil {
 		errorsByteSlice, _ := json.Marshal(cc.errorResp.Errors)
-    	logReq = logReq.RawJSON("errors", errorsByteSlice)
+		logReq = logReq.RawJSON("errors", errorsByteSlice)
 		logReq.Msg(cc.errorResp.Message)
-    } else {
+	} else {
 		logReq.Send()
 	}
 }

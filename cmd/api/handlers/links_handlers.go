@@ -3,11 +3,11 @@ package handlers
 import (
 	"net/http"
 
-    "github.com/mutannejs/luof-go/cmd/api/custom"
+	"github.com/mutannejs/luof-go/cmd/api/custom"
 	"github.com/mutannejs/luof-go/cmd/api/types"
 	"github.com/mutannejs/luof-go/core/usecase/create_link"
-    "github.com/mutannejs/luof-go/core/usecase/delete_link"
-    "github.com/mutannejs/luof-go/core/usecase/get_link_by_uid"
+	"github.com/mutannejs/luof-go/core/usecase/delete_link"
+	"github.com/mutannejs/luof-go/core/usecase/get_link_by_uid"
 	"github.com/mutannejs/luof-go/core/usecase/update_link"
 
 	"github.com/google/uuid"
@@ -15,110 +15,110 @@ import (
 )
 
 func GetLinkByUid(c echo.Context) error {
-    var cc = c.(*custom.Context)
-    var gl types.GetLink
+	var cc = c.(*custom.Context)
+	var gl types.GetLink
 
-    if err := cc.ExecRequetParamsOperations(
-        &gl,
-        &types.GetLinkSchema,
-    ); err != nil {
-        return err
-    }
+	if err := cc.ExecRequetParamsOperations(
+		&gl,
+		&types.GetLinkSchema,
+	); err != nil {
+		return err
+	}
 
-    uid, err := uuid.Parse(gl.LinkUid)
-    if err != nil {
-        return cc.LogAndReturnErr(err)
-    }
+	uid, err := uuid.Parse(gl.LinkUid)
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
 
-    glbu := get_link_by_uid.New(cc.Repositories.Link)
-    l, err := glbu.Execute(uid)
+	glbu := get_link_by_uid.New(cc.Repositories.Link)
+	l, err := glbu.Execute(uid)
 
-    if err != nil {
-        return cc.LogAndReturnErr(err)
-    }
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
 
-    return cc.JSON(http.StatusOK, l)
+	return cc.JSON(http.StatusOK, l)
 }
 
 func CreateLink(c echo.Context) error {
-    var cc = c.(*custom.Context)
-    var l = types.SaveLink{}
+	var cc = c.(*custom.Context)
+	var l = types.SaveLink{}
 
-    if err := cc.ExecRequetJSONOperations(
-        &l,
-        &types.SaveLinkSchema,
-    ); err != nil {
-        return err
-    }
+	if err := cc.ExecRequetJSONOperations(
+		&l,
+		&types.SaveLinkSchema,
+	); err != nil {
+		return err
+	}
 
-    cl := create_link.New(cc.Repositories.Link)
-    uid, err := cl.Execute(
-        l.Url,
-        l.Name,
-        l.Description,
-        l.UseMarkdown)
+	cl := create_link.New(cc.Repositories.Link)
+	uid, err := cl.Execute(
+		l.Url,
+		l.Name,
+		l.Description,
+		l.UseMarkdown)
 
-    if err != nil {
-        return cc.LogAndReturnErr(err)
-    }
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
 
-    return cc.String(http.StatusOK, uid.String())
+	return cc.String(http.StatusOK, uid.String())
 }
 
 func DeleteLink(c echo.Context) error {
-    var cc = c.(*custom.Context)
-    var gl types.GetLink
+	var cc = c.(*custom.Context)
+	var gl types.GetLink
 
-    if err := cc.ExecRequetParamsOperations(
-        &gl,
-        &types.GetLinkSchema,
-    ); err != nil {
-        return err
-    }
+	if err := cc.ExecRequetParamsOperations(
+		&gl,
+		&types.GetLinkSchema,
+	); err != nil {
+		return err
+	}
 
-    uid, err := uuid.Parse(gl.LinkUid)
-    if err != nil {
-        return cc.LogAndReturnErr(err)
-    }
+	uid, err := uuid.Parse(gl.LinkUid)
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
 
-    dl := delete_link.New(cc.Repositories.Link)
-    _, err = dl.Execute(uid)
+	dl := delete_link.New(cc.Repositories.Link)
+	_, err = dl.Execute(uid)
 
-    if err != nil {
-        return cc.LogAndReturnErr(err)
-    }
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
 
-    return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusOK)
 }
 
 func UpdateLink(c echo.Context) error {
-    var cc = c.(*custom.Context)
-    var l = types.SaveLink{}
-    var gl = types.GetLink{}
+	var cc = c.(*custom.Context)
+	var l = types.SaveLink{}
+	var gl = types.GetLink{}
 
-    if err := cc.ExecRequetOperations(
-        custom.RequestValues{ JsonBody: &l, Params: &gl },
-        custom.RequestValidations{ JsonBody: types.SaveLinkSchema, Params: types.GetLinkSchema },
-    ); err != nil {
-        return err
-    }
+	if err := cc.ExecRequetOperations(
+		custom.RequestValues{ JsonBody: &l, Params: &gl },
+		custom.RequestValidations{ JsonBody: types.SaveLinkSchema, Params: types.GetLinkSchema },
+	); err != nil {
+		return err
+	}
 
-    uid, err := uuid.Parse(gl.LinkUid)
-    if err != nil {
-        return cc.LogAndReturnErr(err)
-    }
+	uid, err := uuid.Parse(gl.LinkUid)
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
 
-    ul := update_link.New(cc.Repositories.Link)
-    _, err = ul.Execute(
-        uid,
-        l.Url,
-        l.Name,
-        l.Description,
-        l.UseMarkdown)
+	ul := update_link.New(cc.Repositories.Link)
+	_, err = ul.Execute(
+		uid,
+		l.Url,
+		l.Name,
+		l.Description,
+		l.UseMarkdown)
 
-    if err != nil {
-        return cc.LogAndReturnErr(err)
-    }
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
 
-    return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusOK)
 }

@@ -10,29 +10,29 @@ import (
 )
 
 type InsertLinkInCategory struct {
-    Repo repository.BelongsTo
+	Repo repository.BelongsTo
 }
 
 func New(repo repository.BelongsTo) InsertLinkInCategory {
-    return InsertLinkInCategory{repo}
+	return InsertLinkInCategory{repo}
 }
 
 func (ilicUseCase *InsertLinkInCategory) Execute(
-    linkUid uuid.UUID,
-    categoryUid uuid.UUID,
-    isMain bool,
+	linkUid uuid.UUID,
+	categoryUid uuid.UUID,
+	isMain bool,
 ) (err error) {
-    var exists bool
+	var exists bool
 
-    exists, err = ilicUseCase.Repo.Exists(linkUid, categoryUid)
+	exists, err = ilicUseCase.Repo.Exists(linkUid, categoryUid)
 
-    if err != nil {
-        return
-    } else if exists {
-        return domain.ALREADY_BELONGS
-    }
+	if err != nil {
+		return
+	} else if exists {
+		return domain.ALREADY_BELONGS
+	}
 
-    err = ilicUseCase.Repo.Create(linkUid, categoryUid, time.Now(), isMain)
+	err = ilicUseCase.Repo.Create(linkUid, categoryUid, time.Now(), isMain)
 
-    return
+	return
 }

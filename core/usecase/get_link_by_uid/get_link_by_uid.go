@@ -8,29 +8,29 @@ import (
 )
 
 type GetLinkByUid struct {
-    Repo repository.Link
+	Repo repository.Link
 }
 
 func New(repo repository.Link) GetLinkByUid {
-    return GetLinkByUid{repo}
+	return GetLinkByUid{repo}
 }
 
 func (glbuUseCase *GetLinkByUid) Execute(
-    uid uuid.UUID,
+	uid uuid.UUID,
 ) (link domain.Link, err error) {
-    var exists bool
+	var exists bool
 
-    exists, err = glbuUseCase.Repo.Exists(uid)
+	exists, err = glbuUseCase.Repo.Exists(uid)
 
-    if err != nil {
-        return
-    }
+	if err != nil {
+		return
+	}
 
-    if !exists {
-        err = domain.LINK_NOT_EXISTS
-    } else {
-        link, err = glbuUseCase.Repo.GetByUid(uid)
-    }
+	if !exists {
+		err = domain.LINK_NOT_EXISTS
+	} else {
+		link, err = glbuUseCase.Repo.GetByUid(uid)
+	}
 
-    return
+	return
 }

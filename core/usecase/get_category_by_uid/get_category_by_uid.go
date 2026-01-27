@@ -8,29 +8,29 @@ import (
 )
 
 type GetCategoryByUid struct {
-    Repo repository.Category
+	Repo repository.Category
 }
 
 func New(repo repository.Category) GetCategoryByUid {
-    return GetCategoryByUid{repo}
+	return GetCategoryByUid{repo}
 }
 
 func (gcbuUseCase *GetCategoryByUid) Execute(
-    uid uuid.UUID,
+	uid uuid.UUID,
 ) (category domain.Category, err error) {
-    var exists bool
+	var exists bool
 
-    exists, err = gcbuUseCase.Repo.Exists(uid)
+	exists, err = gcbuUseCase.Repo.Exists(uid)
 
-    if err != nil {
-        return
-    }
+	if err != nil {
+		return
+	}
 
-    if !exists {
-        err = domain.CATEGORY_NOT_EXISTS
-    } else {
-        category, err = gcbuUseCase.Repo.GetByUid(uid)
-    }
+	if !exists {
+		err = domain.CATEGORY_NOT_EXISTS
+	} else {
+		category, err = gcbuUseCase.Repo.GetByUid(uid)
+	}
 
-    return
+	return
 }

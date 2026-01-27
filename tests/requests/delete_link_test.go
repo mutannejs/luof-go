@@ -12,24 +12,24 @@ import (
 )
 
 type DeleteLinkTestSuite struct {
-    suite.Suite
-    delete ltests.DeleteFuncType
-    post ltests.RequestFuncType
+	suite.Suite
+	delete ltests.DeleteFuncType
+	post ltests.RequestFuncType
 }
 
 func (ts *DeleteLinkTestSuite) SetupSuite() {
-    env, _ := lenv.LoadTest()
-    urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
+	env, _ := lenv.LoadTest()
+	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
 
-    c := resty.New()
-    ts.post = ltests.GetJSONPost(c, urlBase)
-    ts.delete = ltests.GetDelete(c, urlBase + "/{linkUid}")
+	c := resty.New()
+	ts.post = ltests.GetJSONPost(c, urlBase)
+	ts.delete = ltests.GetDelete(c, urlBase + "/{linkUid}")
 
-    ts.post(nil, domain.MockLinkMapRequest)
+	ts.post(nil, domain.MockLinkMapRequest)
 }
 
 func (ts *DeleteLinkTestSuite) TestDeleteLink() {
-    res, _ := ts.post(nil, domain.MockLinkMapRequest)
+	res, _ := ts.post(nil, domain.MockLinkMapRequest)
 	res, err := ts.delete(map[string]string{"linkUid": res.String()})
 
 	ts.NoError(err)
@@ -59,5 +59,5 @@ func (ts *DeleteLinkTestSuite) TestDeleteLink_NotExists() {
 }
 
 func TestDeleteLinkAllTests(t *testing.T) {
-    suite.Run(t, new(DeleteLinkTestSuite))
+	suite.Run(t, new(DeleteLinkTestSuite))
 }

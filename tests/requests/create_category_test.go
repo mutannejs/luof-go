@@ -12,16 +12,16 @@ import (
 )
 
 type CreateCategoryTestSuite struct {
-    suite.Suite
-    post ltests.RequestFuncType
+	suite.Suite
+	post ltests.RequestFuncType
 }
 
 func (ts *CreateCategoryTestSuite) SetupSuite() {
-    env, _ := lenv.LoadTest()
-    urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
+	env, _ := lenv.LoadTest()
+	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
 
-    c := resty.New()
-    ts.post = ltests.GetJSONPost(c, urlBase)
+	c := resty.New()
+	ts.post = ltests.GetJSONPost(c, urlBase)
 }
 
 func (ts *CreateCategoryTestSuite) TestCreateCategory() {
@@ -46,5 +46,5 @@ func (ts *CreateCategoryTestSuite) TestCreateCategory_Error() {
 }
 
 func TestCreateCategoryAllTests(t *testing.T) {
-    suite.Run(t, new(CreateCategoryTestSuite))
+	suite.Run(t, new(CreateCategoryTestSuite))
 }

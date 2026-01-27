@@ -8,56 +8,56 @@ import (
 )
 
 var (
-    ErrNoChange = migrate.ErrNoChange
+	ErrNoChange = migrate.ErrNoChange
 )
 
 func Migrate(db *sql.DB, version uint, getMigration func (*sql.DB) (*migrate.Migrate, error)) (err error) {
-    var m *migrate.Migrate
+	var m *migrate.Migrate
 
-    if m, err = getMigration(db); err != nil {
-        return err
-    }
+	if m, err = getMigration(db); err != nil {
+		return err
+	}
 
-    return m.Migrate(version)
+	return m.Migrate(version)
 }
 
 func Up(db *sql.DB, getMigration func (*sql.DB) (*migrate.Migrate, error)) (err error) {
-    var m *migrate.Migrate
+	var m *migrate.Migrate
 
-    if m, err = getMigration(db); err != nil {
-        return err
-    }
+	if m, err = getMigration(db); err != nil {
+		return err
+	}
 
-    return m.Up()
+	return m.Up()
 }
 
 func Drop(db *sql.DB, getMigration func (*sql.DB) (*migrate.Migrate, error)) (err error) {
-    var m *migrate.Migrate
+	var m *migrate.Migrate
 
-    if m, err = getMigration(db); err != nil {
-        return err
-    }
+	if m, err = getMigration(db); err != nil {
+		return err
+	}
 
-    return m.Drop()
+	return m.Drop()
 }
 
 func Down(db *sql.DB, getMigration func (*sql.DB) (*migrate.Migrate, error)) (err error) {
-    var m *migrate.Migrate
+	var m *migrate.Migrate
 
-    if m, err = getMigration(db); err != nil {
-        return err
-    }
+	if m, err = getMigration(db); err != nil {
+		return err
+	}
 
-    return m.Down()
+	return m.Down()
 }
 
 func Version(db *sql.DB, getMigration func (*sql.DB) (*migrate.Migrate, error)) (uint, bool, error) {
-    var m *migrate.Migrate
-    var err error
+	var m *migrate.Migrate
+	var err error
 
-    if m, err = getMigration(db); err != nil {
-        return 0, false, err
-    }
+	if m, err = getMigration(db); err != nil {
+		return 0, false, err
+	}
 
-    return m.Version()
+	return m.Version()
 }

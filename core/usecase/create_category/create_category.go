@@ -1,33 +1,33 @@
 package create_category
 
 import (
-    "github.com/mutannejs/luof-go/core/domain"
-    "github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 
-    "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 type CreateCategory struct {
-    Repo repository.Category
+	Repo repository.Category
 }
 
 func New(repo repository.Category) CreateCategory {
-    return CreateCategory{repo}
+	return CreateCategory{repo}
 }
 
 func (ccUseCase *CreateCategory) Execute(
-    name string,
-    description string,
-    useMarkdown bool,
+	name string,
+	description string,
+	useMarkdown bool,
 ) (uid uuid.UUID, err error) {
-    var category domain.Category
+	var category domain.Category
 
-    category, err = domain.NewCategory(name, description, useMarkdown)
+	category, err = domain.NewCategory(name, description, useMarkdown)
 
-    if err == nil {
-        err = ccUseCase.Repo.Create(category)
-        uid = category.GetUid()
-    }
+	if err == nil {
+		err = ccUseCase.Repo.Create(category)
+		uid = category.GetUid()
+	}
 
-    return
+	return
 }

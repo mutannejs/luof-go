@@ -12,24 +12,24 @@ import (
 )
 
 type DeleteCategoryTestSuite struct {
-    suite.Suite
-    delete ltests.DeleteFuncType
-    post ltests.RequestFuncType
+	suite.Suite
+	delete ltests.DeleteFuncType
+	post ltests.RequestFuncType
 }
 
 func (ts *DeleteCategoryTestSuite) SetupSuite() {
-    env, _ := lenv.LoadTest()
-    urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
+	env, _ := lenv.LoadTest()
+	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
 
-    c := resty.New()
-    ts.post = ltests.GetJSONPost(c, urlBase)
-    ts.delete = ltests.GetDelete(c, urlBase + "/{categoryUid}")
+	c := resty.New()
+	ts.post = ltests.GetJSONPost(c, urlBase)
+	ts.delete = ltests.GetDelete(c, urlBase + "/{categoryUid}")
 
-    ts.post(nil, domain.MockCategoryMapRequest)
+	ts.post(nil, domain.MockCategoryMapRequest)
 }
 
 func (ts *DeleteCategoryTestSuite) TestDeleteCategory() {
-    res, _ := ts.post(nil, domain.MockCategoryMapRequest)
+	res, _ := ts.post(nil, domain.MockCategoryMapRequest)
 	res, err := ts.delete(map[string]string{"categoryUid": res.String()})
 
 	ts.NoError(err)
@@ -59,5 +59,5 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_NotExists() {
 }
 
 func TestDeleteCategoryAllTests(t *testing.T) {
-    suite.Run(t, new(DeleteCategoryTestSuite))
+	suite.Run(t, new(DeleteCategoryTestSuite))
 }

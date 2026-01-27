@@ -7,17 +7,17 @@ import (
 )
 
 type ReadLink interface {
-    Exists(uuid.UUID) (bool, error)
-    GetByUid(uuid.UUID) (domain.Link, error)
+	Exists(uuid.UUID) (bool, error)
+	GetByUid(uuid.UUID) (domain.Link, error)
 }
 
 type WriteLink interface {
-    Create(domain.Link) error
-    Delete(uuid.UUID) error
-    Update(uuid.UUID, domain.Link) error
+	Create(domain.Link) error
+	Delete(uuid.UUID) error
+	Update(uuid.UUID, domain.Link) error
 }
 
 type Link interface {
-    ReadLink
-    WriteLink
+	ReadLink
+	WriteLink
 }

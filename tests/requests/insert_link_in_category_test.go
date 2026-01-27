@@ -13,31 +13,31 @@ import (
 )
 
 type InsertLinkInCategoryTestSuite struct {
-    suite.Suite
-    post ltests.RequestFuncType
-    linkUidString string
-    categoryUidString string
+	suite.Suite
+	post ltests.RequestFuncType
+	linkUidString string
+	categoryUidString string
 }
 
 func (ts *InsertLinkInCategoryTestSuite) SetupSuite() {
-    env, _ := lenv.LoadTest()
-    db, _ := sqlite.GetConnection(env)
-    urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api"
+	env, _ := lenv.LoadTest()
+	db, _ := sqlite.GetConnection(env)
+	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api"
 
-    c := resty.New()
-    ts.post = ltests.GetJSONPost(c, urlBase + "/categories/{categoryUid}/links")
+	c := resty.New()
+	ts.post = ltests.GetJSONPost(c, urlBase + "/categories/{categoryUid}/links")
 
-    postLink := ltests.GetJSONPost(c, urlBase + "/links")
-    postCategory := ltests.GetJSONPost(c, urlBase + "/categories")
+	postLink := ltests.GetJSONPost(c, urlBase + "/links")
+	postCategory := ltests.GetJSONPost(c, urlBase + "/categories")
 
-    ltests.CleanTable(db, "belongs_to")
-    db.Close()
+	ltests.CleanTable(db, "belongs_to")
+	db.Close()
 
-    resLink, _ := postLink(nil, domain.MockLinkMapRequest)
-    ts.linkUidString = string(resLink.Body())
+	resLink, _ := postLink(nil, domain.MockLinkMapRequest)
+	ts.linkUidString = string(resLink.Body())
 
-    resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
-    ts.categoryUidString = string(resCategory.Body())
+	resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
+	ts.categoryUidString = string(resCategory.Body())
 }
 
 func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory() {
@@ -82,9 +82,9 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_AlreadyExists(
 	ts.Equal(
 		resBody,
 		expectedJson,
-        "Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + domain.ALREADY_BELONGS.Error()) 
+		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + domain.ALREADY_BELONGS.Error()) 
 }
 
 func TestInsertLinkInCategoryAllTests(t *testing.T) {
-    suite.Run(t, new(InsertLinkInCategoryTestSuite))
+	suite.Run(t, new(InsertLinkInCategoryTestSuite))
 }

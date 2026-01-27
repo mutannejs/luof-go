@@ -11,62 +11,62 @@ import (
 )
 
 var (
-    alreadyBelongs = domain.ALREADY_BELONGS
-    mockUidLink = domain.MockUidLink
-    mockUidCategory = domain.MockUidCategory
+	alreadyBelongs = domain.ALREADY_BELONGS
+	mockUidLink = domain.MockUidLink
+	mockUidCategory = domain.MockUidCategory
 )
 
 func TestInsertLinkInCategory_NotExists(t *testing.T) {
-    var assert = assert.New(t)
+	var assert = assert.New(t)
 
-    var btRepo = repository.NewBelongsToMockRepository()
-    var ilic = New(btRepo)
+	var btRepo = repository.NewBelongsToMockRepository()
+	var ilic = New(btRepo)
 
-    btRepo.
-        On(
-            "Exists",
-            mock.AnythingOfType("uuid.UUID"),
-            mock.AnythingOfType("uuid.UUID"),
-        ).Return(false, nil).
-        On(
-            "Create",
-            mock.AnythingOfType("uuid.UUID"),
-            mock.AnythingOfType("uuid.UUID"),
-            mock.AnythingOfType("time.Time"),
-            true,
-        ).Return(nil)
+	btRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(false, nil).
+		On(
+			"Create",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("time.Time"),
+			true,
+		).Return(nil)
 
-    err := ilic.Execute(mockUidLink, mockUidCategory, true)
+	err := ilic.Execute(mockUidLink, mockUidCategory, true)
 
-    assert.NoError(
-                    err,
-                    "Tentar inserir um link em uma categoria, ambos ainda não relacionados, não deveria retornar erro")
+	assert.NoError(
+					err,
+					"Tentar inserir um link em uma categoria, ambos ainda não relacionados, não deveria retornar erro")
 }
 
 func TestInsertLinkInCategory_Exists(t *testing.T) {
-    var assert = assert.New(t)
+	var assert = assert.New(t)
 
-    var btRepo = repository.NewBelongsToMockRepository()
-    var ilic = New(btRepo)
+	var btRepo = repository.NewBelongsToMockRepository()
+	var ilic = New(btRepo)
 
-    btRepo.
-        On(
-            "Exists",
-            mock.AnythingOfType("uuid.UUID"),
-            mock.AnythingOfType("uuid.UUID"),
-        ).Return(true, nil).
-        On(
-            "Create",
-            mock.AnythingOfType("uuid.UUID"),
-            mock.AnythingOfType("uuid.UUID"),
-            mock.AnythingOfType("time.Time"),
-            false,
-        ).Return(nil)
+	btRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil).
+		On(
+			"Create",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("time.Time"),
+			false,
+		).Return(nil)
 
-    err := ilic.Execute(mockUidLink, mockUidCategory, false)
+	err := ilic.Execute(mockUidLink, mockUidCategory, false)
 
-    assert.ErrorIs(
-                    err,
-                    alreadyBelongs,
-                    "Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + alreadyBelongs.Error())
+	assert.ErrorIs(
+					err,
+					alreadyBelongs,
+					"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + alreadyBelongs.Error())
 }

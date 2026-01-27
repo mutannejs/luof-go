@@ -1,9 +1,9 @@
 package ltests
 
 import (
-    "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 type Identifiable interface {
-    GetUid() uuid.UUID
+	GetUid() uuid.UUID
 }

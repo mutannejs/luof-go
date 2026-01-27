@@ -1,6 +1,6 @@
 package domain
 
 type Description struct {
-    Content string
-    UseMarkdown bool
+	Content string
+	UseMarkdown bool
 }

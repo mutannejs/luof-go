@@ -12,22 +12,22 @@ import (
 )
 
 type UpdateLinkTestSuite struct {
-    suite.Suite
-    linkUid string
-    put ltests.RequestFuncType
+	suite.Suite
+	linkUid string
+	put ltests.RequestFuncType
 }
 
 func (ts *UpdateLinkTestSuite) SetupSuite() {
-    env, _ := lenv.LoadTest()
-    urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
+	env, _ := lenv.LoadTest()
+	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
 
-    c := resty.New()
+	c := resty.New()
 
-    post := ltests.GetJSONPost(c, urlBase)
-    res, _ := post(nil, domain.MockLinkMapRequest)
+	post := ltests.GetJSONPost(c, urlBase)
+	res, _ := post(nil, domain.MockLinkMapRequest)
 
 	ts.linkUid = res.String()
-    ts.put = ltests.GetJSONPut(c, urlBase + "/{linkUid}")
+	ts.put = ltests.GetJSONPut(c, urlBase + "/{linkUid}")
 }
 
 func (ts *UpdateLinkTestSuite) TestUpdateLink() {
@@ -74,5 +74,5 @@ func (ts *UpdateLinkTestSuite) TestUpdateLink_NotExists() {
 }
 
 func TestUpdateLinkAllTests(t *testing.T) {
-    suite.Run(t, new(UpdateLinkTestSuite))
+	suite.Run(t, new(UpdateLinkTestSuite))
 }

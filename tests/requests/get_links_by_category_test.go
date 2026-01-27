@@ -14,33 +14,33 @@ import (
 )
 
 type GetLinksByCategoryTestSuite struct {
-    suite.Suite
-    get ltests.RequestFuncType
-    uidLinkString string
-    alternativeUidLinkString string
-    categoryUidString string
+	suite.Suite
+	get ltests.RequestFuncType
+	uidLinkString string
+	alternativeUidLinkString string
+	categoryUidString string
 }
 
 func (ts *GetLinksByCategoryTestSuite) SetupSuite() {
-    env, _ := lenv.LoadTest()
-    db, _ := sqlite.GetConnection(env)
-    urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api"
-    c := resty.New()
+	env, _ := lenv.LoadTest()
+	db, _ := sqlite.GetConnection(env)
+	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api"
+	c := resty.New()
 
-    ltests.CleanTable(db, "belongs_to")
-    db.Close()
+	ltests.CleanTable(db, "belongs_to")
+	db.Close()
 
-    ts.get = ltests.GetGet(c, urlBase + "/categories/{categoryUid}/links")
+	ts.get = ltests.GetGet(c, urlBase + "/categories/{categoryUid}/links")
 
-    postLink := ltests.GetJSONPost(c, urlBase + "/links")
-    postCategory := ltests.GetJSONPost(c, urlBase + "/categories")
-    postBelongsTo := ltests.GetJSONPost(c, urlBase + "/categories/{categoryUid}/links")
+	postLink := ltests.GetJSONPost(c, urlBase + "/links")
+	postCategory := ltests.GetJSONPost(c, urlBase + "/categories")
+	postBelongsTo := ltests.GetJSONPost(c, urlBase + "/categories/{categoryUid}/links")
 
-    resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
-    ts.categoryUidString = string(resCategory.Body())
+	resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
+	ts.categoryUidString = string(resCategory.Body())
 
-    resLink, _ := postLink(nil, domain.MockLinkMapRequest)
-    ts.uidLinkString = string(resLink.Body())
+	resLink, _ := postLink(nil, domain.MockLinkMapRequest)
+	ts.uidLinkString = string(resLink.Body())
 
 	postBelongsTo(
 		map[string]string{
@@ -50,8 +50,8 @@ func (ts *GetLinksByCategoryTestSuite) SetupSuite() {
 			"isMain": "true",
 		})
 
-    resLink, _ = postLink(nil, domain.AlternativeMockLinkMapRequest)
-    ts.alternativeUidLinkString = string(resLink.Body())
+	resLink, _ = postLink(nil, domain.AlternativeMockLinkMapRequest)
+	ts.alternativeUidLinkString = string(resLink.Body())
 
 	postBelongsTo(
 		map[string]string{
@@ -69,8 +69,8 @@ func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory() {
 		},
 		nil)
 
-    var linksJson []map[string]string
-    json.Unmarshal(res.Body(), &linksJson)
+	var linksJson []map[string]string
+	json.Unmarshal(res.Body(), &linksJson)
 
 	ts.Len(
 		linksJson,
@@ -102,9 +102,9 @@ func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_NotExists() {
 	ts.Equal(
 		resBody,
 		expectedJson,
-        "Tentar recuperar os link de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error()) 
+		"Tentar recuperar os link de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error()) 
 }
 
 func TestGetLinksByCategoryAllTests(t *testing.T) {
-    suite.Run(t, new(GetLinksByCategoryTestSuite))
+	suite.Run(t, new(GetLinksByCategoryTestSuite))
 }

@@ -1,28 +1,28 @@
 package types
 
 import (
-    z "github.com/Oudwins/zog"
+	z "github.com/Oudwins/zog"
 )
 
 type GetLink struct {
-    LinkUid string
+	LinkUid string
 }
 
 type SaveLink struct {
-    Url string
-    Name string
-    Description string
-    UseMarkdown bool
+	Url string
+	Name string
+	Description string
+	UseMarkdown bool
 }
 
 var (
-    GetLinkSchema = z.Struct(z.Shape{
-        "linkUid": UidValidate,
-    })
-    SaveLinkSchema = z.Struct(z.Shape{
-        "url": z.String().URL(),
-        "name": z.String().Max(200).Required(),
-        "description": z.String(),
-        "useMarkdown": z.Bool(),
-    })
+	GetLinkSchema = z.Struct(z.Shape{
+		"linkUid": UidValidate,
+	})
+	SaveLinkSchema = z.Struct(z.Shape{
+		"url": z.String().URL(),
+		"name": z.String().Max(200).Required(),
+		"description": z.String(),
+		"useMarkdown": z.Bool(),
+	})
 )

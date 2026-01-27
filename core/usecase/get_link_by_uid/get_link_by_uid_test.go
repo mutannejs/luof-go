@@ -11,46 +11,46 @@ import (
 )
 
 var (
-    linkNotExists = domain.LINK_NOT_EXISTS
-    mockLink = domain.MockLink
-    mockUidLink = domain.MockUidLink
+	linkNotExists = domain.LINK_NOT_EXISTS
+	mockLink = domain.MockLink
+	mockUidLink = domain.MockUidLink
 )
 
 func TestGetLinkByUid_NotExists(t *testing.T) {
-    var assert = assert.New(t)
+	var assert = assert.New(t)
 
-    var repo = repository.NewLinkMockRepository()
-    var glbu = New(repo)
+	var repo = repository.NewLinkMockRepository()
+	var glbu = New(repo)
 
-    repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
+	repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
-    link, err := glbu.Execute(mockUidLink)
+	link, err := glbu.Execute(mockUidLink)
 
-    assert.Zero(
-                    link,
-                    "Deveria ser retornado zero para um uid inválido")
-    assert.EqualError(
-                    err,
-                    linkNotExists.Error(),
-                    "Buscar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
+	assert.Zero(
+					link,
+					"Deveria ser retornado zero para um uid inválido")
+	assert.EqualError(
+					err,
+					linkNotExists.Error(),
+					"Buscar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
 }
 
 func TestGetLinkByUid_Exists(t *testing.T) {
-    var assert = assert.New(t)
+	var assert = assert.New(t)
 
-    var repo = repository.NewLinkMockRepository()
-    var glbu = New(repo)
+	var repo = repository.NewLinkMockRepository()
+	var glbu = New(repo)
 
-    repo.On("Exists", mockUidLink).Return(true, nil)
-    repo.On("GetByUid", mockUidLink).Return(mockLink, nil)
+	repo.On("Exists", mockUidLink).Return(true, nil)
+	repo.On("GetByUid", mockUidLink).Return(mockLink, nil)
 
-    link, err := glbu.Execute(mockUidLink)
+	link, err := glbu.Execute(mockUidLink)
 
-    assert.Equal(
-                    link,
-                    mockLink,
-                    "O link retornado pela função deve ser o mesmo retornado pelo repositório")
-    assert.NoError(
-                    err,
-                    "Buscar um link válido não deveria retornar erro")
+	assert.Equal(
+					link,
+					mockLink,
+					"O link retornado pela função deve ser o mesmo retornado pelo repositório")
+	assert.NoError(
+					err,
+					"Buscar um link válido não deveria retornar erro")
 }

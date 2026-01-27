@@ -10,45 +10,45 @@ import (
 )
 
 var (
-    LINK_ERROR_NEW = errors.New("error instantiate new link")
-    LINK_NOT_EXISTS = errors.New("the searched link does not exist")
+	LINK_ERROR_NEW = errors.New("error instantiate new link")
+	LINK_NOT_EXISTS = errors.New("the searched link does not exist")
 )
 
 type Link struct {
-    uid uuid.UUID
-    Url string
-    Name string
-    Description Description
-    CreatedAt time.Time
-    UpdatedAt time.Time
+	uid uuid.UUID
+	Url string
+	Name string
+	Description Description
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func (l Link) GetUid() uuid.UUID {
-    return l.uid
+	return l.uid
 }
 
 func (l *Link) SetUid(uid uuid.UUID) {
-    l.uid = uid
+	l.uid = uid
 }
 
 func NewLink(
-    url string,
-    name string,
-    contentDescription string,
-    useMarkdown bool,
+	url string,
+	name string,
+	contentDescription string,
+	useMarkdown bool,
 ) (Link, error) {
-    var uid uuid.UUID
-    var err error
+	var uid uuid.UUID
+	var err error
 
-    uid, err = luuid.New()
-    if err != nil {
-        return Link{}, errors.Join(LINK_ERROR_NEW, err)
-    }
+	uid, err = luuid.New()
+	if err != nil {
+		return Link{}, errors.Join(LINK_ERROR_NEW, err)
+	}
 
-    var createdAt time.Time = time.Now()
-    var updatedAt time.Time
-    var description = Description{contentDescription, useMarkdown}
-    var link = Link{uid, url, name, description, createdAt, updatedAt}
+	var createdAt time.Time = time.Now()
+	var updatedAt time.Time
+	var description = Description{contentDescription, useMarkdown}
+	var link = Link{uid, url, name, description, createdAt, updatedAt}
 
-    return link, nil
+	return link, nil
 }

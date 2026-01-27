@@ -7,24 +7,24 @@ import (
 )
 
 const (
-    DEFAULT_PORT = "8123"
+	DEFAULT_PORT = "8123"
 )
 
 func StartServer(env map[string]string, repositories repository.Repositories) error {
-    var address string
+	var address string
 
-    if envPort, exists := env["SERVER_PORT"]; exists {
-        address = ":" + envPort
-    } else {
-        address = ":" + DEFAULT_PORT
-    }
+	if envPort, exists := env["SERVER_PORT"]; exists {
+		address = ":" + envPort
+	} else {
+		address = ":" + DEFAULT_PORT
+	}
 
-    var e *echo.Echo = echo.New()
+	var e *echo.Echo = echo.New()
 
-    e.HideBanner = true
+	e.HideBanner = true
 
-    setRootRoutes(e)
-    setMiddleware(e, repositories)
+	setRootRoutes(e)
+	setMiddleware(e, repositories)
 
-    return e.Start(address)
+	return e.Start(address)
 }

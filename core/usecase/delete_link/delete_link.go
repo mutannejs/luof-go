@@ -8,27 +8,27 @@ import (
 )
 
 type DeleteLink struct {
-    Repo repository.Link
+	Repo repository.Link
 }
 
 func New(repo repository.Link) DeleteLink {
-    return DeleteLink{repo}
+	return DeleteLink{repo}
 }
 
 func (dlUseCase *DeleteLink) Execute(
-    uid uuid.UUID,
+	uid uuid.UUID,
 ) (exists bool, err error) {
-    exists, err = dlUseCase.Repo.Exists(uid)
+	exists, err = dlUseCase.Repo.Exists(uid)
 
-    if err != nil {
-        return
-    }
+	if err != nil {
+		return
+	}
 
-    if !exists {
-        err = domain.LINK_NOT_EXISTS
-    } else {
-        err = dlUseCase.Repo.Delete(uid)
-    }
+	if !exists {
+		err = domain.LINK_NOT_EXISTS
+	} else {
+		err = dlUseCase.Repo.Delete(uid)
+	}
 
-    return
+	return
 }

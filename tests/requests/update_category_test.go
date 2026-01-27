@@ -12,22 +12,22 @@ import (
 )
 
 type UpdateCategoryTestSuite struct {
-    suite.Suite
-    categoryUid string
-    put ltests.RequestFuncType
+	suite.Suite
+	categoryUid string
+	put ltests.RequestFuncType
 }
 
 func (ts *UpdateCategoryTestSuite) SetupSuite() {
-    env, _ := lenv.LoadTest()
-    urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
+	env, _ := lenv.LoadTest()
+	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
 
-    c := resty.New()
+	c := resty.New()
 
-    post := ltests.GetJSONPost(c, urlBase)
-    res, _ := post(nil, domain.MockCategoryMapRequest)
+	post := ltests.GetJSONPost(c, urlBase)
+	res, _ := post(nil, domain.MockCategoryMapRequest)
 
 	ts.categoryUid = res.String()
-    ts.put = ltests.GetJSONPut(c, urlBase + "/{categoryUid}")
+	ts.put = ltests.GetJSONPut(c, urlBase + "/{categoryUid}")
 }
 
 func (ts *UpdateCategoryTestSuite) TestUpdateCategory() {
@@ -73,5 +73,5 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory_NotExists() {
 }
 
 func TestUpdateCategoryAllTests(t *testing.T) {
-    suite.Run(t, new(UpdateCategoryTestSuite))
+	suite.Run(t, new(UpdateCategoryTestSuite))
 }

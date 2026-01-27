@@ -12,38 +12,38 @@ O **core** do projeto é exemplificado no seguinte diagrama:
 
 ```mermaid
 erDiagram
-    direction LR
-    Link o{--o| BelongsTo : belong
-    BelongsTo o|--o{ Category : belong
-    Category o{--o| SubCategory : belong
-    Link {
-        string uid_link "PK"
-        string url
-        string name "NOT NULL"
-        string description
-        bool use_markdown
-        datetime created_at "NOT NULL"
-        datetime updated_at "NOT NULL"
-    }
-    BelongsTo {
-        string uid_link "FK PK"
-        string uid_category "FK PK"
-        datetime iserted_at "NOT NULL"
-        bool is_main
-    }
-    Category {
-        string uid_category "PK"
-        string name "NOT NULL"
-        string description
-        bool use_markdown
-        datetime created_at "NOT NULL"
-        datetime updated_at "NOT NULL"
-    }
-    SubCategory {
-        string uid_child "FK PK"
-        string uid_father "FK PK"
-        datetime iserted_at "NOT NULL"
-    }
+	direction LR
+	Link o{--o| BelongsTo : belong
+	BelongsTo o|--o{ Category : belong
+	Category o{--o| SubCategory : belong
+	Link {
+		string uid_link "PK"
+		string url
+		string name "NOT NULL"
+		string description
+		bool use_markdown
+		datetime created_at "NOT NULL"
+		datetime updated_at "NOT NULL"
+	}
+	BelongsTo {
+		string uid_link "FK PK"
+		string uid_category "FK PK"
+		datetime iserted_at "NOT NULL"
+		bool is_main
+	}
+	Category {
+		string uid_category "PK"
+		string name "NOT NULL"
+		string description
+		bool use_markdown
+		datetime created_at "NOT NULL"
+		datetime updated_at "NOT NULL"
+	}
+	SubCategory {
+		string uid_child "FK PK"
+		string uid_father "FK PK"
+		datetime iserted_at "NOT NULL"
+	}
 ```
 
 Essa modelagem deve servir como base para que as operações abaixo sejam realizadas:

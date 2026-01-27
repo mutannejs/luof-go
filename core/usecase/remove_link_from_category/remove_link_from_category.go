@@ -8,28 +8,28 @@ import (
 )
 
 type RemoveLinkFromCategory struct {
-    Repo repository.BelongsTo
+	Repo repository.BelongsTo
 }
 
 func New(repo repository.BelongsTo) RemoveLinkFromCategory {
-    return RemoveLinkFromCategory{repo}
+	return RemoveLinkFromCategory{repo}
 }
 
 func (rlfcUseCase *RemoveLinkFromCategory) Execute(
-    linkUid uuid.UUID,
-    categoryUid uuid.UUID,
+	linkUid uuid.UUID,
+	categoryUid uuid.UUID,
 ) (err error) {
-    var exists bool
+	var exists bool
 
-    exists, err = rlfcUseCase.Repo.Exists(linkUid, categoryUid)
+	exists, err = rlfcUseCase.Repo.Exists(linkUid, categoryUid)
 
-    if err != nil {
-        return
-    } else if !exists {
-        return domain.NOT_BELONGS
-    }
+	if err != nil {
+		return
+	} else if !exists {
+		return domain.NOT_BELONGS
+	}
 
-    err = rlfcUseCase.Repo.Delete(linkUid, categoryUid)
+	err = rlfcUseCase.Repo.Delete(linkUid, categoryUid)
 
-    return
+	return
 }

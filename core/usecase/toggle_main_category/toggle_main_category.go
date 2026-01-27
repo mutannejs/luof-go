@@ -8,29 +8,29 @@ import (
 )
 
 type ToggleMainCategory struct {
-    Repo repository.BelongsTo
+	Repo repository.BelongsTo
 }
 
 func New(repo repository.BelongsTo) ToggleMainCategory {
-    return ToggleMainCategory{repo}
+	return ToggleMainCategory{repo}
 }
 
 func (tmcUseCase *ToggleMainCategory) Execute(
-    linkUid uuid.UUID,
-    categoryUid uuid.UUID,
-    isMain bool,
+	linkUid uuid.UUID,
+	categoryUid uuid.UUID,
+	isMain bool,
 ) (err error) {
-    var exists bool
+	var exists bool
 
-    exists, err = tmcUseCase.Repo.Exists(linkUid, categoryUid)
+	exists, err = tmcUseCase.Repo.Exists(linkUid, categoryUid)
 
-    if err != nil {
-        return
-    } else if !exists {
-        return domain.NOT_BELONGS
-    }
+	if err != nil {
+		return
+	} else if !exists {
+		return domain.NOT_BELONGS
+	}
 
-    err = tmcUseCase.Repo.Update(linkUid, categoryUid, isMain)
+	err = tmcUseCase.Repo.Update(linkUid, categoryUid, isMain)
 
-    return
+	return
 }

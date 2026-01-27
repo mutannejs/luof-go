@@ -13,22 +13,22 @@ import (
 )
 
 type GetCategoryTestSuite struct {
-    suite.Suite
-    get ltests.RequestFuncType
-    categoryUid string
+	suite.Suite
+	get ltests.RequestFuncType
+	categoryUid string
 }
 
 func (ts *GetCategoryTestSuite) SetupSuite() {
-    env, _ := lenv.LoadTest()
-    urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
+	env, _ := lenv.LoadTest()
+	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
 
-    c := resty.New()
+	c := resty.New()
 
-    post := ltests.GetJSONPost(c, urlBase)
-    res, _ := post(nil, domain.MockCategoryMapRequest)
+	post := ltests.GetJSONPost(c, urlBase)
+	res, _ := post(nil, domain.MockCategoryMapRequest)
 
 	ts.categoryUid = res.String()
-    ts.get = ltests.GetGet(c, urlBase + "/{categoryUid}")
+	ts.get = ltests.GetGet(c, urlBase + "/{categoryUid}")
 }
 
 func (ts *GetCategoryTestSuite) TestGetCategory() {
@@ -64,5 +64,5 @@ func (ts *GetCategoryTestSuite) TestGetCategory_NotExists() {
 }
 
 func TestGetCategoryAllTests(t *testing.T) {
-    suite.Run(t, new(GetCategoryTestSuite))
+	suite.Run(t, new(GetCategoryTestSuite))
 }

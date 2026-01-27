@@ -10,9 +10,9 @@ import (
 )
 
 func GetRepositories(db *sql.DB) repository.Repositories {
-    return repository.Repositories{
-        BelongsTo: belongs_to.New(db),
-        Category: category.New(db),
-        Link: link.New(db),
-    }
+	return repository.Repositories{
+		BelongsTo: belongs_to.New(db),
+		Category: category.New(db),
+		Link: link.New(db),
+	}
 }

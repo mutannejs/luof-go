@@ -10,35 +10,35 @@ import (
 )
 
 type UpdateLink struct {
-    Repo repository.Link
+	Repo repository.Link
 }
 
 func New(repo repository.Link) UpdateLink {
-    return UpdateLink{repo}
+	return UpdateLink{repo}
 }
 
 func (ulUseCase *UpdateLink) Execute(
-    uid uuid.UUID,
-    url string,
-    name string,
-    description string,
-    useMarkdown bool,
+	uid uuid.UUID,
+	url string,
+	name string,
+	description string,
+	useMarkdown bool,
 ) (exists bool, err error) {
-    exists, err = ulUseCase.Repo.Exists(uid)
+	exists, err = ulUseCase.Repo.Exists(uid)
 
-    if err != nil {
-        return
-    } else if !exists {
-        return exists, domain.LINK_NOT_EXISTS
-    }
+	if err != nil {
+		return
+	} else if !exists {
+		return exists, domain.LINK_NOT_EXISTS
+	}
 
-    var link domain.Link
-    link, err = domain.NewLink(url, name, description, useMarkdown)
+	var link domain.Link
+	link, err = domain.NewLink(url, name, description, useMarkdown)
 
-    if err == nil {
-        link.UpdatedAt = time.Now()
-        err = ulUseCase.Repo.Update(uid, link)
-    }
+	if err == nil {
+		link.UpdatedAt = time.Now()
+		err = ulUseCase.Repo.Update(uid, link)
+	}
 
-    return
+	return
 }

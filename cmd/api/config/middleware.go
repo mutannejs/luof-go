@@ -9,16 +9,16 @@ import (
 )
 
 func setMiddleware(e *echo.Echo, repositories repository.Repositories) {
-    e.Pre(middleware.AddTrailingSlash())
+	e.Pre(middleware.AddTrailingSlash())
 
-    e.Use(ContextMiddleware(repositories))
+	e.Use(ContextMiddleware(repositories))
 }
 
 func ContextMiddleware(repositories repository.Repositories) echo.MiddlewareFunc {
-    return func(next echo.HandlerFunc) echo.HandlerFunc {
-        return func(c echo.Context) error {
-            cc := &custom.Context{Context: c, Repositories: repositories}
-            return next(cc)
-        }
-    }
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			cc := &custom.Context{Context: c, Repositories: repositories}
+			return next(cc)
+		}
+	}
 }

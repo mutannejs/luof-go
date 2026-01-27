@@ -7,17 +7,17 @@ import (
 )
 
 type ReadCategory interface {
-    Exists(uuid.UUID) (bool, error)
-    GetByUid(uuid.UUID) (domain.Category, error)
+	Exists(uuid.UUID) (bool, error)
+	GetByUid(uuid.UUID) (domain.Category, error)
 }
 
 type WriteCategory interface {
-    Create(domain.Category) error
-    Delete(uuid.UUID) error
-    Update(uuid.UUID, domain.Category) error
+	Create(domain.Category) error
+	Delete(uuid.UUID) error
+	Update(uuid.UUID, domain.Category) error
 }
 
 type Category interface {
-    ReadCategory
-    WriteCategory
+	ReadCategory
+	WriteCategory
 }

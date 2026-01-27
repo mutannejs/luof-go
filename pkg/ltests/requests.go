@@ -1,116 +1,116 @@
 package ltests
 
 import (
-    "encoding/json"
-    "strings"
+	"encoding/json"
+	"strings"
 
-    "github.com/go-resty/resty/v2"
+	"github.com/go-resty/resty/v2"
 )
 
 type RequestFuncType func (map[string]string, map[string]string) (*resty.Response, error)
 type DeleteFuncType func (map[string]string) (*resty.Response, error)
 
 func GetFormDataPost(c *resty.Client, urlBase string) RequestFuncType {
-    return func(
-        pathParamsMap map[string]string,
-        formData map[string]string,
-    ) (*resty.Response, error) {
-        return c.R().
-            SetPathParams(pathParamsMap).
-            SetFormData(formData).
-            Post(urlBase)
-    }
+	return func(
+		pathParamsMap map[string]string,
+		formData map[string]string,
+	) (*resty.Response, error) {
+		return c.R().
+			SetPathParams(pathParamsMap).
+			SetFormData(formData).
+			Post(urlBase)
+	}
 }
 
 func GetJSONPost(c *resty.Client, urlBase string) RequestFuncType {
-    return func(
-        pathParamsMap map[string]string,
-        dataMap map[string]string,
-    ) (*resty.Response, error) {
-        return c.R().
-            SetPathParams(pathParamsMap).
-            SetBody(dataMap).
-            Post(urlBase)
-    }
+	return func(
+		pathParamsMap map[string]string,
+		dataMap map[string]string,
+	) (*resty.Response, error) {
+		return c.R().
+			SetPathParams(pathParamsMap).
+			SetBody(dataMap).
+			Post(urlBase)
+	}
 }
 
 func GetJSONPut(c *resty.Client, urlBase string) RequestFuncType {
-    return func(
-        pathParamsMap map[string]string,
-        dataMap map[string]string,
-    ) (*resty.Response, error) {
-        return c.R().
-            SetPathParams(pathParamsMap).
-            SetBody(dataMap).
-            Put(urlBase)
-    }
+	return func(
+		pathParamsMap map[string]string,
+		dataMap map[string]string,
+	) (*resty.Response, error) {
+		return c.R().
+			SetPathParams(pathParamsMap).
+			SetBody(dataMap).
+			Put(urlBase)
+	}
 }
 
 func GetJSONPatch(c *resty.Client, urlBase string) RequestFuncType {
-    return func(
-        pathParamsMap map[string]string,
-        dataMap map[string]string,
-    ) (*resty.Response, error) {
-        return c.R().
-            SetPathParams(pathParamsMap).
-            SetBody(dataMap).
-            Patch(urlBase)
-    }
+	return func(
+		pathParamsMap map[string]string,
+		dataMap map[string]string,
+	) (*resty.Response, error) {
+		return c.R().
+			SetPathParams(pathParamsMap).
+			SetBody(dataMap).
+			Patch(urlBase)
+	}
 }
 
 func GetGet(c *resty.Client, urlBase string) RequestFuncType {
-    return func(
-        pathParamsMap map[string]string,
-        queryParamsMap map[string]string,
-    ) (*resty.Response, error) {
-        return c.R().
-            SetPathParams(pathParamsMap).
-            SetQueryParams(queryParamsMap).
-            Get(urlBase)
-    }
+	return func(
+		pathParamsMap map[string]string,
+		queryParamsMap map[string]string,
+	) (*resty.Response, error) {
+		return c.R().
+			SetPathParams(pathParamsMap).
+			SetQueryParams(queryParamsMap).
+			Get(urlBase)
+	}
 }
 
 func GetDelete(c *resty.Client, urlBase string) DeleteFuncType {
-    return func(
-        pathParamsMap map[string]string,
-    ) (*resty.Response, error) {
-        return c.R().
-            SetPathParams(pathParamsMap).
-            Delete(urlBase)
-    }
+	return func(
+		pathParamsMap map[string]string,
+	) (*resty.Response, error) {
+		return c.R().
+			SetPathParams(pathParamsMap).
+			Delete(urlBase)
+	}
 }
 
 func GetErrorKeys(res []byte) (keys []string) {
-    var errors map[string]any
+	var errors map[string]any
 
-    if err := json.Unmarshal(res, &errors); err != nil {
-        return nil
-    }
+	if err := json.Unmarshal(res, &errors); err != nil {
+		return nil
+	}
 
-    for key, _ := range errors["Errors"].(map[string]any) {
-        keys = append(keys, key)
-    }
+	for key, _ := range errors["Errors"].(map[string]any) {
+		keys = append(keys, key)
+	}
 
-    return
+	return
 }
 
 func DeleteKeyInByteSlice(value []byte, key string) []byte {
-    var valueMap map[string]string
+	var valueMap map[string]string
 
-    json.Unmarshal(value, &valueMap)
-    delete(valueMap, key)
+	json.Unmarshal(value, &valueMap)
+	delete(valueMap, key)
 
-    valueByteSlice, _ := json.Marshal(valueMap)
+	valueByteSlice, _ := json.Marshal(valueMap)
 
-    return valueByteSlice
+	return valueByteSlice
 }
 
 func GetResponseMessage(message string) (expectedJson []byte) {
-    expectedJson, _ = json.Marshal(
-        map[string]string{"message": message})
-    return
+	expectedJson, _ = json.Marshal(
+		map[string]string{"message": message})
+	return
 }
 
 func TrimResponse(mes, resp []byte) (string, string) {
-    return strings.TrimSpace(string(mes)), strings.TrimSpace(string(resp))
+	return strings.TrimSpace(string(mes)), strings.TrimSpace(string(resp))
 }

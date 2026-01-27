@@ -12,16 +12,16 @@ import (
 )
 
 type CreateLinkTestSuite struct {
-    suite.Suite
-    post ltests.RequestFuncType
+	suite.Suite
+	post ltests.RequestFuncType
 }
 
 func (ts *CreateLinkTestSuite) SetupSuite() {
-    env, _ := lenv.LoadTest()
-    urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
+	env, _ := lenv.LoadTest()
+	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/links"
 
-    c := resty.New()
-    ts.post = ltests.GetJSONPost(c, urlBase)
+	c := resty.New()
+	ts.post = ltests.GetJSONPost(c, urlBase)
 }
 
 func (ts *CreateLinkTestSuite) TestCreateLink() {
@@ -47,5 +47,5 @@ func (ts *CreateLinkTestSuite) TestCreateLink_Error() {
 }
 
 func TestCreateLinkAllTests(t *testing.T) {
-    suite.Run(t, new(CreateLinkTestSuite))
+	suite.Run(t, new(CreateLinkTestSuite))
 }
