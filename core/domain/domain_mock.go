@@ -48,6 +48,7 @@ var (
 
 	// Conjuntos de elementos do domínio
 	MockLinks = []Link{MockLink, AlternativeMockLink}
+	MockCategories = []Category{MockCategory, AlternativeMockCategory}
 
 	// Corpo de requests
 	MockLinkMapRequest = map[string]string{
