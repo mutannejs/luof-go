@@ -20,6 +20,11 @@ func TestSetupSqlite(t *testing.T) {
 	db, err := sqlite.GetConnection(env)
 	assert.NoError(err, "Tentar se conectar com o sqlite não deveria retornar erro")
 
+
+	err = lmigration.Drop(db, sqlite.GetMigration)
+	assert.NoError(err, "Tentar dropar o banco não deveria retornar erro")
+
+
 	err = lmigration.Up(db, sqlite.GetMigration)
 	assert.NoError(err, "As migrations deveriam ser executadas sem que ocorressem erros")
 
@@ -30,17 +35,6 @@ func TestSetupSqlite(t *testing.T) {
 
 	assert.NoError(err, "A tabela `link` deveria ter sido criada após executar as migrations")
 
-	db.Close()
-}
-
-func TestDownSqlite(t *testing.T) {
-	var assert = assert.New(t)
-
-	env, err := lenv.LoadTest()
-	assert.NoError(err, "Tentar carregar as variáveis de ambiente não deveria retornar erro")
-
-	db, err := sqlite.GetConnection(env)
-	assert.NoError(err, "Tentar se conectar com o sqlite não deveria retornar erro")
 
 	err = lmigration.Migrate(db, 0, sqlite.GetMigration)
 	assert.NoError(err, "As migrations deveriam ser executadas sem que ocorressem erros")
