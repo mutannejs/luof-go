@@ -68,4 +68,27 @@ var (
 		"description": AlternativeMockLink.Description.Content,
 		"useMarkdown": strconv.FormatBool(AlternativeMockLink.Description.UseMarkdown),
 	}
+
+	/** Árvores de categorias
+	 * leitura			filme
+	 * |------ livro	|------ terror
+	 *					|		|- jumpscare
+	 *					|		|- serial killer
+	 *					|
+	 *					|------	ação
+	 */
+	CategoriesTree = map[string]Category{
+		"leitura": GetCategory("leitura", "", false),
+		"livro": GetCategory("livro", "", false),
+		"filme": GetCategory("filme", "", false),
+		"acao": GetCategory("ação", "", false),
+		"terror": GetCategory("terror", "", false),
+		"jumpscare": GetCategory("jumpscare", "", false),
+		"serial_killer": GetCategory("serial killer", "", false),
+	}
 )
+
+func GetCategory(name, content string, useMarkdown bool) (cat Category) {
+	cat, _ = NewCategory(name, content, useMarkdown);
+	return
+}

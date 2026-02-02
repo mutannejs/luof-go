@@ -9,11 +9,10 @@ import (
 
 type GetSubcategories struct {
 	CategoryRepo repository.Category
-	SubcategoryRepo repository.Subcategory
 }
 
-func New(cRepo repository.Category, sRepo repository.Subcategory) GetSubcategories {
-	return GetSubcategories{cRepo, sRepo}
+func New(cRepo repository.Category) GetSubcategories {
+	return GetSubcategories{cRepo}
 }
 
 func (gsUseCase *GetSubcategories) Execute(
@@ -30,7 +29,7 @@ func (gsUseCase *GetSubcategories) Execute(
 	if !exists {
 		err = domain.CATEGORY_NOT_EXISTS
 	} else {
-		subcategories, err = gsUseCase.SubcategoryRepo.GetSubcategories(uid)
+		subcategories, err = gsUseCase.CategoryRepo.GetSubcategories(uid)
 	}
 
 	return

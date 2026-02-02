@@ -8,10 +8,10 @@ import (
 )
 
 type RemoveSubcategory struct {
-	Repo repository.Subcategory
+	Repo repository.Category
 }
 
-func New(repo repository.Subcategory) RemoveSubcategory {
+func New(repo repository.Category) RemoveSubcategory {
 	return RemoveSubcategory{repo}
 }
 
@@ -29,7 +29,7 @@ func (isUseCase *RemoveSubcategory) Execute(
 		return domain.NOT_IS_SUBCATEGORY
 	}
 
-	err = isUseCase.Repo.Delete(fatherUid, childUid)
+	err = isUseCase.Repo.DeleteSubcategory(childUid)
 
 	return
 }

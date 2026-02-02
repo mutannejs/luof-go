@@ -19,9 +19,8 @@ var (
 func TestGetLinksByCategory_CategoryNotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var sRepo = repository.NewSubcategoryMockRepository()
 	var cRepo = repository.NewCategoryMockRepository()
-	var glbc = New(cRepo, sRepo)
+	var glbc = New(cRepo)
 
 	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
@@ -39,12 +38,11 @@ func TestGetLinksByCategory_CategoryNotExists(t *testing.T) {
 func TestGetLinksByCategory_CategoryExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var sRepo = repository.NewSubcategoryMockRepository()
 	var cRepo = repository.NewCategoryMockRepository()
-	var glbc = New(cRepo, sRepo)
+	var glbc = New(cRepo)
 
 	cRepo.On("Exists", mockUidCategory).Return(true, nil)
-	sRepo.On("GetSubcategories", mockUidCategory).Return(mockCategories, nil)
+	cRepo.On("GetSubcategories", mockUidCategory).Return(mockCategories, nil)
 
 	links, err := glbc.Execute(mockUidCategory)
 

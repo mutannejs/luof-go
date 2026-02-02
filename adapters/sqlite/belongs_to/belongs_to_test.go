@@ -70,7 +70,7 @@ func (ts *TestSuite) TestExists() {
 	exists, err := ts.btr.Exists(mockUidLink, mockUidCategory)
 
 	ts.NoError(err, "Exists, se informado uma chave válida não deveria retornar erro")
-	ts.Equal(true, exists, "Exists deveria retornar verdadeiro para uma cha válida")
+	ts.Equal(true, exists, "Exists deveria retornar verdadeiro para uma chave válida")
 }
 
 func (ts *TestSuite) TestNotExists() {

@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	areRelatives = domain.ARE_RELATIVES
+	areRelated = domain.ARE_RELATED
 	mockUidCategory = domain.MockUidCategory
 	alternativeMockUidCategory = domain.AlternativeMockUidCategory
 )
@@ -19,17 +19,17 @@ var (
 func TestInsertSubcategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var sRepo = repository.NewSubcategoryMockRepository()
-	var is = New(sRepo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var is = New(cRepo)
 
-	sRepo.
+	cRepo.
 		On(
-			"AreRelatives",
+			"AreRelated",
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
 		).Return(false, nil).
 		On(
-			"Create",
+			"InsertSubcategory",
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("time.Time"),
@@ -45,17 +45,17 @@ func TestInsertSubcategory_NotExists(t *testing.T) {
 func TestInsertSubcategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var sRepo = repository.NewSubcategoryMockRepository()
-	var is = New(sRepo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var is = New(cRepo)
 
-	sRepo.
+	cRepo.
 		On(
-			"AreRelatives",
+			"AreRelated",
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
 		).Return(true, nil).
 		On(
-			"Create",
+			"InsertSubcategory",
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("time.Time"),
@@ -65,6 +65,6 @@ func TestInsertSubcategory_Exists(t *testing.T) {
 
 	assert.ErrorIs(
 		err,
-		areRelatives,
-		"Tentar inserir uma subcategoria em outra categoria, ambas já relacionadas, deveria retornar erro contendo " + areRelatives.Error())
+		areRelated,
+		"Tentar inserir uma subcategoria em outra categoria, ambas já relacionadas, deveria retornar erro contendo " + areRelated.Error())
 }

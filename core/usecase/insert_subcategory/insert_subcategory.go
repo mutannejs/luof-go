@@ -10,10 +10,10 @@ import (
 )
 
 type InsertSubcategory struct {
-	Repo repository.Subcategory
+	Repo repository.Category
 }
 
-func New(repo repository.Subcategory) InsertSubcategory {
+func New(repo repository.Category) InsertSubcategory {
 	return InsertSubcategory{repo}
 }
 
@@ -21,17 +21,17 @@ func (isUseCase *InsertSubcategory) Execute(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,
 ) (err error) {
-	var areRelatives bool
+	var areRelated bool
 
-	areRelatives, err = isUseCase.Repo.AreRelatives(fatherUid, childUid)
+	areRelated, err = isUseCase.Repo.AreRelated(fatherUid, childUid)
 
 	if err != nil {
 		return
-	} else if areRelatives {
-		return domain.ARE_RELATIVES
+	} else if areRelated {
+		return domain.ARE_RELATED
 	}
 
-	err = isUseCase.Repo.Create(fatherUid, childUid, time.Now())
+	err = isUseCase.Repo.InsertSubcategory(fatherUid, childUid, time.Now())
 
 	return
 }

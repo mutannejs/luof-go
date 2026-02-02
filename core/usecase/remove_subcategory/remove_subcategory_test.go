@@ -19,18 +19,17 @@ var (
 func TestRemoveSubcategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var sRepo = repository.NewSubcategoryMockRepository()
-	var is = New(sRepo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var is = New(cRepo)
 
-	sRepo.
+	cRepo.
 		On(
 			"IsSubcategory",
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
 		).Return(true, nil).
 		On(
-			"Delete",
-			mock.AnythingOfType("uuid.UUID"),
+			"DeleteSubcategory",
 			mock.AnythingOfType("uuid.UUID"),
 		).Return(nil)
 
@@ -44,18 +43,17 @@ func TestRemoveSubcategory_Exists(t *testing.T) {
 func TestRemoveSubcategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var sRepo = repository.NewSubcategoryMockRepository()
-	var is = New(sRepo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var is = New(cRepo)
 
-	sRepo.
+	cRepo.
 		On(
 			"IsSubcategory",
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
 		).Return(false, nil).
 		On(
-			"Delete",
-			mock.AnythingOfType("uuid.UUID"),
+			"DeleteSubcategory",
 			mock.AnythingOfType("uuid.UUID"),
 		).Return(nil)
 
