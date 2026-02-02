@@ -13,9 +13,8 @@ O **core** do projeto é exemplificado no seguinte diagrama:
 ```mermaid
 erDiagram
 	direction LR
-	Link o{--o| BelongsTo : belong
-	BelongsTo o|--o{ Category : belong
-	Category o{--o| SubCategory : belong
+	Link o|--o{ BelongsTo : belong
+	BelongsTo o{--o| Category : belong
 	Link {
 		string uid_link "PK"
 		string url
@@ -36,13 +35,9 @@ erDiagram
 		string name "NOT NULL"
 		string description
 		bool use_markdown
+		string uid_father "FK"
 		datetime created_at "NOT NULL"
 		datetime updated_at "NOT NULL"
-	}
-	SubCategory {
-		string uid_child "FK PK"
-		string uid_father "FK PK"
-		datetime iserted_at "NOT NULL"
 	}
 ```
 
