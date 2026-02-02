@@ -5,12 +5,12 @@ import (
 	"github.com/mutannejs/luof-go/pkg/ltests"
 )
 
-func NewCategoryMockRepository() *ltests.MockCategoryRepository[domain.Category] {
-	return &ltests.MockCategoryRepository[domain.Category]{}
+func NewCategoryMockRepository() *ltests.CategoryMockRepository[domain.Category] {
+	return &ltests.CategoryMockRepository[domain.Category]{}
 }
 
-func NewLinkMockRepository() *ltests.MockCrudRepository[domain.Link] {
-	return &ltests.MockCrudRepository[domain.Link]{}
+func NewLinkMockRepository() *ltests.LinkMockRepository[domain.Link] {
+	return &ltests.LinkMockRepository[domain.Link]{}
 }
 
 func NewBelongsToMockRepository() *ltests.BelongsToMockRepository[domain.Link] {

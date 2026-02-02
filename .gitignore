@@ -1,4 +1,4 @@
 sql_queries/
 testdata/
-luof-go*.sqlite
+luof-go*
 .env
