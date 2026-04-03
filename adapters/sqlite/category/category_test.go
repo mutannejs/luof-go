@@ -29,6 +29,28 @@ type TestSuite struct {
 	cr *Category
 }
 
+func (ts *TestSuite) insertAllCategories() {
+	for _, category := range categoriesTree {
+		ts.cr.Create(category)
+	}
+}
+
+func (ts *TestSuite) makeTree() {
+	ts.insertAllCategories()
+	ts.insertSubcategory("leitura", "livro")
+	ts.insertSubcategory("filme", "terror")
+	ts.insertSubcategory("filme", "acao")
+	ts.insertSubcategory("terror", "jumpscare")
+	ts.insertSubcategory("terror", "serial_killer")
+}
+
+func (ts *TestSuite) insertSubcategory(father, child string) error {
+	return ts.cr.InsertSubcategory(
+		categoriesTree[father].GetUid(),
+		categoriesTree[child].GetUid(),
+		time.Now())
+}
+
 func (ts *TestSuite) SetupSuite() {
 	env, _ := lenv.LoadTest()
 	db, _ := sqlite.GetConnection(env)
@@ -38,10 +60,6 @@ func (ts *TestSuite) SetupSuite() {
 	ts.env = env
 	ts.db = db
 	ts.cr = cr
-
-	for _, category := range categoriesTree {
-		cr.Create(category)
-	}
 }
 
 func (ts *TestSuite) TearDownTest() {
@@ -137,73 +155,90 @@ func (ts *TestSuite) TestDelete() {
 func (ts *TestSuite) TestIsSubcategory() {
 	ts.makeTree()
 
-	areRelated, err := ts.cr.IsSubcategory(
+	isSubcategory, err := ts.cr.IsSubcategory(
 		categoriesTree["filme"].GetUid(),
 		categoriesTree["terror"].GetUid())
 
 	ts.NoError(err, "IsSubcategory, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(true, areRelated, "IsSubcategory deveria retornar verdadeiro para duas categorias que são uma subcategoria direta da outra")
+	ts.Equal(true, isSubcategory, "IsSubcategory deveria retornar verdadeiro para duas categorias que são uma subcategoria direta da outra")
 }
 
 func (ts *TestSuite) TestNotIsSubcategory() {
 	ts.makeTree()
 
-	areRelated, err := ts.cr.IsSubcategory(
+	isSubcategory, err := ts.cr.IsSubcategory(
 		categoriesTree["filme"].GetUid(),
 		categoriesTree["serial_killer"].GetUid())
 
 	ts.NoError(err, "IsSubcategory, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(false, areRelated, "IsSubcategory deveria retornar falso para duas categorias que não são uma subcategoria direta da outra")
+	ts.Equal(false, isSubcategory, "IsSubcategory deveria retornar falso para duas categorias que não são uma subcategoria direta da outra")
 }
 
-/*func (ts *TestSuite) TestGetLinksByCategory_Empty() {
-	links, err := ts.cr.GetLinksByCategory(mockUidCategory)
+func (ts *TestSuite) TestAreRelated() {
+	ts.makeTree()
 
-	ts.Empty(links, "Tentar recuperar links de uma categoria vazia deveria retornar uma lista de links vazia")
-	ts.NoError(err, "Tentar recuperar links de uma categoria vazia não deveria retornar erro")
+	areRelated, err := ts.cr.AreRelated(
+		categoriesTree["filme"].GetUid(),
+		categoriesTree["serial_killer"].GetUid())
+
+	ts.NoError(err, "AreRelated, se informado duas chaves válidas não deveria retornar erro")
+	ts.Equal(true, areRelated, "AreRelated deveria retornar verdadeiro para duas categorias que são relacionadas por parentesco")
+
+	areRelated, err = ts.cr.AreRelated(
+		categoriesTree["serial_killer"].GetUid(),
+		categoriesTree["filme"].GetUid())
+
+	ts.NoError(err, "AreRelated, se informado duas chaves válidas não deveria retornar erro")
+	ts.Equal(true, areRelated, "AreRelated deveria retornar verdadeiro para duas categorias que são relacionadas por parentesco")
 }
 
-func (ts *TestSuite) TestGetLinksByCategory_Exists() {
-	ts.cr.Create(mockUidLink, mockUidCategory, time.Now(), false)
-	ts.cr.Create(alternativeMockUidLink, mockUidCategory, time.Now(), true)
-	links, err := ts.cr.GetLinksByCategory(mockUidCategory)
+func (ts *TestSuite) TestNotAreRelated() {
+	ts.makeTree()
 
-	ts.NoError(err, "Tentar recuperar links de uma categoria válida não deveria retornar erro")
-	ts.Len(links, 2)
+	areRelated, err := ts.cr.AreRelated(
+		categoriesTree["livro"].GetUid(),
+		categoriesTree["jumpscare"].GetUid())
 
-	var link domain.Link
-	if links[0].GetUid() == mockUidLink {
-		link = links[0]
-	} else if len(links) > 1 && links[1].GetUid() == mockUidLink {
-		link = links[1]
+	ts.NoError(err, "AreRelated, se informado duas chaves válidas não deveria retornar erro")
+	ts.Equal(false, areRelated, "AreRelated deveria retornar falso para duas categorias que não são uma relacionadas por parentesco")
+}
+
+func (ts *TestSuite) TestGetSubcategories_Empty() {
+	ts.makeTree()
+
+	subcategories, err := ts.cr.GetSubcategories(categoriesTree["jumpscare"].GetUid())
+
+	ts.NoError(err, "Tentar recuperar subcategorias de uma categoria válida não deveria retornar erro")
+	ts.Empty(subcategories, "Tentar recuperar subcategorias de uma categoria vazia deveria retornar uma lista de subcategorias vazia")
+}
+
+func (ts *TestSuite) TestGetSubcategories_NotEmpty() {
+	ts.makeTree()
+
+	subcategories, err := ts.cr.GetSubcategories(categoriesTree["terror"].GetUid())
+
+	ts.NoError(err, "Tentar recuperar subcategorias de uma categoria válida não deveria retornar erro")
+	ts.Len(subcategories, 2)
+
+	var mockCategory = categoriesTree["jumpscare"]
+	var category domain.Category
+
+	if subcategories[0].GetUid() == categoriesTree["jumpscare"].GetUid() {
+		category = subcategories[0]
+	} else if len(subcategories) > 1 && subcategories[1].GetUid() == categoriesTree["jumpscare"].GetUid() {
+		category = subcategories[1]
 	} else {
-		ts.Fail("Tentar recuperar links de uma categoria válida deveria retornar todos os dados de seus links")
+		ts.Fail("Tentar recuperar subcategorias de uma categoria válida deveria retornar todos os dados de suas subcategorias")
 	}
 
-	ts.Equal(mockUidLink, link.GetUid())
-	ts.Equal(mockLink.Name, link.Name)
-	ts.Equal(mockLink.Url, link.Url)
-	ts.Equal(mockLink.Description.Content, link.Description.Content)
-	ts.Equal(mockLink.Description.UseMarkdown, link.Description.UseMarkdown)
-	ts.NotZero(link.CreatedAt)
-	ts.Zero(link.UpdatedAt)
-}*/
+	ts.Equal(mockCategory.GetUid(), category.GetUid())
+	ts.Equal(mockCategory.Name, category.Name)
+	ts.Equal(mockCategory.Description.Content, category.Description.Content)
+	ts.Equal(mockCategory.Description.UseMarkdown, category.Description.UseMarkdown)
+	ts.NotZero(category.CreatedAt)
+	ts.NotZero(category.UpdatedAt)
+}
 
 func TestSqliteCategory(t *testing.T) {
 	suite.Run(t, new(TestSuite))
-}
-
-func (ts *TestSuite) makeTree() {
-	ts.insertSubcategory("leitura", "livro")
-	ts.insertSubcategory("filme", "terror")
-	ts.insertSubcategory("filme", "acao")
-	ts.insertSubcategory("terror", "jumpscare")
-	ts.insertSubcategory("terror", "serial_killer")
-}
-
-func (ts *TestSuite) insertSubcategory(father, child string) error {
-	return ts.cr.InsertSubcategory(
-		categoriesTree[father].GetUid(),
-		categoriesTree[child].GetUid(),
-		time.Now())
 }

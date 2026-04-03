@@ -18,46 +18,56 @@ func New(db *sql.DB) *Category {
 }
 
 func (sr *Category) AreRelated(
-	fatherUid uuid.UUID,
-	childUid uuid.UUID,
+	firstCategoryUid uuid.UUID,
+	secondCategoryUid uuid.UUID,
 ) (areRelated bool, err error) {
 	err = sr.DB.QueryRow(
 		`
-			WITH RECURSIVE relateds
-				(father, child)
-			AS (
-				SELECT uid_father, uid_category
-				FROM category
-				WHERE uid_father = ?
+			SELECT father FROM (
+				WITH RECURSIVE descendants
+					(father, child)
+				AS (
+					SELECT uid_father, uid_category
+					FROM category
+					WHERE uid_father = ?
+
+					UNION
+
+					SELECT c.uid_father, c.uid_category
+					FROM category c
+					JOIN descendants d ON d.child = c.uid_father
+				)
+				SELECT *
+				FROM descendants
+				WHERE father is not null
 
 				UNION
 
-				SELECT c.uid_father, c.uid_category
-				FROM category c
-				INNER JOIN relateds d
-				WHERE d.child = c.uid_father
+				SELECT * FROM (
+					WITH RECURSIVE ancestors
+						(father, child)
+					AS (
+						SELECT uid_father, uid_category
+						FROM category
+						WHERE uid_category = ?
 
-				UNION
+						UNION
 
-				SELECT c.uid_father, c.uid_child
-				FROM category c
-				INNER JOIN relateds d
-				WHERE d.father = c.uid_child
+						SELECT c.uid_father, c.uid_category
+						FROM category c
+						JOIN ancestors d ON d.father = c.uid_category
+					)
+					SELECT father AS uid_father, child AS uid_category
+					FROM ancestors
+					WHERE father is not null
+				)
 			)
-
-			SELECT father as uid_category
-			FROM relateds
-			WHERE uid_category = ?
-
-			UNION
-
-			SELECT child as uid_category
-			FROM relateds
-			WHERE uid_category = ?
+			WHERE father = ? OR child = ?
 		`,
-		fatherUid,
-		childUid,
-		childUid,
+		firstCategoryUid,
+		firstCategoryUid,
+		secondCategoryUid,
+		secondCategoryUid,
 	).Scan(new(string))
 
 	areRelated = err != sql.ErrNoRows
@@ -115,6 +125,7 @@ func (sr *Category) GetSubcategories(
 	rows, err = sr.DB.Query(
 		`
 			SELECT
+				uid_category,
 				name,
 				description,
 				use_markdown,
@@ -166,10 +177,10 @@ func (sr *Category) GetSubcategories(
 func (sr *Category) IsSubcategory(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,
-) (isCategory bool, err error) {
+) (isSubcategory bool, err error) {
 	err = sr.DB.QueryRow(
 		`
-			SELECT uid_father
+			SELECT name
 			FROM category
 			WHERE uid_father = ? AND uid_category = ?
 		`,
@@ -177,7 +188,7 @@ func (sr *Category) IsSubcategory(
 		childUid,
 	).Scan(new(string))
 
-	isCategory = err != sql.ErrNoRows
+	isSubcategory = err != sql.ErrNoRows
 
 	if err == sql.ErrNoRows {
 		err = nil
