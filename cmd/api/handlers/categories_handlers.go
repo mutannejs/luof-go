@@ -8,6 +8,8 @@ import (
 	"github.com/mutannejs/luof-go/core/usecase/create_category"
 	"github.com/mutannejs/luof-go/core/usecase/delete_category"
 	"github.com/mutannejs/luof-go/core/usecase/get_category_by_uid"
+	"github.com/mutannejs/luof-go/core/usecase/get_subcategories"
+	"github.com/mutannejs/luof-go/core/usecase/insert_subcategory"
 	"github.com/mutannejs/luof-go/core/usecase/update_category"
 
 	"github.com/google/uuid"
@@ -38,6 +40,32 @@ func GetCategoryByUid(echoContext echo.Context) error {
 	}
 
 	return cc.JSON(http.StatusOK, c)
+}
+
+func GetSubcategories(echoContext echo.Context) error {
+	var cc = echoContext.(*custom.Context)
+	var gc types.GetCategory
+
+	if err := cc.ExecRequetParamsOperations(
+		&gc,
+		&types.GetCategorySchema,
+	); err != nil {
+		return err
+	}
+
+	uid, err := uuid.Parse(gc.CategoryUid)
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
+
+	gs := get_subcategories.New(cc.Repositories.Category)
+	subcategories, err := gs.Execute(uid)
+
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
+
+	return cc.JSON(http.StatusOK, subcategories)
 }
 
 func CreateCategory(echoContext echo.Context) error {
@@ -82,6 +110,40 @@ func DeleteCategory(echoContext echo.Context) error {
 
 	dc := delete_category.New(cc.Repositories.Category)
 	_, err = dc.Execute(uid)
+
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
+
+	return cc.NoContent(http.StatusOK)
+}
+
+func InsertSubcategory(echoContext echo.Context) error {
+	var cc = echoContext.(*custom.Context)
+	var c = types.GetCategory{}
+	var s = types.SaveSubcategory{}
+
+	if err := cc.ExecRequetOperations(
+		custom.RequestValues{ JsonBody: &s, Params: &c },
+		custom.RequestValidations{ JsonBody: types.SaveSubcategorySchema, Params: types.GetCategorySchema },
+	); err != nil {
+		return err
+	}
+
+	fatherUid, err := uuid.Parse(c.CategoryUid)
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
+
+	childUid, err := uuid.Parse(s.ChildUid)
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
+
+	ic := insert_subcategory.New(cc.Repositories.Category)
+	err = ic.Execute(
+		fatherUid,
+		childUid)
 
 	if err != nil {
 		return cc.LogAndReturnErr(err)

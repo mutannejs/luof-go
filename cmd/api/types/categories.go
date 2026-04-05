@@ -14,6 +14,10 @@ type SaveCategory struct {
 	UseMarkdown bool
 }
 
+type SaveSubcategory struct {
+	ChildUid string
+}
+
 type GetBelongsTo struct {
 	CategoryUid string
 	LinkUid string
@@ -36,6 +40,9 @@ var (
 		"name": z.String().Max(200).Required(),
 		"description": z.String(),
 		"useMarkdown": z.Bool(),
+	})
+	SaveSubcategorySchema = z.Struct(z.Shape{
+		"childUid": UidValidate,
 	})
 	GetBelongsToSchema = z.Struct(z.Shape{
 		"categoryUid": UidValidate,

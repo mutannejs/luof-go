@@ -203,6 +203,23 @@ func (ts *TestSuite) TestNotAreRelated() {
 	ts.Equal(false, areRelated, "AreRelated deveria retornar falso para duas categorias que não são uma relacionadas por parentesco")
 }
 
+func (ts *TestSuite) TestInsertSubcategory() {
+	ts.insertAllCategories()
+
+	err := ts.cr.InsertSubcategory(
+		categoriesTree["filme"].GetUid(),
+		categoriesTree["terror"].GetUid(),
+		time.Now())
+
+	ts.NoError(err, "InsertSubcategory, se informado duas chaves válidas não deveria retornar erro")
+
+	isSubcategory, err := ts.cr.IsSubcategory(
+		categoriesTree["filme"].GetUid(),
+		categoriesTree["terror"].GetUid())
+
+	ts.Equal(true, isSubcategory, "IsSubcategory deveria retornar true para uma relação criada usando InsertSubcategory")
+}
+
 func (ts *TestSuite) TestGetSubcategories_Empty() {
 	ts.makeTree()
 

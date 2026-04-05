@@ -68,6 +68,11 @@ var (
 		"description": AlternativeMockLink.Description.Content,
 		"useMarkdown": strconv.FormatBool(AlternativeMockLink.Description.UseMarkdown),
 	}
+	AlternativeMockCategoryMapRequest = map[string]string{
+		"name": AlternativeMockCategory.Name,
+		"description": AlternativeMockCategory.Description.Content,
+		"useMarkdown": strconv.FormatBool(AlternativeMockCategory.Description.UseMarkdown),
+	}
 
 	/** Árvores de categorias
 	 * leitura			filme
