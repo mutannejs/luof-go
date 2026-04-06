@@ -174,6 +174,42 @@ func (sr *Category) GetSubcategories(
 	return
 }
 
+func (sr *Category) IsAncestor(
+	ancestorUid uuid.UUID,
+	categoryUid uuid.UUID,
+) (isAncestor bool, err error) {
+	err = sr.DB.QueryRow(
+		`
+			WITH RECURSIVE ancestors
+				(father, child)
+			AS (
+				SELECT uid_father, uid_category
+				FROM category
+				WHERE uid_category = ?
+
+				UNION
+
+				SELECT c.uid_father, c.uid_category
+				FROM category c
+				JOIN ancestors d ON d.father = c.uid_category
+			)
+			SELECT father
+			FROM ancestors
+			WHERE father = ?
+		`,
+		categoryUid,
+		ancestorUid,
+	).Scan(new(string))
+
+	isAncestor = err != sql.ErrNoRows
+
+	if err == sql.ErrNoRows {
+		err = nil
+	}
+
+	return
+}
+
 func (sr *Category) IsSubcategory(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,

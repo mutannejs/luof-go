@@ -13,6 +13,7 @@ var (
 	ARE_RELATED = errors.New("both categories are already related")
 	CATEGORY_ERROR_NEW = errors.New("error instantiate new category")
 	CATEGORY_NOT_EXISTS = errors.New("the searched category does not exist")
+	ANCESTOR_NOT_BECOME_A_SUBCATEGORY = errors.New("one ancestral category of another cannot become a subcategory of it.")
 	NOT_IS_SUBCATEGORY = errors.New("the child is not subcategory of the father")
 )
 

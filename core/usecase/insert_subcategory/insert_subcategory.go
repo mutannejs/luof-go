@@ -21,14 +21,14 @@ func (isUseCase *InsertSubcategory) Execute(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,
 ) (err error) {
-	var areRelated bool
+	var isAncestor bool
 
-	areRelated, err = isUseCase.Repo.AreRelated(fatherUid, childUid)
+	isAncestor, err = isUseCase.Repo.IsAncestor(fatherUid, childUid)
 
 	if err != nil {
 		return
-	} else if areRelated {
-		return domain.ARE_RELATED
+	} else if isAncestor {
+		return domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY
 	}
 
 	err = isUseCase.Repo.InsertSubcategory(fatherUid, childUid, time.Now())

@@ -174,6 +174,42 @@ func (ts *TestSuite) TestNotIsSubcategory() {
 	ts.Equal(false, isSubcategory, "IsSubcategory deveria retornar falso para duas categorias que não são uma subcategoria direta da outra")
 }
 
+func (ts *TestSuite) TestIsAncestor() {
+	ts.makeTree()
+
+	isAncestor, err := ts.cr.IsAncestor(
+		categoriesTree["filme"].GetUid(),
+		categoriesTree["terror"].GetUid())
+
+	ts.NoError(err, "IsAncestor, se informado duas chaves válidas não deveria retornar erro")
+	ts.Equal(true, isAncestor, "IsAncestor deveria retornar verdadeiro para duas categorias que são relacionadas diretamente")
+
+	isAncestor, err = ts.cr.IsAncestor(
+		categoriesTree["filme"].GetUid(),
+		categoriesTree["serial_killer"].GetUid())
+
+	ts.NoError(err, "IsAncestor, se informado duas chaves válidas não deveria retornar erro")
+	ts.Equal(true, isAncestor, "IsAncestor deveria retornar verdadeiro para duas categorias que são relacionadas")
+}
+
+func (ts *TestSuite) TestNotIsAncestor() {
+	ts.makeTree()
+
+	isAncestor, err := ts.cr.IsAncestor(
+		categoriesTree["livro"].GetUid(),
+		categoriesTree["terror"].GetUid())
+
+	ts.NoError(err, "IsAncestor, se informado duas chaves válidas não deveria retornar erro")
+	ts.Equal(false, isAncestor, "IsAncestor deveria retornar falso para duas categorias que não são relacionadas")
+
+	isAncestor, err = ts.cr.IsAncestor(
+		categoriesTree["serial_killer"].GetUid(),
+		categoriesTree["filme"].GetUid())
+
+	ts.NoError(err, "IsAncestor, se informado duas chaves válidas não deveria retornar erro")
+	ts.Equal(false, isAncestor, "IsAncestor deveria retornar falso para duas categorias que são relacionadas, mas não na ordem ancestral->descendente")
+}
+
 func (ts *TestSuite) TestAreRelated() {
 	ts.makeTree()
 

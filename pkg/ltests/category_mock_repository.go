@@ -62,6 +62,14 @@ func (repo *CategoryMockRepository[T]) InsertSubcategory(
 	return args.Error(0)
 }
 
+func (repo *CategoryMockRepository[T]) IsAncestor(
+	ancestorUid uuid.UUID,
+	categoryUid uuid.UUID,
+) (bool, error) {
+	args := repo.Called(ancestorUid, categoryUid)
+	return args.Bool(0), args.Error(1)
+}
+
 func (repo *CategoryMockRepository[T]) IsSubcategory(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,

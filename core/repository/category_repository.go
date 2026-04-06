@@ -13,6 +13,7 @@ type ReadCategory interface {
 	Exists(uuid.UUID) (bool, error)
 	GetByUid(uuid.UUID) (domain.Category, error)
 	GetSubcategories(uuid.UUID) ([]domain.Category, error)
+	IsAncestor(uuid.UUID, uuid.UUID) (bool, error)
 	IsSubcategory(uuid.UUID, uuid.UUID) (bool, error)
 }
 
