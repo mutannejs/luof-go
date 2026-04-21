@@ -15,8 +15,11 @@ import (
 type InsertSubcategoryTestSuite struct {
 	suite.Suite
 	post ltests.RequestFuncType
+	postCategory ltests.RequestFuncType
+	deleteCategory ltests.DeleteFuncType
 	fatherUidString string
 	childUidString string
+	netoUidString string
 }
 
 func (ts *InsertSubcategoryTestSuite) SetupSuite() {
@@ -26,17 +29,37 @@ func (ts *InsertSubcategoryTestSuite) SetupSuite() {
 
 	c := resty.New()
 	ts.post = ltests.GetJSONPost(c, urlBase + "/{categoryUid}/subcategories")
-
-	postCategory := ltests.GetJSONPost(c, urlBase)
+	ts.postCategory = ltests.GetJSONPost(c, urlBase)
+	ts.deleteCategory = ltests.GetDelete(c, urlBase + "/{categoryUid}")
 
 	ltests.CleanTable(db, "category")
 	db.Close()
+}
 
-	resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
+func (ts *InsertSubcategoryTestSuite) SetupTest() {
+	resCategory, _ := ts.postCategory(nil, domain.MockCategoryMapRequest)
 	ts.fatherUidString = string(resCategory.Body())
 
-	resCategory, _ = postCategory(nil, domain.AlternativeMockCategoryMapRequest)
+	resCategory, _ = ts.postCategory(nil, domain.AlternativeMockCategoryMapRequest)
 	ts.childUidString = string(resCategory.Body())
+
+	resCategory, _ = ts.postCategory(nil, domain.AlternativeMockCategoryMapRequest)
+	ts.netoUidString = string(resCategory.Body())
+}
+
+func (ts *InsertSubcategoryTestSuite) TearDownTest() {
+	ts.deleteCategory(
+		map[string]string{
+			"categoryUid": ts.netoUidString,
+		})
+	ts.deleteCategory(
+		map[string]string{
+			"categoryUid": ts.childUidString,
+		})
+	ts.deleteCategory(
+		map[string]string{
+			"categoryUid": ts.fatherUidString,
+		})
 }
 
 func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory() {
@@ -45,6 +68,32 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory() {
 			"categoryUid": ts.fatherUidString},
 		map[string]string{
 			"childUid": ts.childUidString,
+		})
+
+	ts.Empty(
+		string(res.Body()),
+		"Tentar inserir uma subcategoria, ambas ainda não relacionadas não deveria retornar nada")
+}
+
+func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_Relateds() {
+	res, _ := ts.post(
+		map[string]string{
+			"categoryUid": ts.fatherUidString},
+		map[string]string{
+			"childUid": ts.childUidString,
+		})
+	res, _ = ts.post(
+		map[string]string{
+			"categoryUid": ts.childUidString},
+		map[string]string{
+			"childUid": ts.netoUidString,
+		})
+
+	res, _ = ts.post(
+		map[string]string{
+			"categoryUid": ts.fatherUidString},
+		map[string]string{
+			"childUid": ts.netoUidString,
 		})
 
 	ts.Empty(
@@ -69,6 +118,44 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AlreadyExists() {
 			"categoryUid": ts.fatherUidString},
 		map[string]string{
 			"childUid": ts.childUidString,
+		})
+
+	res, _ = ts.post(
+		map[string]string{
+			"categoryUid": ts.fatherUidString},
+		map[string]string{
+			"childUid": ts.childUidString,
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.IS_SUBCATEGORY.Error()),
+		res.Body())
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar inserir uma subcategoria, ambas já relacionadas, deveria retornar erro contendo " + domain.IS_SUBCATEGORY.Error()) 
+}
+
+func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AncestorNotBecomeASubcategory() {
+	res, _ := ts.post(
+		map[string]string{
+			"categoryUid": ts.fatherUidString},
+		map[string]string{
+			"childUid": ts.childUidString,
+		})
+	res, _ = ts.post(
+		map[string]string{
+			"categoryUid": ts.childUidString},
+		map[string]string{
+			"childUid": ts.netoUidString,
+		})
+
+	res, _ = ts.post(
+		map[string]string{
+			"categoryUid": ts.netoUidString},
+		map[string]string{
+			"childUid": ts.fatherUidString,
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(

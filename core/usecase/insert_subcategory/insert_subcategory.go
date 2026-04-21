@@ -23,7 +23,15 @@ func (isUseCase *InsertSubcategory) Execute(
 ) (err error) {
 	var isAncestor bool
 
-	isAncestor, err = isUseCase.Repo.IsAncestor(fatherUid, childUid)
+	isSubcategory, err := isUseCase.Repo.IsSubcategory(fatherUid, childUid)
+
+	if err != nil {
+		return
+	} else if isSubcategory {
+		return domain.IS_SUBCATEGORY
+	}
+
+	isAncestor, err = isUseCase.Repo.IsAncestor(childUid, fatherUid)
 
 	if err != nil {
 		return

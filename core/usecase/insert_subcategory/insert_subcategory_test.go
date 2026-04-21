@@ -11,9 +11,10 @@ import (
 )
 
 var (
-	isAncestor = domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY
-	mockUidCategory = domain.MockUidCategory
 	alternativeMockUidCategory = domain.AlternativeMockUidCategory
+	isAncestor = domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY
+	isSubcategory = domain.IS_SUBCATEGORY
+	mockUidCategory = domain.MockUidCategory
 )
 
 func TestInsertSubcategory_NotExists(t *testing.T) {
@@ -23,6 +24,11 @@ func TestInsertSubcategory_NotExists(t *testing.T) {
 	var is = New(cRepo)
 
 	cRepo.
+		On(
+			"IsSubcategory",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(false, nil).
 		On(
 			"IsAncestor",
 			mock.AnythingOfType("uuid.UUID"),
@@ -50,6 +56,43 @@ func TestInsertSubcategory_Exists(t *testing.T) {
 
 	cRepo.
 		On(
+			"IsSubcategory",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil).
+		On(
+			"IsAncestor",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil).
+		On(
+			"InsertSubcategory",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("time.Time"),
+		).Return(nil)
+
+	err := is.Execute(alternativeMockUidCategory, mockUidCategory)
+
+	assert.ErrorIs(
+		err,
+		isSubcategory,
+		"Tentar inserir uma subcategoria em outra categoria, ambas já relacionadas, deveria retornar erro contendo " + isSubcategory.Error())
+}
+
+func TestInsertSubcategory_AncestorBecomeASubcategory(t *testing.T) {
+	var assert = assert.New(t)
+
+	var cRepo = repository.NewCategoryMockRepository()
+	var is = New(cRepo)
+
+	cRepo.
+		On(
+			"IsSubcategory",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(false, nil).
+		On(
 			"IsAncestor",
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
@@ -66,5 +109,5 @@ func TestInsertSubcategory_Exists(t *testing.T) {
 	assert.ErrorIs(
 		err,
 		isAncestor,
-		"Tentar inserir uma subcategoria em outra categoria, ambas já relacionadas, deveria retornar erro contendo " + isAncestor.Error())
+		"Tentar inserir uma subcategoria em outra categoria, a primeira sendo ancestral da outra, deveria retornar erro contendo " + isAncestor.Error())
 }
