@@ -10,6 +10,7 @@ import (
 	"github.com/mutannejs/luof-go/core/usecase/get_category_by_uid"
 	"github.com/mutannejs/luof-go/core/usecase/get_subcategories"
 	"github.com/mutannejs/luof-go/core/usecase/insert_subcategory"
+	"github.com/mutannejs/luof-go/core/usecase/remove_subcategory"
 	"github.com/mutannejs/luof-go/core/usecase/update_category"
 
 	"github.com/google/uuid"
@@ -144,6 +145,37 @@ func InsertSubcategory(echoContext echo.Context) error {
 	err = ic.Execute(
 		fatherUid,
 		childUid)
+
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
+
+	return cc.NoContent(http.StatusOK)
+}
+
+func RemoveSubcategory(echoContext echo.Context) error {
+	var cc = echoContext.(*custom.Context)
+	var rs types.RemoveSubcategory
+
+	if err := cc.ExecRequetParamsOperations(
+		&rs,
+		&types.RemoveSubcategorySchema,
+	); err != nil {
+		return err
+	}
+
+	categoryUid, err := uuid.Parse(rs.CategoryUid)
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
+
+	childUid, err := uuid.Parse(rs.ChildUid)
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
+
+	rsuc := remove_subcategory.New(cc.Repositories.Category)
+	err = rsuc.Execute(categoryUid, childUid)
 
 	if err != nil {
 		return cc.LogAndReturnErr(err)

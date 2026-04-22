@@ -98,7 +98,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_Relateds() {
 
 	ts.Empty(
 		string(res.Body()),
-		"Tentar inserir uma subcategoria, ambas ainda não relacionadas não deveria retornar nada")
+		"Tentar inserir uma subcategoria, ambas não diretamente relacionadas, não deveria retornar nada")
 }
 
 func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_Error() {

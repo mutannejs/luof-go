@@ -14,6 +14,11 @@ type SaveCategory struct {
 	UseMarkdown bool
 }
 
+type RemoveSubcategory struct {
+	CategoryUid string
+	ChildUid string
+}
+
 type SaveSubcategory struct {
 	ChildUid string
 }
@@ -40,6 +45,10 @@ var (
 		"name": z.String().Max(200).Required(),
 		"description": z.String(),
 		"useMarkdown": z.Bool(),
+	})
+	RemoveSubcategorySchema = z.Struct(z.Shape{
+		"categoryUid": UidValidate,
+		"childUid": UidValidate,
 	})
 	SaveSubcategorySchema = z.Struct(z.Shape{
 		"childUid": UidValidate,

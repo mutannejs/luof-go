@@ -1,4 +1,4 @@
-package insert_subcategory
+package remove_subcategory
 
 import (
 	"github.com/mutannejs/luof-go/core/domain"

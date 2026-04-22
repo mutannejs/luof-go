@@ -44,6 +44,7 @@ func setApiCategoriesRoutes(categories *echo.Group) {
 func setApiSubcategoriesRoutes(subcategories *echo.Group) {
 	subcategories.GET("/", handlers.GetSubcategories)
 	subcategories.POST("/", handlers.InsertSubcategory)
+	subcategories.DELETE("/:childUid/", handlers.RemoveSubcategory)
 }
 
 func setApiBelongsToRoutes(belongsTo *echo.Group) {
