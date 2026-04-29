@@ -23,6 +23,10 @@ func (isUseCase *InsertSubcategory) Execute(
 ) (err error) {
 	var isAncestor bool
 
+	if fatherUid == childUid {
+		return domain.CANNOT_BE_A_SUBCATEGORY_OF_ITSELF
+	}
+
 	isSubcategory, err := isUseCase.Repo.IsSubcategory(fatherUid, childUid)
 
 	if err != nil {

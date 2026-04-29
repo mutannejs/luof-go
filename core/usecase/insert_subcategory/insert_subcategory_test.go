@@ -13,6 +13,7 @@ import (
 var (
 	alternativeMockUidCategory = domain.AlternativeMockUidCategory
 	isAncestor = domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY
+	isSameCategory = domain.CANNOT_BE_A_SUBCATEGORY_OF_ITSELF
 	isSubcategory = domain.IS_SUBCATEGORY
 	mockUidCategory = domain.MockUidCategory
 )
@@ -110,4 +111,36 @@ func TestInsertSubcategory_AncestorBecomeASubcategory(t *testing.T) {
 		err,
 		isAncestor,
 		"Tentar inserir uma subcategoria em outra categoria, a primeira sendo ancestral da outra, deveria retornar erro contendo " + isAncestor.Error())
+}
+
+func TestInsertSubcategory_SubcategoryOfItself(t *testing.T) {
+	var assert = assert.New(t)
+
+	var cRepo = repository.NewCategoryMockRepository()
+	var is = New(cRepo)
+
+	cRepo.
+		On(
+			"IsSubcategory",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(false, nil).
+		On(
+			"IsAncestor",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(false, nil).
+		On(
+			"InsertSubcategory",
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("uuid.UUID"),
+			mock.AnythingOfType("time.Time"),
+		).Return(nil)
+
+	err := is.Execute(mockUidCategory, mockUidCategory)
+
+	assert.ErrorIs(
+		err,
+		isSameCategory,
+		"Tentar inserir uma subcategoria nela mesma deveria retornar erro contendo " + isSameCategory.Error())
 }
