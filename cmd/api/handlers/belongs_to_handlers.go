@@ -37,6 +37,10 @@ func GetLinksByCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
+	/*if len(links) == 0 {
+		return cc.JSON(http.StatusOK, make([]any, 0, 0))
+	}*/
+
 	return cc.JSON(http.StatusOK, links)
 }
 

@@ -16,7 +16,7 @@ var (
 	mockCategories = domain.MockCategories
 )
 
-func TestGetLinksByCategory_CategoryNotExists(t *testing.T) {
+func TestGetSubcategories_CategoryNotExists(t *testing.T) {
 	var assert = assert.New(t)
 
 	var cRepo = repository.NewCategoryMockRepository()
@@ -24,10 +24,10 @@ func TestGetLinksByCategory_CategoryNotExists(t *testing.T) {
 
 	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
 
-	links, err := glbc.Execute(mockUidCategory)
+	subcategories, err := glbc.Execute(mockUidCategory)
 
 	assert.Zero(
-		links,
+		subcategories,
 		"Deveria ser retornado zero para um uid que não pertence a nenhuma categoria existente")
 	assert.ErrorIs(
 		err,
@@ -35,7 +35,7 @@ func TestGetLinksByCategory_CategoryNotExists(t *testing.T) {
 		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
-func TestGetLinksByCategory_CategoryExists(t *testing.T) {
+func TestGetSubcategories_CategoryExists(t *testing.T) {
 	var assert = assert.New(t)
 
 	var cRepo = repository.NewCategoryMockRepository()
@@ -44,16 +44,38 @@ func TestGetLinksByCategory_CategoryExists(t *testing.T) {
 	cRepo.On("Exists", mockUidCategory).Return(true, nil)
 	cRepo.On("GetSubcategories", mockUidCategory).Return(mockCategories, nil)
 
-	links, err := glbc.Execute(mockUidCategory)
+	subcategories, err := glbc.Execute(mockUidCategory)
 
 	assert.Contains(
-					links,
+					subcategories,
 					mockCategories[0],
 					"Todas as subcategorias no repositório devem ser retornadas pela função")
 	assert.Contains(
-					links,
+					subcategories,
 					mockCategories[1],
 					"Todas as subcategorias no repositório devem ser retornadas pela função")
+	assert.NoError(
+					err,
+					"Buscar por uma categoria válida não deveria retornar erro")
+}
+
+func TestGetSubcategories_EmptyCategory(t *testing.T) {
+	var assert = assert.New(t)
+
+	var cRepo = repository.NewCategoryMockRepository()
+	var glbc = New(cRepo)
+
+	var emptySubcategories []domain.Category
+
+	cRepo.On("Exists", mockUidCategory).Return(true, nil)
+	cRepo.On("GetSubcategories", mockUidCategory).Return(emptySubcategories, nil)
+
+	subcategories, err := glbc.Execute(mockUidCategory)
+
+	assert.Len(
+					subcategories,
+					0,
+					"Buscar as subcategorias de uma categoria vazia deveria retornar um array vazio")
 	assert.NoError(
 					err,
 					"Buscar por uma categoria válida não deveria retornar erro")

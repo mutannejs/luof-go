@@ -19,6 +19,7 @@ type GetLinksByCategoryTestSuite struct {
 	uidLinkString string
 	alternativeUidLinkString string
 	categoryUidString string
+	emptyCategoryUidString string
 }
 
 func (ts *GetLinksByCategoryTestSuite) SetupSuite() {
@@ -38,6 +39,9 @@ func (ts *GetLinksByCategoryTestSuite) SetupSuite() {
 
 	resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
 	ts.categoryUidString = string(resCategory.Body())
+
+	resCategory, _ = postCategory(nil, domain.AlternativeMockCategoryMapRequest)
+	ts.emptyCategoryUidString = string(resCategory.Body())
 
 	resLink, _ := postLink(nil, domain.MockLinkMapRequest)
 	ts.uidLinkString = string(resLink.Body())
@@ -103,6 +107,23 @@ func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_NotExists() {
 		resBody,
 		expectedJson,
 		"Tentar recuperar os link de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error()) 
+}
+
+func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_Empty() {
+	res, _ := ts.get(
+		map[string]string{
+			"categoryUid": ts.emptyCategoryUidString,
+		},
+		nil)
+
+	expectedJson, resBody := ltests.TrimResponse(
+		[]byte("[]"),
+		res.Body())
+
+	ts.Equal(
+		resBody,
+		expectedJson,
+		"Tentar recuperar os link de uma categoria vazia deveria retornar um array vazio") 
 }
 
 func TestGetLinksByCategoryAllTests(t *testing.T) {

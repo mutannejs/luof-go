@@ -66,6 +66,10 @@ func GetSubcategories(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
+	/*if len(subcategories) == 0 {
+		return cc.JSON(http.StatusOK, make([]any, 0, 0))
+	}*/
+
 	return cc.JSON(http.StatusOK, subcategories)
 }
 

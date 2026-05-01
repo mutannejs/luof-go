@@ -167,7 +167,11 @@ func (sr *Category) GetSubcategories(
 		c.SetUid(categoryUid)
 		categories = append(categories, c)
 	}
-	
+
+	if len(categories) == 0 {
+		categories = make([]domain.Category, 0, 0)
+	}
+
 	err = rows.Err()
 	rows.Close()
 
