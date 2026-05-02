@@ -53,6 +53,11 @@ func (repo *CategoryMockRepository[T]) GetSubcategories(
 	return args.Get(0).([]T), args.Error(1)
 }
 
+func (repo *CategoryMockRepository[T]) HasSubcategories(uid uuid.UUID) (bool, error) {
+	args := repo.Called(uid)
+	return args.Bool(0), args.Error(1)
+}
+
 func (repo *CategoryMockRepository[T]) InsertSubcategory(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,

@@ -16,6 +16,7 @@ var (
 	CATEGORY_ERROR_NEW = errors.New("error instantiate new category")
 	CATEGORY_NOT_EXISTS = errors.New("the searched category does not exist")
 	IS_SUBCATEGORY = errors.New("the child is already subcategory of the father")
+	HAS_SUBCATEGORIES = errors.New("the category cannot be deleted because it has subcategories")
 	NOT_IS_SUBCATEGORY = errors.New("the child is not subcategory of the father")
 )
 

@@ -11,6 +11,7 @@ import (
 type ReadBelongsTo interface {
 	Exists(uuid.UUID, uuid.UUID) (bool, error)
 	GetLinksByCategory(uuid.UUID) ([]domain.Link, error)
+	HasLinks(uuid.UUID) (bool, error)
 }
 
 type WriteBelongsTo interface {

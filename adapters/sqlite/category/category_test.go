@@ -152,6 +152,25 @@ func (ts *TestSuite) TestDelete() {
 	ts.ErrorIs(sql.ErrNoRows, err, "Tentar recuperar uma categoria previamente deletado deveria retornar " + sql.ErrNoRows.Error())
 }
 
+func (ts *TestSuite) TestHasSubcategories() {
+	ts.makeTree()
+
+	hasSubcategories, err := ts.cr.HasSubcategories(
+		categoriesTree["filme"].GetUid())
+
+	ts.NoError(err, "HasSubcategories se informado um uid válido não deveria retornar erro")
+	ts.Equal(true, hasSubcategories, "HasSubcategories deveria retornar verdadeiro para um uid de uma categoria com subcategorias")
+}
+
+func (ts *TestSuite) TestHasNoSubcategories() {
+	ts.cr.Create(mockCategory)
+
+	hasSubcategories, err := ts.cr.HasSubcategories(mockUidCategory)
+
+	ts.NoError(err, "HasSubcategories se informado um uid válido não deveria retornar erro")
+	ts.Equal(false, hasSubcategories, "HasSubcategories deveria retornar falso para um uid de uma categoria sem subcategorias")
+}
+
 func (ts *TestSuite) TestIsSubcategory() {
 	ts.makeTree()
 

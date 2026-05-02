@@ -39,6 +39,22 @@ func (btr *BelongsTo) Exists(
 	return
 }
 
+func (btr *BelongsTo) HasLinks(
+	uid uuid.UUID,
+) (hasLinks bool, err error) {
+	err = btr.DB.QueryRow(
+		`SELECT 1 FROM belongs_to WHERE uid_category = ? LIMIT 1`,
+		uid).Scan(new(int))
+
+	hasLinks = err != sql.ErrNoRows
+
+	if err == sql.ErrNoRows {
+		err = nil
+	}
+
+	return
+}
+
 func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, err error) {
 	var rows *sql.Rows
 

@@ -12,22 +12,25 @@ import (
 
 var (
 	categoryNotExists = domain.CATEGORY_NOT_EXISTS
+	hasLinks = domain.HAS_LINKS
+	hasSubcategories = domain.HAS_SUBCATEGORIES
 	mockUidCategory = domain.MockUidCategory
 )
 
 func TestDeleteCategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewCategoryMockRepository()
-	var dc = New(repo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var btRepo = repository.NewBelongsToMockRepository()
+	var dc = New(btRepo, cRepo)
 
-	repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
+	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
+	btRepo.On("HasLinks", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
+	cRepo.On("HasSubcategories", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
+	cRepo.On("Delete", mockUidCategory).Return(nil)
 
-	exists, err := dc.Execute(mockUidCategory)
+	err := dc.Execute(mockUidCategory)
 
-	assert.False(
-					exists,
-					"Não deveria ser possível deletar uma categoria que não existe")
 	assert.ErrorIs(
 					err,
 					categoryNotExists,
@@ -37,18 +40,58 @@ func TestDeleteCategory_NotExists(t *testing.T) {
 func TestDeleteCategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewCategoryMockRepository()
-	var dc = New(repo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var btRepo = repository.NewBelongsToMockRepository()
+	var dc = New(btRepo, cRepo)
 
-	repo.On("Exists", mockUidCategory).Return(true, nil)
-	repo.On("Delete", mockUidCategory).Return(nil)
+	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(true, nil)
+	btRepo.On("HasLinks", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
+	cRepo.On("HasSubcategories", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
+	cRepo.On("Delete", mockUidCategory).Return(nil)
 
-	exists, err := dc.Execute(mockUidCategory)
+	err := dc.Execute(mockUidCategory)
 
-	assert.True(
-					exists,
-					"Deveria ser possível deletar uma categoria válida")
 	assert.NoError(
 					err,
 					"Deletar uma categoria válida não deveria retornar erro")
+}
+
+func TestDeleteCategory_HasLinks(t *testing.T) {
+	var assert = assert.New(t)
+
+	var cRepo = repository.NewCategoryMockRepository()
+	var btRepo = repository.NewBelongsToMockRepository()
+	var dc = New(btRepo, cRepo)
+
+	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(true, nil)
+	btRepo.On("HasLinks", mock.AnythingOfType("uuid.UUID")).Return(true, nil)
+	cRepo.On("HasSubcategories", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
+	cRepo.On("Delete", mockUidCategory).Return(nil)
+
+	err := dc.Execute(mockUidCategory)
+
+	assert.ErrorIs(
+					err,
+					hasLinks,
+					"Tentativa de deletar uma categoria que possui links deveria retornar erro contendo " + hasLinks.Error())
+}
+
+func TestDeleteCategory_HasSubcategories(t *testing.T) {
+	var assert = assert.New(t)
+
+	var cRepo = repository.NewCategoryMockRepository()
+	var btRepo = repository.NewBelongsToMockRepository()
+	var dc = New(btRepo, cRepo)
+
+	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(true, nil)
+	btRepo.On("HasLinks", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
+	cRepo.On("HasSubcategories", mock.AnythingOfType("uuid.UUID")).Return(true, nil)
+	cRepo.On("Delete", mockUidCategory).Return(nil)
+
+	err := dc.Execute(mockUidCategory)
+
+	assert.ErrorIs(
+					err,
+					hasSubcategories,
+					"Tentativa de deletar uma categoria que possui subcategorias deveria retornar erro contendo " + hasSubcategories.Error())
 }

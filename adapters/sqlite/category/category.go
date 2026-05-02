@@ -17,11 +17,11 @@ func New(db *sql.DB) *Category {
 	return &Category{db}
 }
 
-func (sr *Category) AreRelated(
+func (cr *Category) AreRelated(
 	firstCategoryUid uuid.UUID,
 	secondCategoryUid uuid.UUID,
 ) (areRelated bool, err error) {
-	err = sr.DB.QueryRow(
+	err = cr.DB.QueryRow(
 		`
 			SELECT father FROM (
 				WITH RECURSIVE descendants
@@ -79,8 +79,8 @@ func (sr *Category) AreRelated(
 	return
 }
 
-func (lr *Category) Exists(uid uuid.UUID) (exists bool, err error) {
-	err = lr.DB.QueryRow(
+func (cr *Category) Exists(uid uuid.UUID) (exists bool, err error) {
+	err = cr.DB.QueryRow(
 		`SELECT name FROM category WHERE uid_category = ?`,
 		uid).Scan(new(string))
 
@@ -93,8 +93,8 @@ func (lr *Category) Exists(uid uuid.UUID) (exists bool, err error) {
 	return
 }
 
-func (lr *Category) GetByUid(uid uuid.UUID) (l domain.Category, err error) {
-	err = lr.DB.QueryRow(
+func (cr *Category) GetByUid(uid uuid.UUID) (l domain.Category, err error) {
+	err = cr.DB.QueryRow(
 			`SELECT
 				name,
 				description,
@@ -117,12 +117,28 @@ func (lr *Category) GetByUid(uid uuid.UUID) (l domain.Category, err error) {
 	return
 }
 
-func (sr *Category) GetSubcategories(
+func (cr *Category) HasSubcategories(
+	uid uuid.UUID,
+) (hasSubcategories bool, err error) {
+	err = cr.DB.QueryRow(
+		`SELECT 1 FROM category WHERE uid_father = ? LIMIT 1`,
+		uid).Scan(new(int))
+
+	hasSubcategories = err != sql.ErrNoRows
+
+	if err == sql.ErrNoRows {
+		err = nil
+	}
+
+	return
+}
+
+func (cr *Category) GetSubcategories(
 	uid uuid.UUID,
 ) (categories []domain.Category, err error) {
 	var rows *sql.Rows
 
-	rows, err = sr.DB.Query(
+	rows, err = cr.DB.Query(
 		`
 			SELECT
 				uid_category,
@@ -178,11 +194,11 @@ func (sr *Category) GetSubcategories(
 	return
 }
 
-func (sr *Category) IsAncestor(
+func (cr *Category) IsAncestor(
 	ancestorUid uuid.UUID,
 	categoryUid uuid.UUID,
 ) (isAncestor bool, err error) {
-	err = sr.DB.QueryRow(
+	err = cr.DB.QueryRow(
 		`
 			WITH RECURSIVE ancestors
 				(father, child)
@@ -214,11 +230,11 @@ func (sr *Category) IsAncestor(
 	return
 }
 
-func (sr *Category) IsSubcategory(
+func (cr *Category) IsSubcategory(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,
 ) (isSubcategory bool, err error) {
-	err = sr.DB.QueryRow(
+	err = cr.DB.QueryRow(
 		`
 			SELECT name
 			FROM category
@@ -237,8 +253,8 @@ func (sr *Category) IsSubcategory(
 	return
 }
 
-func (lr *Category) Create(l domain.Category) (err error) {
-	_, err = lr.DB.Exec(
+func (cr *Category) Create(l domain.Category) (err error) {
+	_, err = cr.DB.Exec(
 		`
 			INSERT INTO category (
 				uid_category,
@@ -261,18 +277,18 @@ func (lr *Category) Create(l domain.Category) (err error) {
 	return
 }
 
-func (lr *Category) Delete(uid uuid.UUID) (err error) {
-	_, err = lr.DB.Exec(
+func (cr *Category) Delete(uid uuid.UUID) (err error) {
+	_, err = cr.DB.Exec(
 		`DELETE FROM category WHERE uid_category = ?`,
 		uid)
 
 	return
 }
 
-func (sr *Category) DeleteSubcategory(
+func (cr *Category) DeleteSubcategory(
 	childUid uuid.UUID,
 ) (err error) {
-	_, err = sr.DB.Exec(
+	_, err = cr.DB.Exec(
 		`
 			UPDATE category
 			SET uid_father = null
@@ -283,12 +299,12 @@ func (sr *Category) DeleteSubcategory(
 	return
 }
 
-func (sr *Category) InsertSubcategory(
+func (cr *Category) InsertSubcategory(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,
 	updatedAt time.Time,
 ) (err error) {
-	_, err = sr.DB.Exec(
+	_, err = cr.DB.Exec(
 		`
 			UPDATE category
 			SET uid_father = ?,
@@ -302,8 +318,8 @@ func (sr *Category) InsertSubcategory(
 	return
 }
 
-func (lr *Category) Update(uid uuid.UUID, l domain.Category) (err error) {
-	_, err = lr.DB.Exec(
+func (cr *Category) Update(uid uuid.UUID, l domain.Category) (err error) {
+	_, err = cr.DB.Exec(
 		`
 			UPDATE category
 			SET name = ?,

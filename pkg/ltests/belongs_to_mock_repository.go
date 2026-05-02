@@ -19,6 +19,13 @@ func (repo *BelongsToMockRepository[T]) Exists(
 	return args.Bool(0), args.Error(1)
 }
 
+func (repo *BelongsToMockRepository[T]) HasLinks(
+	uidCategory uuid.UUID,
+) (bool, error) {
+	args := repo.Called(uidCategory)
+	return args.Bool(0), args.Error(1)
+}
+
 func (repo *BelongsToMockRepository[T]) GetLinksByCategory(
 	uid uuid.UUID,
 ) ([]T, error) {

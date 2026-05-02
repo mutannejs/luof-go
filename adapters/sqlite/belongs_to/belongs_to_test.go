@@ -80,6 +80,22 @@ func (ts *TestSuite) TestNotExists() {
 	ts.Equal(false, exists, "Exists deveria retornar falso para uma chave inválida")
 }
 
+func (ts *TestSuite) TestHasLinks() {
+	ts.btr.Create(mockUidLink, mockUidCategory, time.Now(), false)
+
+	hasLinks, err := ts.btr.HasLinks(mockUidCategory)
+
+	ts.NoError(err, "HasLinks, se informado uma chave válida não deveria retornar erro")
+	ts.Equal(true, hasLinks, "HasLinks deveria retornar verdadeiro para uma chave de uma categoria com links")
+}
+
+func (ts *TestSuite) TestHasNoLinks() {
+	hasLinks, err := ts.btr.HasLinks(mockUidCategory)
+
+	ts.NoError(err, "HasLinks, se informado uma chave inválida não deveria retornar erro")
+	ts.Equal(false, hasLinks, "HasLinks deveria retornar falso para uma chave de uma categoria sem links")
+}
+
 func (ts *TestSuite) TestGetLinksByCategory_Empty() {
 	links, err := ts.btr.GetLinksByCategory(mockUidCategory)
 

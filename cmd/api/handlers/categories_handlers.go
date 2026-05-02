@@ -113,8 +113,8 @@ func DeleteCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	dc := delete_category.New(cc.Repositories.Category)
-	_, err = dc.Execute(uid)
+	dc := delete_category.New(cc.Repositories.BelongsTo, cc.Repositories.Category)
+	err = dc.Execute(uid)
 
 	if err != nil {
 		return cc.LogAndReturnErr(err)

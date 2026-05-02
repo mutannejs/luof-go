@@ -8,27 +8,40 @@ import (
 )
 
 type DeleteCategory struct {
-	Repo repository.Category
+	BelongsToRepo repository.BelongsTo
+	CategoryRepo repository.Category
 }
 
-func New(repo repository.Category) DeleteCategory {
-	return DeleteCategory{repo}
+func New(btRepo repository.BelongsTo, cRepo repository.Category) DeleteCategory {
+	return DeleteCategory{btRepo, cRepo}
 }
 
 func (dcUseCase *DeleteCategory) Execute(
 	uid uuid.UUID,
-) (exists bool, err error) {
-	exists, err = dcUseCase.Repo.Exists(uid)
+) (err error) {
+	exists, err := dcUseCase.CategoryRepo.Exists(uid)
 
 	if err != nil {
 		return
+	} else if !exists {
+		return domain.CATEGORY_NOT_EXISTS
 	}
 
-	if !exists {
-		err = domain.CATEGORY_NOT_EXISTS
-	} else {
-		err = dcUseCase.Repo.Delete(uid)
+	hasLinks, err := dcUseCase.BelongsToRepo.HasLinks(uid)
+
+	if err != nil {
+		return
+	} else if hasLinks {
+		return domain.HAS_LINKS
 	}
 
-	return
+	hasSubcategories, err := dcUseCase.CategoryRepo.HasSubcategories(uid)
+
+	if err != nil {
+		return
+	} else if hasSubcategories {
+		return domain.HAS_SUBCATEGORIES
+	}
+
+	return dcUseCase.CategoryRepo.Delete(uid)
 }
