@@ -21,6 +21,8 @@ var (
 	mockUidLink = domain.MockUidLink
 	mockCategory = domain.MockCategory
 	mockUidCategory = domain.MockUidCategory
+	alternativeMockCategory = domain.AlternativeMockCategory
+	alternativeMockUidCategory = domain.AlternativeMockUidCategory
 	alternativeMockLink = domain.AlternativeMockLink
 	alternativeMockUidLink = domain.AlternativeMockUidLink
 )
@@ -47,6 +49,7 @@ func (ts *TestSuite) SetupSuite() {
 	lr.Create(mockLink)
 	lr.Create(alternativeMockLink)
 	cr.Create(mockCategory)
+	cr.Create(alternativeMockCategory)
 }
 
 func (ts *TestSuite) TearDownTest() {
@@ -127,6 +130,21 @@ func (ts *TestSuite) TestGetLinksByCategory_Exists() {
 	ts.Equal(mockLink.Description.UseMarkdown, link.Description.UseMarkdown)
 	ts.NotZero(link.CreatedAt)
 	ts.Zero(link.UpdatedAt)
+}
+
+func (ts *TestSuite) TestSetHasNoMainCategory() {
+	ts.btr.Create(mockUidLink, mockUidCategory, time.Now(), true)
+	ts.btr.Create(mockUidLink, alternativeMockUidCategory, time.Now(), true)
+	ts.btr.SetHasNoMainCategory(mockUidLink)
+
+	err := ts.btr.DB.QueryRow(
+		`SELECT 1 FROM belongs_to WHERE uid_link = ? AND is_main = true`,
+		mockUidLink).Scan(new(int))
+
+	ts.ErrorIs(
+		err,
+		sql.ErrNoRows,
+		"SetHasNoMainCategory deveria setar todas categorias de um link como não principal")
 }
 
 func TestSqliteCategory(t *testing.T) {

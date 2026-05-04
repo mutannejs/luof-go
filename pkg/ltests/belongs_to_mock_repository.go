@@ -59,3 +59,10 @@ func (repo *BelongsToMockRepository[T]) Update(
 	args := repo.Called(uidLink, uidCategory, isMain)
 	return args.Error(0)
 }
+
+func (repo *BelongsToMockRepository[T]) SetHasNoMainCategory(
+	uidLink uuid.UUID,
+) error {
+	args := repo.Called(uidLink)
+	return args.Error(0)
+}

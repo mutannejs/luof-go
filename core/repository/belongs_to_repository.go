@@ -18,6 +18,7 @@ type WriteBelongsTo interface {
 	Create(uuid.UUID, uuid.UUID, time.Time, bool) error
 	Delete(uuid.UUID, uuid.UUID) error
 	Update(uuid.UUID, uuid.UUID, bool) error
+	SetHasNoMainCategory(uuid.UUID) error
 }
 
 type BelongsTo interface {

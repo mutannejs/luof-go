@@ -59,7 +59,7 @@ var (
 	})
 	CreateBelongsToSchema = z.Struct(z.Shape{
 		"linkUid": UidValidate,
-		"isMain": z.Bool().Required(),
+		"isMain": z.Bool(),
 	})
 	UpdateBelongsToSchema = z.Struct(z.Shape{
 		"isMain": z.Bool().Required(),

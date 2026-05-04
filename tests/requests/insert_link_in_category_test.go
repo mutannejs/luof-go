@@ -16,6 +16,7 @@ type InsertLinkInCategoryTestSuite struct {
 	suite.Suite
 	post ltests.RequestFuncType
 	linkUidString string
+	alternativeLinkUidString string
 	categoryUidString string
 }
 
@@ -35,6 +36,9 @@ func (ts *InsertLinkInCategoryTestSuite) SetupSuite() {
 
 	resLink, _ := postLink(nil, domain.MockLinkMapRequest)
 	ts.linkUidString = string(resLink.Body())
+
+	resLink, _ = postLink(nil, domain.AlternativeMockLinkMapRequest)
+	ts.alternativeLinkUidString = string(resLink.Body())
 
 	resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
 	ts.categoryUidString = string(resCategory.Body())
@@ -83,6 +87,19 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_AlreadyExists(
 		resBody,
 		expectedJson,
 		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + domain.ALREADY_BELONGS.Error()) 
+}
+
+func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_DefaultIsMain() {
+	res, _ := ts.post(
+		map[string]string{
+			"categoryUid": ts.categoryUidString},
+		map[string]string{
+			"linkUid": ts.alternativeLinkUidString,
+		})
+
+	ts.Empty(
+		res.Body(),
+		"Tentar inserir um link em uma categoria sem informar se ela é a principal, não deveria retornar nada")
 }
 
 func TestInsertLinkInCategoryAllTests(t *testing.T) {

@@ -34,6 +34,10 @@ func TestInsertLinkInCategory_NotExists(t *testing.T) {
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("time.Time"),
 			true,
+		).Return(nil).
+		On(
+			"SetHasNoMainCategory",
+			mock.AnythingOfType("uuid.UUID"),
 		).Return(nil)
 
 	err := ilic.Execute(mockUidLink, mockUidCategory, true)
@@ -61,6 +65,10 @@ func TestInsertLinkInCategory_Exists(t *testing.T) {
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("time.Time"),
 			false,
+		).Return(nil).
+		On(
+			"SetHasNoMainCategory",
+			mock.AnythingOfType("uuid.UUID"),
 		).Return(nil)
 
 	err := ilic.Execute(mockUidLink, mockUidCategory, false)

@@ -32,6 +32,8 @@ func (ilicUseCase *InsertLinkInCategory) Execute(
 		return domain.ALREADY_BELONGS
 	}
 
+	err = ilicUseCase.Repo.SetHasNoMainCategory(linkUid)
+
 	err = ilicUseCase.Repo.Create(linkUid, categoryUid, time.Now(), isMain)
 
 	return

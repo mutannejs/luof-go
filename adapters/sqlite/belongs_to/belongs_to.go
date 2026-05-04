@@ -165,11 +165,25 @@ func (btr *BelongsTo) Update(
 		`
 			UPDATE belongs_to
 			SET is_main = ?
-			WHERE uid_link = ? AND uid_Category = ?
+			WHERE uid_link = ? AND uid_category = ?
 		`,
 		isMain,
 		linkUid,
 		categoryUid)
+
+	return
+}
+
+func (btr *BelongsTo) SetHasNoMainCategory(
+	linkUid uuid.UUID,
+) (err error) {
+	_, err = btr.DB.Exec(
+		`
+			UPDATE belongs_to
+			SET is_main = false
+			WHERE uid_link = ? AND is_main = true
+		`,
+		linkUid)
 
 	return
 }
