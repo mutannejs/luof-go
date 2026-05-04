@@ -29,7 +29,7 @@ func main() {
 		log.Error().Err(err).Msg("error loading env")
 		return
 	} else {
-		log.Info().Msg("env loaded successfully")
+		log.Info().Msg("env loaded successfully in '" + env["ENV"] + "'")
 	}
 
 	repoSettings, err = adapters.GetRepositorySettings(env)
