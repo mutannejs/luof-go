@@ -30,8 +30,8 @@ func TestGetSubcategories_CategoryNotExists(t *testing.T) {
 		subcategories,
 		"Deveria ser retornado zero para um uid que não pertence a nenhuma categoria existente")
 	assert.ErrorIs(
-		err,
 		categoryNotExists,
+		err,
 		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
@@ -47,16 +47,16 @@ func TestGetSubcategories_CategoryExists(t *testing.T) {
 	subcategories, err := glbc.Execute(mockUidCategory)
 
 	assert.Contains(
-					subcategories,
-					mockCategories[0],
-					"Todas as subcategorias no repositório devem ser retornadas pela função")
+		subcategories,
+		mockCategories[0],
+		"Todas as subcategorias no repositório devem ser retornadas pela função")
 	assert.Contains(
-					subcategories,
-					mockCategories[1],
-					"Todas as subcategorias no repositório devem ser retornadas pela função")
+		subcategories,
+		mockCategories[1],
+		"Todas as subcategorias no repositório devem ser retornadas pela função")
 	assert.NoError(
-					err,
-					"Buscar por uma categoria válida não deveria retornar erro")
+		err,
+		"Buscar por uma categoria válida não deveria retornar erro")
 }
 
 func TestGetSubcategories_EmptyCategory(t *testing.T) {
@@ -73,10 +73,10 @@ func TestGetSubcategories_EmptyCategory(t *testing.T) {
 	subcategories, err := glbc.Execute(mockUidCategory)
 
 	assert.Len(
-					subcategories,
-					0,
-					"Buscar as subcategorias de uma categoria vazia deveria retornar um array vazio")
+		subcategories,
+		0,
+		"Buscar as subcategorias de uma categoria vazia deveria retornar um array vazio")
 	assert.NoError(
-					err,
-					"Buscar por uma categoria válida não deveria retornar erro")
+		err,
+		"Buscar por uma categoria válida não deveria retornar erro")
 }

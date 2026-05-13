@@ -32,12 +32,12 @@ func TestUpdateCategory_NotExists(t *testing.T) {
 	)
 
 	assert.False(
-					exists,
-					"Não deveria ser possível atualizar uma categoria que não existe")
+		exists,
+		"Não deveria ser possível atualizar uma categoria que não existe")
 	assert.ErrorIs(
-					err,
-					categoryNotExists,
-					"Tentar atualizar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
+		categoryNotExists,
+		err,
+		"Tentar atualizar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
 func TestUpdateCategory_Exists(t *testing.T) {
@@ -71,15 +71,15 @@ func TestUpdateCategory_Exists(t *testing.T) {
 
 	// Testa o valor de UpdatedAt
 	assert.Less(
-					category.CreatedAt,
-					category.UpdatedAt,
-					"O valor de UpdatedAt deve ser maior que o valor de CreatedAt")
+		category.CreatedAt,
+		category.UpdatedAt,
+		"O valor de UpdatedAt deve ser maior que o valor de CreatedAt")
 
 	// Testa o retorno da função
 	assert.True(
-					exists,
-					"Deveria ser possível atualizar uma categoria válida")
+		exists,
+		"Deveria ser possível atualizar uma categoria válida")
 	assert.NoError(
-					err,
-					"Atualizar uma categoria válida não deveria retornar erro")
+		err,
+		"Atualizar uma categoria válida não deveria retornar erro")
 }

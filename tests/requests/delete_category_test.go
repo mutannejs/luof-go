@@ -48,7 +48,7 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory() {
 func (ts *DeleteCategoryTestSuite) TestDeleteCategory_ParamRequired() {
 	res, _ := ts.delete(map[string]string{"categoryId": domain.MockUidCategory.String()})
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"categoryUid"}) 
+	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body())) 
 }
 
 func (ts *DeleteCategoryTestSuite) TestDeleteCategory_NotExists() {

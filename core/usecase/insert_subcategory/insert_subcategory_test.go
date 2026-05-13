@@ -76,8 +76,8 @@ func TestInsertSubcategory_Exists(t *testing.T) {
 	err := is.Execute(alternativeMockUidCategory, mockUidCategory)
 
 	assert.ErrorIs(
-		err,
 		isSubcategory,
+		err,
 		"Tentar inserir uma subcategoria em outra categoria, ambas já relacionadas, deveria retornar erro contendo " + isSubcategory.Error())
 }
 
@@ -108,8 +108,8 @@ func TestInsertSubcategory_AncestorBecomeASubcategory(t *testing.T) {
 	err := is.Execute(alternativeMockUidCategory, mockUidCategory)
 
 	assert.ErrorIs(
-		err,
 		isAncestor,
+		err,
 		"Tentar inserir uma subcategoria em outra categoria, a primeira sendo ancestral da outra, deveria retornar erro contendo " + isAncestor.Error())
 }
 
@@ -140,7 +140,7 @@ func TestInsertSubcategory_SubcategoryOfItself(t *testing.T) {
 	err := is.Execute(mockUidCategory, mockUidCategory)
 
 	assert.ErrorIs(
-		err,
 		isSameCategory,
+		err,
 		"Tentar inserir uma subcategoria nela mesma deveria retornar erro contendo " + isSameCategory.Error())
 }

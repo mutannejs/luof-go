@@ -21,16 +21,16 @@ func TestNewCategory(t *testing.T) {
 	)
 
 	assert.ErrorIs(
-					err,
-					CATEGORY_ERROR_NEW,
-					"Erro na criação de categoria deveria conter o erro " + CATEGORY_ERROR_NEW.Error())
+		CATEGORY_ERROR_NEW,
+		err,
+		"Erro na criação de categoria deveria conter o erro " + CATEGORY_ERROR_NEW.Error())
 	assert.ErrorIs(
-					err,
-					luuid.UUID_ERROR_NEW,
-					"Erro na criação de categoria deveria conter o erro " + luuid.UUID_ERROR_NEW.Error())
+		luuid.UUID_ERROR_NEW,
+		err,
+		"Erro na criação de categoria deveria conter o erro " + luuid.UUID_ERROR_NEW.Error())
 	assert.Zero(
-					category,
-					"A categoria retornada ao ocorrer erro deveria ser zero")
+		category,
+		"A categoria retornada ao ocorrer erro deveria ser zero")
 }
 
 // Testa a instanciação de um novo Link para casos onde ocorrem erros de UUID
@@ -45,14 +45,14 @@ func TestNewLink(t *testing.T) {
 	)
 
 	assert.ErrorIs(
-					err,
-					LINK_ERROR_NEW,
-					"Erro na criação de link deveria conter o erro " + LINK_ERROR_NEW.Error())
+		LINK_ERROR_NEW,
+		err,
+		"Erro na criação de link deveria conter o erro " + LINK_ERROR_NEW.Error())
 	assert.ErrorIs(
-					err,
-					luuid.UUID_ERROR_NEW,
-					"Erro na criação de link deveria conter o erro " + luuid.UUID_ERROR_NEW.Error())
+		luuid.UUID_ERROR_NEW,
+		err,
+		"Erro na criação de link deveria conter o erro " + luuid.UUID_ERROR_NEW.Error())
 	assert.Zero(
-					link,
-					"O link retornado ao ocorrer erro deveria ser zero")
+		link,
+		"O link retornado ao ocorrer erro deveria ser zero")
 }

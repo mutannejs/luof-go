@@ -32,9 +32,9 @@ func TestDeleteCategory_NotExists(t *testing.T) {
 	err := dc.Execute(mockUidCategory)
 
 	assert.ErrorIs(
-					err,
-					categoryNotExists,
-					"Tentativa de deletar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
+		categoryNotExists,
+		err,
+		"Tentativa de deletar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
 func TestDeleteCategory_Exists(t *testing.T) {
@@ -52,8 +52,8 @@ func TestDeleteCategory_Exists(t *testing.T) {
 	err := dc.Execute(mockUidCategory)
 
 	assert.NoError(
-					err,
-					"Deletar uma categoria válida não deveria retornar erro")
+		err,
+		"Deletar uma categoria válida não deveria retornar erro")
 }
 
 func TestDeleteCategory_HasLinks(t *testing.T) {
@@ -71,9 +71,9 @@ func TestDeleteCategory_HasLinks(t *testing.T) {
 	err := dc.Execute(mockUidCategory)
 
 	assert.ErrorIs(
-					err,
-					hasLinks,
-					"Tentativa de deletar uma categoria que possui links deveria retornar erro contendo " + hasLinks.Error())
+		hasLinks,
+		err,
+		"Tentativa de deletar uma categoria que possui links deveria retornar erro contendo " + hasLinks.Error())
 }
 
 func TestDeleteCategory_HasSubcategories(t *testing.T) {
@@ -91,7 +91,7 @@ func TestDeleteCategory_HasSubcategories(t *testing.T) {
 	err := dc.Execute(mockUidCategory)
 
 	assert.ErrorIs(
-					err,
-					hasSubcategories,
-					"Tentativa de deletar uma categoria que possui subcategorias deveria retornar erro contendo " + hasSubcategories.Error())
+		hasSubcategories,
+		err,
+		"Tentativa de deletar uma categoria que possui subcategorias deveria retornar erro contendo " + hasSubcategories.Error())
 }

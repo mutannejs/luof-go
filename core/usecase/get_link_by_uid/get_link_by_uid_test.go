@@ -27,12 +27,12 @@ func TestGetLinkByUid_NotExists(t *testing.T) {
 	link, err := glbu.Execute(mockUidLink)
 
 	assert.Zero(
-					link,
-					"Deveria ser retornado zero para um uid inválido")
+		link,
+		"Deveria ser retornado zero para um uid inválido")
 	assert.EqualError(
-					err,
-					linkNotExists.Error(),
-					"Buscar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
+		linkNotExists,
+		err.Error(),
+		"Buscar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
 }
 
 func TestGetLinkByUid_Exists(t *testing.T) {
@@ -47,10 +47,10 @@ func TestGetLinkByUid_Exists(t *testing.T) {
 	link, err := glbu.Execute(mockUidLink)
 
 	assert.Equal(
-					link,
-					mockLink,
-					"O link retornado pela função deve ser o mesmo retornado pelo repositório")
+		mockLink,
+		link,
+		"O link retornado pela função deve ser o mesmo retornado pelo repositório")
 	assert.NoError(
-					err,
-					"Buscar um link válido não deveria retornar erro")
+		err,
+		"Buscar um link válido não deveria retornar erro")
 }

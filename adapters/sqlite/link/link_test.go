@@ -90,7 +90,7 @@ func (ts *TestSuite) TestExists() {
 	exists, err := ts.lr.Exists(mockUidLink)
 
 	ts.NoError(err, "Exists se informado um uid válido não deveria retornar erro")
-	ts.Equal(true, exists, "Exists deveria retornar verdadeiro para um uid válido")
+	ts.True( exists, "Exists deveria retornar verdadeiro para um uid válido")
 }
 
 func (ts *TestSuite) TestNotExists() {
@@ -103,7 +103,7 @@ func (ts *TestSuite) TestNotExists() {
 	exists, err := ts.lr.Exists(uid)
 
 	ts.NoError(err, "Exists se informado um uid inválido não deveria retornar erro")
-	ts.Equal(false, exists, "Exists deveria retornar falso para um uid válido")
+	ts.False( exists, "Exists deveria retornar falso para um uid válido")
 }
 
 func (ts *TestSuite) TestUpdate() {

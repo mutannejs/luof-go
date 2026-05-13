@@ -27,12 +27,12 @@ func TestGetCategoryByUid_NotExists(t *testing.T) {
 	category, err := gcbu.Execute(mockUidCategory)
 
 	assert.Zero(
-					category,
-					"Deveria ser retornado zero para um uid inválido")
+		category,
+		"Deveria ser retornado zero para um uid inválido")
 	assert.ErrorIs(
-					err,
-					categoryNotExists,
-					"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
+		categoryNotExists,
+		err,
+		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
 func TestGetCategoryByUid_Exists(t *testing.T) {
@@ -47,10 +47,10 @@ func TestGetCategoryByUid_Exists(t *testing.T) {
 	category, err := gcbu.Execute(mockUidCategory)
 
 	assert.Equal(
-					category,
-					mockCategory,
-					"A categoria retornada pela função deve ser a mesma retornada pelo repositório")
+		mockCategory,
+		category,
+		"A categoria retornada pela função deve ser a mesma retornada pelo repositório")
 	assert.NoError(
-					err,
-					"Buscar uma categoria válida não deveria retornar erro")
+		err,
+		"Buscar uma categoria válida não deveria retornar erro")
 }

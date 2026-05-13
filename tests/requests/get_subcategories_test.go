@@ -82,7 +82,7 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_Error() {
 		},
 		nil)
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"categoryUid"}) 
+	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
 }
 
 func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_Empty() {
@@ -97,9 +97,9 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_Empty() {
 		res.Body())
 
 	ts.Equal(
-		resBody,
 		expectedJson,
-		"Tentar recuperar as subcategorias de uma categoria vazia deveria retornar um array vazio") 
+		resBody,
+		"Tentar recuperar as subcategorias de uma categoria vazia deveria retornar um array vazio")
 }
 
 func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_NotExists() {
@@ -114,9 +114,9 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		resBody,
 		expectedJson,
-		"Tentar recuperar as subcategorias de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error()) 
+		resBody,
+		"Tentar recuperar as subcategorias de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error())
 }
 
 func TestGetSubcategoriesAllTests(t *testing.T) {

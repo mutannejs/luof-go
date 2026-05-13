@@ -47,7 +47,7 @@ func (ts *GetLinkTestSuite) TestGetLink() {
 func (ts *GetLinkTestSuite) TestGetLink_ParamRequired() {
 	res, _ := ts.get(map[string]string{"linkId": domain.MockUidLink.String()}, nil)
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"linkUid"}) 
+	ts.ElementsMatch([]string{"linkUid"}, ltests.GetErrorKeys(res.Body())) 
 }
 
 func (ts *GetLinkTestSuite) TestGetLink_NotExists() {
@@ -58,8 +58,8 @@ func (ts *GetLinkTestSuite) TestGetLink_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		resBody,
 		expectedJson,
+		resBody,
 		"Tentar recuperar um link passando um uuid inválido deveria retornar o erro " + domain.LINK_NOT_EXISTS.Error())
 }
 

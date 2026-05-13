@@ -19,29 +19,29 @@ func TestNewCategory(t *testing.T) {
 	)
 
 	assert.NoError(
-					err,
-					"Criação com dados válidos não deveria falhar")
+		err,
+		"Criação com dados válidos não deveria falhar")
 	assert.NotZero(
-					category.GetUid(),
-					"A nova categoria deveria possuir como Uid um uuid diferente de zero")
+		category.GetUid(),
+		"A nova categoria deveria possuir como Uid um uuid diferente de zero")
 	assert.Equal(
-					category.Name,
-					CategoryMockMap["name"],
-					"O nome deveria ser igual ao argumento do construtor")
+		CategoryMockMap["name"],
+		category.Name,
+		"O nome deveria ser igual ao argumento do construtor")
 	assert.Equal(
-					category.Description.Content,
-					CategoryMockMap["description"],
-					"A descrição deveria ser igual ao argumento do construtor")
+		CategoryMockMap["description"],
+		category.Description.Content,
+		"A descrição deveria ser igual ao argumento do construtor")
 	assert.Equal(
-					category.Description.UseMarkdown,
-					CategoryMockMap["useMarkdown"],
-					"O valor UseMarkdown deveria ser igual ao argumento do construtor")
+		CategoryMockMap["useMarkdown"],
+		category.Description.UseMarkdown,
+		"O valor UseMarkdown deveria ser igual ao argumento do construtor")
 	assert.NotZero(
-					category.CreatedAt,
-					"O valor de CreatedAt deveria ser diferente de zero")
+		category.CreatedAt,
+		"O valor de CreatedAt deveria ser diferente de zero")
 	assert.Zero(
-					category.UpdatedAt,
-					"O valor de UpdatedAt deveria ser zero")
+		category.UpdatedAt,
+		"O valor de UpdatedAt deveria ser zero")
 }
 
 // Testa a instanciação de um novo Link para casos onde não ocorrem erros
@@ -56,31 +56,31 @@ func TestNewLink(t *testing.T) {
 	)
 
 	assert.NoError(
-					err,
-					"criação com dados válidos não deveria falhar")
+		err,
+		"criação com dados válidos não deveria falhar")
 	assert.NotZero(
-					link.GetUid(),
-					"O novo link deveria possui como Uid um uuid diferente de zero")
+		link.GetUid(),
+		"O novo link deveria possui como Uid um uuid diferente de zero")
 	assert.Equal(
-					link.Url,
-					LinkMockMap["url"],
-					"A url deveria ser igual ao argumento do construtor")
+		LinkMockMap["url"],
+		link.Url,
+		"A url deveria ser igual ao argumento do construtor")
 	assert.Equal(
-					link.Name,
-					LinkMockMap["name"],
-					"O nome deveria ser igual ao argumento do construtor")
+		LinkMockMap["name"],
+		link.Name,
+		"O nome deveria ser igual ao argumento do construtor")
 	assert.Equal(
-					link.Description.Content,
-					LinkMockMap["description"],
-					"A descrição deveria ser igual ao argumento do construtor")
+		LinkMockMap["description"],
+		link.Description.Content,
+		"A descrição deveria ser igual ao argumento do construtor")
 	assert.Equal(
-					link.Description.UseMarkdown,
-					LinkMockMap["useMarkdown"],
-					"O valor UseMarkdown deveria ser igual ao argumento do construtor")
+		LinkMockMap["useMarkdown"],
+		link.Description.UseMarkdown,
+		"O valor UseMarkdown deveria ser igual ao argumento do construtor")
 	assert.NotZero(
-					link.CreatedAt,
-					"O valor de CreatedAt deveria ser diferente de zero")
+		link.CreatedAt,
+		"O valor de CreatedAt deveria ser diferente de zero")
 	assert.Zero(
-					link.UpdatedAt,
-					"O valor de UpdatedAt deveria ser zero")
+		link.UpdatedAt,
+		"O valor de UpdatedAt deveria ser zero")
 }

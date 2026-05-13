@@ -43,7 +43,7 @@ func (ts *CreateLinkTestSuite) TestCreateLink_Error() {
 			"useMarkdown": domain.MockLink.Name, // não é boolean
 		})
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"url", "name", "useMarkdown"}) 
+	ts.ElementsMatch([]string{"url", "name", "useMarkdown"}, ltests.GetErrorKeys(res.Body())) 
 }
 
 func TestCreateLinkAllTests(t *testing.T) {

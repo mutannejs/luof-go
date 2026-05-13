@@ -42,7 +42,7 @@ func (ts *CreateCategoryTestSuite) TestCreateCategory_Error() {
 			"useMarkdown": domain.MockCategory.Name, // não é boolean
 		})
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"name", "useMarkdown"}) 
+	ts.ElementsMatch([]string{"name", "useMarkdown"}, ltests.GetErrorKeys(res.Body())) 
 }
 
 func TestCreateCategoryAllTests(t *testing.T) {

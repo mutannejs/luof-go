@@ -67,7 +67,7 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_Error() {
 			"isMain": domain.MockCategory.Name,
 		})
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"categoryUid"}) 
+	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
 }
 
 func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_AlreadyExists() {
@@ -84,9 +84,9 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_AlreadyExists(
 		res.Body())
 
 	ts.Equal(
-		resBody,
 		expectedJson,
-		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + domain.ALREADY_BELONGS.Error()) 
+		resBody,
+		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + domain.ALREADY_BELONGS.Error())
 }
 
 func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_DefaultIsMain() {

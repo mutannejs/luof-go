@@ -33,17 +33,17 @@ func TestCreateCategory(t *testing.T) {
 	// com os argumentos passados à função
 	// ! Pode estar errada, mesmo que NewCategory tenha sido corretamente
 	// implementada
-	assert.Equal(category.Name, mockCategory.Name)
-	assert.Equal(category.Description.Content, mockCategory.Description.Content)
-	assert.Equal(category.Description.UseMarkdown, mockCategory.Description.UseMarkdown)
+	assert.Equal(mockCategory.Name, category.Name)
+	assert.Equal(mockCategory.Description.Content, category.Description.Content)
+	assert.Equal(mockCategory.Description.UseMarkdown, category.Description.UseMarkdown)
 	assert.NotZero(category.CreatedAt)
 	assert.Zero(category.UpdatedAt)
 
 	// Testa o retorno da função
 	assert.NotZero(
-					uid,
-					"Criação com dados válidos deveria retornar um uuid diferente de zero")
+		uid,
+		"Criação com dados válidos deveria retornar um uuid diferente de zero")
 	assert.NoError(
-					err,
-					"Criação com dados válidos não deveria retornar erro")
+		err,
+		"Criação com dados válidos não deveria retornar erro")
 }

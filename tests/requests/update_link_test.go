@@ -54,7 +54,7 @@ func (ts *UpdateLinkTestSuite) TestUpdateLink_ParamRequired() {
 			"useMarkdown": domain.AlternativeMockLink.Description.Content,
 		})
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"name", "useMarkdown"}) 
+	ts.ElementsMatch([]string{"name", "useMarkdown"}, ltests.GetErrorKeys(res.Body()))
 }
 
 func (ts *UpdateLinkTestSuite) TestUpdateLink_NotExists() {
@@ -68,8 +68,8 @@ func (ts *UpdateLinkTestSuite) TestUpdateLink_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		resBody,
 		expectedJson,
+		resBody,
 		"Tentar atualizar um link passando um uuid inválido deveria retornar o erro " + domain.LINK_NOT_EXISTS.Error())
 }
 

@@ -110,7 +110,7 @@ func (ts *TestSuite) TestExists() {
 	exists, err := ts.cr.Exists(mockUidCategory)
 
 	ts.NoError(err, "Exists se informado um uid válido não deveria retornar erro")
-	ts.Equal(true, exists, "Exists deveria retornar verdadeiro para um uid válido")
+	ts.True( exists, "Exists deveria retornar verdadeiro para um uid válido")
 }
 
 func (ts *TestSuite) TestNotExists() {
@@ -123,7 +123,7 @@ func (ts *TestSuite) TestNotExists() {
 	exists, err := ts.cr.Exists(uid)
 
 	ts.NoError(err, "Exists se informado um uid inválido não deveria retornar erro")
-	ts.Equal(false, exists, "Exists deveria retornar falso para um uid válido")
+	ts.False( exists, "Exists deveria retornar falso para um uid válido")
 }
 
 func (ts *TestSuite) TestUpdate() {
@@ -159,7 +159,7 @@ func (ts *TestSuite) TestHasSubcategories() {
 		categoriesTree["filme"].GetUid())
 
 	ts.NoError(err, "HasSubcategories se informado um uid válido não deveria retornar erro")
-	ts.Equal(true, hasSubcategories, "HasSubcategories deveria retornar verdadeiro para um uid de uma categoria com subcategorias")
+	ts.True( hasSubcategories, "HasSubcategories deveria retornar verdadeiro para um uid de uma categoria com subcategorias")
 }
 
 func (ts *TestSuite) TestHasNoSubcategories() {
@@ -168,7 +168,7 @@ func (ts *TestSuite) TestHasNoSubcategories() {
 	hasSubcategories, err := ts.cr.HasSubcategories(mockUidCategory)
 
 	ts.NoError(err, "HasSubcategories se informado um uid válido não deveria retornar erro")
-	ts.Equal(false, hasSubcategories, "HasSubcategories deveria retornar falso para um uid de uma categoria sem subcategorias")
+	ts.False( hasSubcategories, "HasSubcategories deveria retornar falso para um uid de uma categoria sem subcategorias")
 }
 
 func (ts *TestSuite) TestIsSubcategory() {
@@ -179,7 +179,7 @@ func (ts *TestSuite) TestIsSubcategory() {
 		categoriesTree["terror"].GetUid())
 
 	ts.NoError(err, "IsSubcategory, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(true, isSubcategory, "IsSubcategory deveria retornar verdadeiro para duas categorias que são uma subcategoria direta da outra")
+	ts.True( isSubcategory, "IsSubcategory deveria retornar verdadeiro para duas categorias que são uma subcategoria direta da outra")
 }
 
 func (ts *TestSuite) TestNotIsSubcategory() {
@@ -190,7 +190,7 @@ func (ts *TestSuite) TestNotIsSubcategory() {
 		categoriesTree["serial_killer"].GetUid())
 
 	ts.NoError(err, "IsSubcategory, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(false, isSubcategory, "IsSubcategory deveria retornar falso para duas categorias que não são uma subcategoria direta da outra")
+	ts.False( isSubcategory, "IsSubcategory deveria retornar falso para duas categorias que não são uma subcategoria direta da outra")
 }
 
 func (ts *TestSuite) TestIsAncestor() {
@@ -201,14 +201,14 @@ func (ts *TestSuite) TestIsAncestor() {
 		categoriesTree["terror"].GetUid())
 
 	ts.NoError(err, "IsAncestor, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(true, isAncestor, "IsAncestor deveria retornar verdadeiro para duas categorias que são relacionadas diretamente")
+	ts.True( isAncestor, "IsAncestor deveria retornar verdadeiro para duas categorias que são relacionadas diretamente")
 
 	isAncestor, err = ts.cr.IsAncestor(
 		categoriesTree["filme"].GetUid(),
 		categoriesTree["serial_killer"].GetUid())
 
 	ts.NoError(err, "IsAncestor, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(true, isAncestor, "IsAncestor deveria retornar verdadeiro para duas categorias que são relacionadas")
+	ts.True( isAncestor, "IsAncestor deveria retornar verdadeiro para duas categorias que são relacionadas")
 }
 
 func (ts *TestSuite) TestNotIsAncestor() {
@@ -219,14 +219,14 @@ func (ts *TestSuite) TestNotIsAncestor() {
 		categoriesTree["terror"].GetUid())
 
 	ts.NoError(err, "IsAncestor, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(false, isAncestor, "IsAncestor deveria retornar falso para duas categorias que não são relacionadas")
+	ts.False( isAncestor, "IsAncestor deveria retornar falso para duas categorias que não são relacionadas")
 
 	isAncestor, err = ts.cr.IsAncestor(
 		categoriesTree["serial_killer"].GetUid(),
 		categoriesTree["filme"].GetUid())
 
 	ts.NoError(err, "IsAncestor, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(false, isAncestor, "IsAncestor deveria retornar falso para duas categorias que são relacionadas, mas não na ordem ancestral->descendente")
+	ts.False( isAncestor, "IsAncestor deveria retornar falso para duas categorias que são relacionadas, mas não na ordem ancestral->descendente")
 }
 
 func (ts *TestSuite) TestAreRelated() {
@@ -237,14 +237,14 @@ func (ts *TestSuite) TestAreRelated() {
 		categoriesTree["serial_killer"].GetUid())
 
 	ts.NoError(err, "AreRelated, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(true, areRelated, "AreRelated deveria retornar verdadeiro para duas categorias que são relacionadas por parentesco")
+	ts.True( areRelated, "AreRelated deveria retornar verdadeiro para duas categorias que são relacionadas por parentesco")
 
 	areRelated, err = ts.cr.AreRelated(
 		categoriesTree["serial_killer"].GetUid(),
 		categoriesTree["filme"].GetUid())
 
 	ts.NoError(err, "AreRelated, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(true, areRelated, "AreRelated deveria retornar verdadeiro para duas categorias que são relacionadas por parentesco")
+	ts.True( areRelated, "AreRelated deveria retornar verdadeiro para duas categorias que são relacionadas por parentesco")
 }
 
 func (ts *TestSuite) TestNotAreRelated() {
@@ -255,7 +255,7 @@ func (ts *TestSuite) TestNotAreRelated() {
 		categoriesTree["jumpscare"].GetUid())
 
 	ts.NoError(err, "AreRelated, se informado duas chaves válidas não deveria retornar erro")
-	ts.Equal(false, areRelated, "AreRelated deveria retornar falso para duas categorias que não são uma relacionadas por parentesco")
+	ts.False( areRelated, "AreRelated deveria retornar falso para duas categorias que não são uma relacionadas por parentesco")
 }
 
 func (ts *TestSuite) TestInsertSubcategory() {
@@ -272,7 +272,7 @@ func (ts *TestSuite) TestInsertSubcategory() {
 		categoriesTree["filme"].GetUid(),
 		categoriesTree["terror"].GetUid())
 
-	ts.Equal(true, isSubcategory, "IsSubcategory deveria retornar true para uma relação criada usando InsertSubcategory")
+	ts.True( isSubcategory, "IsSubcategory deveria retornar true para uma relação criada usando InsertSubcategory")
 }
 
 func (ts *TestSuite) TestGetSubcategories_Empty() {

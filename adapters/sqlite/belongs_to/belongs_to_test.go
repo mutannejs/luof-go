@@ -73,14 +73,14 @@ func (ts *TestSuite) TestExists() {
 	exists, err := ts.btr.Exists(mockUidLink, mockUidCategory)
 
 	ts.NoError(err, "Exists, se informado uma chave válida não deveria retornar erro")
-	ts.Equal(true, exists, "Exists deveria retornar verdadeiro para uma chave válida")
+	ts.True(exists, "Exists deveria retornar verdadeiro para uma chave válida")
 }
 
 func (ts *TestSuite) TestNotExists() {
 	exists, err := ts.btr.Exists(mockUidLink, mockUidCategory)
 
 	ts.NoError(err, "Exists, se informado uma chave inválida não deveria retornar erro")
-	ts.Equal(false, exists, "Exists deveria retornar falso para uma chave inválida")
+	ts.False(exists, "Exists deveria retornar falso para uma chave inválida")
 }
 
 func (ts *TestSuite) TestHasLinks() {
@@ -89,14 +89,14 @@ func (ts *TestSuite) TestHasLinks() {
 	hasLinks, err := ts.btr.HasLinks(mockUidCategory)
 
 	ts.NoError(err, "HasLinks, se informado uma chave válida não deveria retornar erro")
-	ts.Equal(true, hasLinks, "HasLinks deveria retornar verdadeiro para uma chave de uma categoria com links")
+	ts.True(hasLinks, "HasLinks deveria retornar verdadeiro para uma chave de uma categoria com links")
 }
 
 func (ts *TestSuite) TestHasNoLinks() {
 	hasLinks, err := ts.btr.HasLinks(mockUidCategory)
 
 	ts.NoError(err, "HasLinks, se informado uma chave inválida não deveria retornar erro")
-	ts.Equal(false, hasLinks, "HasLinks deveria retornar falso para uma chave de uma categoria sem links")
+	ts.False(hasLinks, "HasLinks deveria retornar falso para uma chave de uma categoria sem links")
 }
 
 func (ts *TestSuite) TestGetLinksByCategory_Empty() {
@@ -142,8 +142,8 @@ func (ts *TestSuite) TestSetHasNoMainCategory() {
 		mockUidLink).Scan(new(int))
 
 	ts.ErrorIs(
-		err,
 		sql.ErrNoRows,
+		err,
 		"SetHasNoMainCategory deveria setar todas categorias de um link como não principal")
 }
 

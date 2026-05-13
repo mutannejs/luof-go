@@ -33,12 +33,12 @@ func TestUpdateLink_NotExists(t *testing.T) {
 	)
 
 	assert.False(
-					exists,
-					"Não deveria ser possível atualizar um link que não existe")
+		exists,
+		"Não deveria ser possível atualizar um link que não existe")
 	assert.EqualError(
-					err,
-					linkNotExists.Error(),
-					"Tentar atualizar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
+		linkNotExists,
+		err.Error(),
+		"Tentar atualizar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
 }
 
 func TestUpdateLink_Exists(t *testing.T) {
@@ -74,15 +74,15 @@ func TestUpdateLink_Exists(t *testing.T) {
 
 	// Testa o valor de UpdatedAt
 	assert.Less(
-					link.CreatedAt,
-					link.UpdatedAt,
-					"O valor de UpdatedAt deve ser maior que o valor de CreatedAt")
+		link.CreatedAt,
+		link.UpdatedAt,
+		"O valor de UpdatedAt deve ser maior que o valor de CreatedAt")
 
 	// Testa o retorno da função
 	assert.True(
-					exists,
-					"Deveria ser possível atualizar um link válido")
+		exists,
+		"Deveria ser possível atualizar um link válido")
 	assert.NoError(
-					err,
-					"Atualizar um link válido não deveria retornar erro")
+		err,
+		"Atualizar um link válido não deveria retornar erro")
 }

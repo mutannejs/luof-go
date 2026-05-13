@@ -109,7 +109,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_Error() {
 			"childUid": domain.MockCategory.Name,
 		})
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"categoryUid"}) 
+	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
 }
 
 func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AlreadyExists() {
@@ -134,7 +134,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AlreadyExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar inserir uma subcategoria, ambas já relacionadas, deveria retornar erro contendo " + domain.IS_SUBCATEGORY.Error()) 
+		"Tentar inserir uma subcategoria, ambas já relacionadas, deveria retornar erro contendo " + domain.IS_SUBCATEGORY.Error())
 }
 
 func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AncestorNotBecomeASubcategory() {
@@ -165,7 +165,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AncestorNotBecomeASu
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar inserir uma subcategoria, ambas já relacionadas, deveria retornar erro contendo " + domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY.Error()) 
+		"Tentar inserir uma subcategoria, ambas já relacionadas, deveria retornar erro contendo " + domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY.Error())
 }
 
 func TestInsertSubcategoryAllTests(t *testing.T) {

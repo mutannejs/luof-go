@@ -82,7 +82,7 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_Error() {
 			"childUid": domain.MockCategory.Name,
 		})
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"categoryUid", "childUid"}) 
+	ts.ElementsMatch([]string{"categoryUid", "childUid"}, ltests.GetErrorKeys(res.Body()))
 }
 
 func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_NotExists() {
@@ -99,7 +99,7 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_NotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar remover uma subcategoria tal que a relação não existe, deveria retornar erro contendo " + domain.NOT_IS_SUBCATEGORY.Error()) 
+		"Tentar remover uma subcategoria tal que a relação não existe, deveria retornar erro contendo " + domain.NOT_IS_SUBCATEGORY.Error())
 }
 
 func TestRemoveSubcategoryAllTests(t *testing.T) {

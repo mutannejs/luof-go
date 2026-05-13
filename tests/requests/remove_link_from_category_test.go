@@ -77,7 +77,7 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_Error() {
 			"linkUid": domain.MockCategory.Name,
 		})
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"categoryUid", "linkUid"}) 
+	ts.ElementsMatch([]string{"categoryUid", "linkUid"}, ltests.GetErrorKeys(res.Body()))
 }
 
 func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_NotExists() {
@@ -92,9 +92,9 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_NotExists(
 		res.Body())
 
 	ts.Equal(
-		resBody,
 		expectedJson,
-		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + domain.NOT_BELONGS.Error()) 
+		resBody,
+		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + domain.NOT_BELONGS.Error())
 }
 
 func TestRemoveLinkFromCategoryAllTests(t *testing.T) {

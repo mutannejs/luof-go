@@ -53,7 +53,7 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory_ParamRequired() {
 			"useMarkdown": domain.AlternativeMockCategory.Description.Content,
 		})
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"name", "useMarkdown"}) 
+	ts.ElementsMatch([]string{"name", "useMarkdown"}, ltests.GetErrorKeys(res.Body()))
 }
 
 func (ts *UpdateCategoryTestSuite) TestUpdateCategory_NotExists() {
@@ -67,8 +67,8 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		resBody,
 		expectedJson,
+		resBody,
 		"Tentar atualizar uma categoria passando um uuid inválido deveria retornar o erro " + domain.CATEGORY_NOT_EXISTS.Error())
 }
 

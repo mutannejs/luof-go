@@ -73,7 +73,7 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_Error() {
 			"isMain": domain.MockLink.Name,
 		})
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"categoryUid"}) 
+	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
 }
 
 func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_NotExists() {
@@ -90,8 +90,8 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		resBody,
 		expectedJson,
+		resBody,
 		"Tentar alternar a categoria principal de um link, ambos não relacionados, deveria retornar erro contendo " + domain.NOT_BELONGS.Error())
 }
 

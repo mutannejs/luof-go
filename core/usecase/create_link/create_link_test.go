@@ -34,18 +34,18 @@ func TestCreateLink(t *testing.T) {
 	// argumentos passados à função
 	// ! Pode estar errada, mesmo que NewLink tenha sido corretamente
 	// implementada
-	assert.Equal(link.Url, mockLink.Url)
-	assert.Equal(link.Name, mockLink.Name)
-	assert.Equal(link.Description.Content, mockLink.Description.Content)
-	assert.Equal(link.Description.UseMarkdown, mockLink.Description.UseMarkdown)
+	assert.Equal(mockLink.Url, link.Url)
+	assert.Equal(mockLink.Name, link.Name)
+	assert.Equal(mockLink.Description.Content, link.Description.Content)
+	assert.Equal(mockLink.Description.UseMarkdown, link.Description.UseMarkdown)
 	assert.NotZero(link.CreatedAt)
 	assert.Zero(link.UpdatedAt)
 
 	// Testa o retorno da função
 	assert.NotZero(
-					uid,
-					"Criação com dados válidos deveria retornar um uuid diferente de zero")
+		uid,
+		"Criação com dados válidos deveria retornar um uuid diferente de zero")
 	assert.NoError( 
-					err,
-					"Criação com dados válidos não deveria retornar erro")
+		err,
+		"Criação com dados válidos não deveria retornar erro")
 }

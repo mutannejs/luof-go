@@ -8,7 +8,6 @@ import (
 )
 
 var (
-	// DB var
 	ENV_DB_NOT_FOUND = errors.New("the 'DB' env var not found")
 	ENV_DB_INVALID = errors.New("the 'DB' env var is invalid, it should be: sqlite")
 )

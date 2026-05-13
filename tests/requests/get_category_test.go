@@ -47,7 +47,7 @@ func (ts *GetCategoryTestSuite) TestGetCategory() {
 func (ts *GetCategoryTestSuite) TestGetCategory_ParamRequired() {
 	res, _ := ts.get(map[string]string{"categoryId": domain.MockUidCategory.String()}, nil)
 
-	ts.ElementsMatch(ltests.GetErrorKeys(res.Body()), []string{"categoryUid"}) 
+	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body())) 
 }
 
 func (ts *GetCategoryTestSuite) TestGetCategory_NotExists() {
@@ -58,8 +58,8 @@ func (ts *GetCategoryTestSuite) TestGetCategory_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		resBody,
 		expectedJson,
+		resBody,
 		"Tentar recuperar uma categoria passando um uuid inválido deveria retornar o erro " + domain.CATEGORY_NOT_EXISTS.Error())
 }
 
