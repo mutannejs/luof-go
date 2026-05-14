@@ -18,8 +18,8 @@ import (
 type ParamsErrors map[string]string
 
 type ResponseError struct {
-	Message string
-	Errors ParamsErrors
+	Message string `json:"message"`
+	Errors ParamsErrors `json:"errors"`
 }
 
 type RequestValues struct {

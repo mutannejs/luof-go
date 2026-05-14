@@ -51,7 +51,7 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 
 - [X] Melhorar logs
 - [X] API
-- [ ] Testar
+- [X] Testar
 - [ ] Documentar
 
 ### Testes
