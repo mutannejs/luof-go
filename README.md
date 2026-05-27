@@ -49,9 +49,6 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 
 ### Próximas etapas
 
-- [X] Melhorar logs
-- [X] API
-- [X] Testar
 - [ ] Documentar
 
 ### Testes

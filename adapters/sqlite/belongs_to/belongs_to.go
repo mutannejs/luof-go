@@ -110,7 +110,7 @@ func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, er
 	if len(links) == 0 {
 		links = make([]domain.Link, 0, 0)
 	}
-	
+
 	err = rows.Err()
 	rows.Close()
 
