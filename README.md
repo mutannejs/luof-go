@@ -86,3 +86,4 @@ Esse repositório é parte de uma reformulação do projeto de mesmo nome dispon
 * Ports & Adapters Examples: https://github.com/nrjohnstone/ports-adapters-examples
 * Hexagonal Architecture in Go: https://medium.com/@matiasvarela/hexagonal-architecture-in-go-cfd4e436faa3
 * Testing in Go with Testify: https://betterstack.com/community/guides/scaling-go/golang-testify/
+* Padrões de commits: https://github.com/iuricode/padroes-de-commits
