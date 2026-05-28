@@ -15,6 +15,7 @@ type ReadCategory interface {
 
 type ReadSubcategory interface {
 	AreRelated(uuid.UUID, uuid.UUID) (bool, error)
+	GetAllRootCategories() ([]domain.Category, error)
 	GetSubcategories(uuid.UUID) ([]domain.Category, error)
 	HasSubcategories(uuid.UUID) (bool, error)
 	IsAncestor(uuid.UUID, uuid.UUID) (bool, error)

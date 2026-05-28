@@ -1,5 +1,7 @@
 # Git
 
+Essa documentação informa quais os padrões e melhores práticas seguidas ao desenvolver este projeto, no que diz respeito à manipulação e uso do **git**.
+
 ## Padrões de commit
 
 Todo commit deve seguir o seguinte padrão:
