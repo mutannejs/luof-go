@@ -13,10 +13,10 @@ func New(repo repository.Category) GetAllRootCategories {
 	return GetAllRootCategories{repo}
 }
 
-func (garcUseCase GetAllRootCategories) Execute() (
+func (garcUseCase *GetAllRootCategories) Execute() (
 	categories []domain.Category,
 	err error,
 ) {
-	categories, err := garcUseCase.Repo.GetAllRootCategories()
+	categories, err = garcUseCase.Repo.GetAllRootCategories()
 	return
 }
