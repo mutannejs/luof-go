@@ -20,7 +20,9 @@ func TestInsertLinkInCategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
 	var btRepo = repository.NewBelongsToMockRepository()
-	var ilic = New(btRepo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var lRepo = repository.NewLinkMockRepository()
+	var ilic = New(btRepo, cRepo, lRepo)
 
 	btRepo.
 		On(
@@ -51,7 +53,9 @@ func TestInsertLinkInCategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
 	var btRepo = repository.NewBelongsToMockRepository()
-	var ilic = New(btRepo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var lRepo = repository.NewLinkMockRepository()
+	var ilic = New(btRepo, cRepo, lRepo)
 
 	btRepo.
 		On(
