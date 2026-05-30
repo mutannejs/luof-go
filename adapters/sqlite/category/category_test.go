@@ -275,6 +275,8 @@ func (ts *TestSuite) TestInsertSubcategory() {
 	ts.True( isSubcategory, "IsSubcategory deveria retornar true para uma relação criada usando InsertSubcategory")
 }
 
+func (ts *TestSuite) TestGetAllRootCategories_Empty() {}
+
 func (ts *TestSuite) TestGetSubcategories_Empty() {
 	ts.makeTree()
 
