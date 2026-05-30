@@ -6,10 +6,9 @@ Essa documentação informa quais os padrões e melhores práticas seguidas ao d
 
 Todo commit deve seguir o seguinte padrão:
 
-```
-tipo_commit(local): breve descrição ou principal ponto do commit\n
-maiores explicações do commit, ou outros pontos relevantes (opcional)
-```
+> tipo_commit(local): breve descrição ou principal ponto do commit\n
+> maiores explicações do commit, ou outros pontos relevantes (opcional)
+
 
 ### Tipos de commit
 
