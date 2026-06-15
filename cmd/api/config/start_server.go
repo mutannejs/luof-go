@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/mutannejs/luof-go/cmd/api/routes"
 	"github.com/mutannejs/luof-go/core/repository"
 
 	"github.com/labstack/echo/v4"
@@ -23,8 +24,8 @@ func StartServer(env map[string]string, repositories repository.Repositories) er
 
 	e.HideBanner = true
 
-	setRootRoutes(e)
 	setMiddleware(e, repositories)
+	routes.SetRootRoutes(e)
 
 	return e.Start(address)
 }
