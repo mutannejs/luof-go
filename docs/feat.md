@@ -306,3 +306,49 @@ func (cr *Category) DeleteSubcategory(
 	return
 }
 ```
+
+#### Teste em repositórios
+
+Os testes unitários de um repositório utilizam um banco de dados de teste, mockado durante a execução dos testes e limpo no final. Para que esse comportamento seja respeitado, alguns métodos devem ser definidos e corretamente implementados:
+
+- Em `SetupSuite` o banco de dados em ambiente de teste é carregado na versão necessária para seu funcionamento.
+- Pode também inserir dados na base, caso estes não impactem na previsibilidade dos testes.
+
+**Exemplo**:
+
+```go
+var (
+	categoryTableMigration uint = 1765719599
+...
+func (ts *TestSuite) SetupSuite() {
+	env, _ := lenv.LoadTest()
+	db, _ := sqlite.GetConnection(env)
+	lmigration.Migrate(db, categoryTableMigration, sqlite.GetMigration)
+	cr := New(db)
+
+	ts.env = env
+	ts.db = db
+	ts.cr = cr
+}
+```
+
+- `TearDownTest` deve limpar o banco para que cada teste seja executado em condições previsíveis.
+
+**Exemplo**:
+
+```go
+func (ts *TestSuite) TearDownTest() {
+	ts.db.Exec("DELETE FROM category")
+}
+```
+
+- `TearDownSuite` deve limpar o banco completamente.
+
+**Exemplo**:
+
+```go
+func (ts *TestSuite) TearDownSuite() {
+	lmigration.Drop(ts.db, sqlite.GetMigration)
+	ts.db.Close()
+}
+```

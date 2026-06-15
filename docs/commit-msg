@@ -2,7 +2,7 @@
 
 COMMIT_MESSAGE=$(cat "$1")
 COMMIT_TYPES="fix|feat|docs|test|perf|refactor|chore|cleanup|remove"
-COMMIT_REGEX='^('${COMMIT_TYPES}')(\([a-zA-Z0-9_]+\))?:\s.*$'
+COMMIT_REGEX='^('${COMMIT_TYPES}')(\([a-zA-Z0-9_/]+\))?:\s.*$'
 
 if ! [[ $COMMIT_MESSAGE =~ $COMMIT_REGEX ]]; then
 	echo -e "ERRO:\tA mensagem do commit não segue o padrão esperado:"
