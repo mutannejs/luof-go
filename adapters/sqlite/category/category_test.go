@@ -275,7 +275,24 @@ func (ts *TestSuite) TestInsertSubcategory() {
 	ts.True( isSubcategory, "IsSubcategory deveria retornar true para uma relação criada usando InsertSubcategory")
 }
 
-func (ts *TestSuite) TestGetAllRootCategories_Empty() {}
+func (ts *TestSuite) TestGetAllRootCategories_Empty() {
+	categories, err := ts.cr.GetAllRootCategories()
+
+	ts.NoError(err, "Tentar recuperar todas categorias raíz não deveria retornar erro")
+	ts.Empty(categories, "Tentar recuperar todas categorias raíz sem que nenhuma categoria tenha sido inserida deveria retornar uma lista vazia")
+}
+
+func (ts *TestSuite) TestGetAllRootCategories_NotEmpty() {
+	ts.makeTree()
+
+	categories, err := ts.cr.GetAllRootCategories()
+
+	ts.NoError(err, "Tentar recuperar todas categorias raíz não deveria retornar erro")
+	ts.Len(
+		categories,
+		2,
+		"Tentar recuperar todas categorias raíz deveria retornar uma lista contendo a quantidade correta de categorias raíz")
+}
 
 func (ts *TestSuite) TestGetSubcategories_Empty() {
 	ts.makeTree()
