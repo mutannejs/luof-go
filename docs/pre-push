@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+ERRORS=$((go vet ./...) 2>&1)
+
+if ! [[ -z "$ERRORS" ]]; then
+	echo -e "ERRO:\tCorrija todos os erros no repositório antes de enviar alterações pro repositório remoto\n"
+	echo -e "$ERRORS"
+	exit 1
+fi
+
+exit 0

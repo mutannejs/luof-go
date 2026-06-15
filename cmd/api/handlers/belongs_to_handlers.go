@@ -65,7 +65,10 @@ func InsertLinkInCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	ilic := insert_link_in_category.New(cc.Repositories.BelongsTo)
+	ilic := insert_link_in_category.New(
+		cc.Repositories.BelongsTo,
+		cc.Repositories.Category,
+		cc.Repositories.Link)
 	err = ilic.Execute(
 		linkUid,
 		categoryUid,
