@@ -7,6 +7,7 @@ import (
 )
 
 func setApiCategoriesRoutes(categories *echo.Group) {
+	categories.GET("/", handlers.GetAllRootCategories)
 	categories.GET("/:categoryUid/", handlers.GetCategoryByUid)
 	categories.POST("/", handlers.CreateCategory)
 	categories.DELETE("/:categoryUid/", handlers.DeleteCategory)

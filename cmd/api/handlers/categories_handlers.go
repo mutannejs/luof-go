@@ -7,6 +7,7 @@ import (
 	"github.com/mutannejs/luof-go/cmd/api/types"
 	"github.com/mutannejs/luof-go/core/usecase/create_category"
 	"github.com/mutannejs/luof-go/core/usecase/delete_category"
+	"github.com/mutannejs/luof-go/core/usecase/get_all_root_categories"
 	"github.com/mutannejs/luof-go/core/usecase/get_category_by_uid"
 	"github.com/mutannejs/luof-go/core/usecase/get_subcategories"
 	"github.com/mutannejs/luof-go/core/usecase/insert_subcategory"
@@ -16,6 +17,19 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
+
+func GetAllRootCategories(echoContext echo.Context) error {
+	var cc = echoContext.(*custom.Context)
+
+	garc := get_all_root_categories.New(cc.Repositories.Category)
+	categories, err := garc.Execute()
+
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
+
+	return cc.JSON(http.StatusOK, categories)
+}
 
 func GetCategoryByUid(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)

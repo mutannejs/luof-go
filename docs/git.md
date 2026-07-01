@@ -16,7 +16,7 @@ Todo commit deve seguir o seguinte padrão:
 - **feat**: implementação de uma nova feature, por exemplo, de um novo caso de uso
 - **docs**: documentação criada ou modificada
 - **test**: teste criado ou modificado
-- **perf**: alterações que`impactam na performance
+- **perf**: alterações que impactam na performance
 - **refactor**: refatoração de um ou mais trechos de código
 - **chore**: alterações que não foram aplicadas no código fonte
 - **cleanup**: limpeza de código
