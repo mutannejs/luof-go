@@ -1,7 +1,7 @@
-package routes
+package route
 
 import (
-	"github.com/mutannejs/luof-go/cmd/api/handlers"
+	"github.com/mutannejs/luof-go/cmd/api/handler"
 
 	"github.com/labstack/echo/v4"
 )
@@ -18,5 +18,5 @@ func setApiRoutes(api *echo.Group) {
 	var categories *echo.Group = api.Group("/categories")
 	setApiCategoriesRoutes(categories)
 
-	api.GET("/", handlers.GetApi)
+	api.GET("/", handler.GetApi)
 }

@@ -1,10 +1,10 @@
-package handlers
+package handler
 
 import (
 	"net/http"
 
 	"github.com/mutannejs/luof-go/cmd/api/custom"
-	"github.com/mutannejs/luof-go/cmd/api/types"
+	"github.com/mutannejs/luof-go/cmd/api/interface"
 	"github.com/mutannejs/luof-go/core/usecase/create_link"
 	"github.com/mutannejs/luof-go/core/usecase/delete_link"
 	"github.com/mutannejs/luof-go/core/usecase/get_link_by_uid"
@@ -16,11 +16,11 @@ import (
 
 func GetLinkByUid(c echo.Context) error {
 	var cc = c.(*custom.Context)
-	var gl types.GetLink
+	var gl interfaces.GetLink
 
 	if err := cc.ExecRequetParamsOperations(
 		&gl,
-		&types.GetLinkSchema,
+		&interfaces.GetLinkSchema,
 	); err != nil {
 		return err
 	}
@@ -42,11 +42,11 @@ func GetLinkByUid(c echo.Context) error {
 
 func CreateLink(c echo.Context) error {
 	var cc = c.(*custom.Context)
-	var l = types.SaveLink{}
+	var l = interfaces.SaveLink{}
 
 	if err := cc.ExecRequetJSONOperations(
 		&l,
-		&types.SaveLinkSchema,
+		&interfaces.SaveLinkSchema,
 	); err != nil {
 		return err
 	}
@@ -67,11 +67,11 @@ func CreateLink(c echo.Context) error {
 
 func DeleteLink(c echo.Context) error {
 	var cc = c.(*custom.Context)
-	var gl types.GetLink
+	var gl interfaces.GetLink
 
 	if err := cc.ExecRequetParamsOperations(
 		&gl,
-		&types.GetLinkSchema,
+		&interfaces.GetLinkSchema,
 	); err != nil {
 		return err
 	}
@@ -93,12 +93,12 @@ func DeleteLink(c echo.Context) error {
 
 func UpdateLink(c echo.Context) error {
 	var cc = c.(*custom.Context)
-	var l = types.SaveLink{}
-	var gl = types.GetLink{}
+	var l = interfaces.SaveLink{}
+	var gl = interfaces.GetLink{}
 
 	if err := cc.ExecRequetOperations(
 		custom.RequestValues{ JsonBody: &l, Params: &gl },
-		custom.RequestValidations{ JsonBody: types.SaveLinkSchema, Params: types.GetLinkSchema },
+		custom.RequestValidations{ JsonBody: interfaces.SaveLinkSchema, Params: interfaces.GetLinkSchema },
 	); err != nil {
 		return err
 	}
