@@ -352,3 +352,23 @@ func (ts *TestSuite) TearDownSuite() {
 	ts.db.Close()
 }
 ```
+
+## Cmd
+
+Em `cmd` estão localizadas todas as interfaces do projeto, podendo ser, por exemplo, uma API ou uma CLI.
+
+Cada interface tem sua própria `main`.
+
+### API
+
+Baseada no padrão REST, a API utiliza o framework **echo** para implementar um servidor HTTP.
+
+Além da `main`, há alguns subdiretórios na pasta, sendo eles:
+
+> ToDo
+
+- **custom**:
+- **handler**:
+- **interface**:
+- **middleware**:
+- **route**:
