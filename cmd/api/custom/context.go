@@ -56,8 +56,18 @@ func (cc *Context) InfoLog() *zerolog.Event {
 }
 
 func (cc *Context) LogAndReturnErr(err error) error {
-	cc.ErrLog().Err(err).Send()
-	return echo.NewHTTPError(http.StatusBadRequest, err)
+	var errMsg = errors.Unwrap(err)
+	var statusError int
+
+	if errMsg == nil || strings.HasPrefix(err.Error(), "400") {
+		statusError = http.StatusBadRequest
+		errMsg = err
+	} else if strings.HasPrefix(err.Error(), "500") {
+		statusError = http.StatusInternalServerError
+	}
+
+	cc.ErrLog().Err(errMsg).Send()
+	return echo.NewHTTPError(statusError, errMsg)
 }
 
 func (cc *Context) ExecRequetParamsOperations(
@@ -115,7 +125,7 @@ func (cc *Context) setJsonBody(
 	if jsonBodyErr != nil || bodyByteSliceErr != nil {
 		cc.errorResp = &ResponseError{}
 		cc.errorResp.Message = JSON_BODY_ERR
-	} else if (validations.JsonBody != nil) {
+	} else if validations.JsonBody != nil {
 		parseErrs := validations.JsonBody.Parse(jsonBody, values.JsonBody)
 		cc.setValidateErr(parseErrs)
 	}
@@ -140,7 +150,7 @@ func (cc *Context) setparamsByteSlice(
 	if paramsByteSliceErr != nil {
 		cc.errorResp = &ResponseError{}
 		cc.errorResp.Message = PARAMS_ERR
-	} else if (validations.Params != nil) {
+	} else if validations.Params != nil {
 		parseErrs := validations.Params.Parse(pathParamsMap, values.Params)
 		cc.setValidateErr(parseErrs)
 	}
@@ -207,7 +217,7 @@ func (cc *Context) logRequest(
 		logReq = logReq.RawJSON("json_body", bodyByteSlice)
 	}
 
-	if (len(paramsByteSlice) != 0) {
+	if len(paramsByteSlice) != 0 {
 		logReq = logReq.RawJSON("params_path", paramsByteSlice)
 	}
 

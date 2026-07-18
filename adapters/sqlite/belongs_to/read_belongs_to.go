@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -26,6 +27,8 @@ func (btr *BelongsTo) Exists(
 	if err == sql.ErrNoRows {
 		err = nil
 	}
+
+	lerror.Internal(&err)
 
 	return
 }
@@ -50,10 +53,11 @@ func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, er
 		uid)
 
 	if err != nil {
+		lerror.Internal(&err)
 		return
 	}
 
-	links = make([]domain.Link, 0, 0)
+	links = make([]domain.Link, 0)
 	var l domain.Link
 	var uidLinkStr string
 	var uidLink uuid.UUID
@@ -85,6 +89,7 @@ func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, er
 
 	err = rows.Err()
 	rows.Close()
+	lerror.Internal(&err)
 
 	return
 }
@@ -101,6 +106,8 @@ func (btr *BelongsTo) HasLinks(
 	if err == sql.ErrNoRows {
 		err = nil
 	}
+
+	lerror.Internal(&err)
 
 	return
 }

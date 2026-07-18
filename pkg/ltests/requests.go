@@ -87,7 +87,7 @@ func GetErrorKeys(res []byte) (keys []string) {
 		return nil
 	}
 
-	for key, _ := range errors["Errors"].(map[string]any) {
+	for key := range errors["errors"].(map[string]any) {
 		keys = append(keys, key)
 	}
 

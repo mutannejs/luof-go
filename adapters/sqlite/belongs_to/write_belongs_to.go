@@ -3,6 +3,8 @@ package belongs_to
 import (
 	"time"
 
+	"github.com/mutannejs/luof-go/pkg/lerror"
+
 	"github.com/google/uuid"
 )
 
@@ -28,6 +30,8 @@ func (btr *BelongsTo) Create(
 		insertedAt,
 		isMain)
 
+	lerror.Internal(&err)
+
 	return
 }
 
@@ -42,6 +46,8 @@ func (btr *BelongsTo) Delete(
 		linkUid,
 		categoryUid)
 
+	lerror.Internal(&err)
+
 	return
 }
 
@@ -55,6 +61,8 @@ func (btr *BelongsTo) SetHasNoMainCategory(
 			WHERE uid_link = ? AND is_main = true
 		`,
 		linkUid)
+
+	lerror.Internal(&err)
 
 	return
 }
@@ -73,6 +81,8 @@ func (btr *BelongsTo) Update(
 		isMain,
 		linkUid,
 		categoryUid)
+
+	lerror.Internal(&err)
 
 	return
 }
