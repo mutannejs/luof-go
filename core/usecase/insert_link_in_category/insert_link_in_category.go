@@ -10,11 +10,13 @@ import (
 )
 
 type InsertLinkInCategory struct {
-	Repo repository.BelongsTo
+	BelongsToRepo repository.BelongsTo
+	CategoryRepo repository.Category
+	LinkRepo repository.Link
 }
 
-func New(repo repository.BelongsTo) InsertLinkInCategory {
-	return InsertLinkInCategory{repo}
+func New(btRepo repository.BelongsTo, cRepo repository.Category, lRepo repository.Link) InsertLinkInCategory {
+	return InsertLinkInCategory{btRepo, cRepo, lRepo}
 }
 
 func (ilicUseCase *InsertLinkInCategory) Execute(
@@ -24,7 +26,7 @@ func (ilicUseCase *InsertLinkInCategory) Execute(
 ) (err error) {
 	var exists bool
 
-	exists, err = ilicUseCase.Repo.Exists(linkUid, categoryUid)
+	exists, err = ilicUseCase.BelongsToRepo.Exists(linkUid, categoryUid)
 
 	if err != nil {
 		return
@@ -32,9 +34,24 @@ func (ilicUseCase *InsertLinkInCategory) Execute(
 		return domain.ALREADY_BELONGS
 	}
 
-	err = ilicUseCase.Repo.SetHasNoMainCategory(linkUid)
+	exists, err = ilicUseCase.CategoryRepo.Exists(categoryUid)
 
-	err = ilicUseCase.Repo.Create(linkUid, categoryUid, time.Now(), isMain)
+	if err != nil {
+		return
+	} else if !exists {
+		return domain.CATEGORY_NOT_EXISTS
+	}
+
+	exists, err = ilicUseCase.LinkRepo.Exists(linkUid)
+
+	if err != nil {
+		return
+	} else if !exists {
+		return domain.LINK_NOT_EXISTS
+	}
+
+	err = ilicUseCase.BelongsToRepo.SetHasNoMainCategory(linkUid)
+	err = ilicUseCase.BelongsToRepo.Create(linkUid, categoryUid, time.Now(), isMain)
 
 	return
 }

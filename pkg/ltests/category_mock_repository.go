@@ -41,6 +41,11 @@ func (repo *CategoryMockRepository[T]) Exists(uid uuid.UUID) (bool, error) {
 	return args.Bool(0), args.Error(1)
 }
 
+func (repo *CategoryMockRepository[T]) GetAllRootCategories() ([]T, error) {
+	args := repo.Called()
+	return args.Get(0).([]T), args.Error(1)
+}
+
 func (repo *CategoryMockRepository[T]) GetByUid(uid uuid.UUID) (T, error) {
 	args := repo.Called(uid)
 	return args.Get(0).(T), args.Error(1)

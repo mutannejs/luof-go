@@ -6,12 +6,19 @@ import (
 	"time"
 
 	"github.com/mutannejs/luof-go/adapters"
-	"github.com/mutannejs/luof-go/cmd/api/config"
+	"github.com/mutannejs/luof-go/cmd/api/middleware"
+	"github.com/mutannejs/luof-go/cmd/api/route"
+	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/lmigration"
 
+	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+)
+
+const (
+	DEFAULT_PORT = "8123"
 )
 
 func main() {
@@ -61,7 +68,26 @@ func main() {
 		log.Info().Msg("migrations completed successfully")
 	}
 
-	if config.StartServer(env, repoSettings.GetRepositories(db)) != nil {
+	if startServer(env, repoSettings.GetRepositories(db)) != nil {
 		log.Error().Err(err).Msg("error start server api")
 	}
+}
+
+func startServer(env map[string]string, repositories repository.Repositories) error {
+	var address string
+
+	if envPort, exists := env["SERVER_PORT"]; exists {
+		address = ":" + envPort
+	} else {
+		address = ":" + DEFAULT_PORT
+	}
+
+	var e *echo.Echo = echo.New()
+
+	e.HideBanner = true
+
+	middleware.SetMiddleware(e, repositories)
+	route.SetRootRoutes(e)
+
+	return e.Start(address)
 }

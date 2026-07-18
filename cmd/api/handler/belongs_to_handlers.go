@@ -1,10 +1,10 @@
-package handlers
+package handler
 
 import (
 	"net/http"
 
 	"github.com/mutannejs/luof-go/cmd/api/custom"
-	"github.com/mutannejs/luof-go/cmd/api/types"
+	"github.com/mutannejs/luof-go/cmd/api/interface"
 	"github.com/mutannejs/luof-go/core/usecase/get_links_by_category"
 	"github.com/mutannejs/luof-go/core/usecase/insert_link_in_category"
 	"github.com/mutannejs/luof-go/core/usecase/remove_link_from_category"
@@ -16,11 +16,11 @@ import (
 
 func GetLinksByCategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var gc types.GetCategory
+	var gc interfaces.GetCategory
 
 	if err := cc.ExecRequetParamsOperations(
 		&gc,
-		&types.GetCategorySchema,
+		&interfaces.GetCategorySchema,
 	); err != nil {
 		return err
 	}
@@ -42,14 +42,14 @@ func GetLinksByCategory(echoContext echo.Context) error {
 
 func InsertLinkInCategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var gc types.GetCategory
-	var cbt types.CreateBelongsTo
+	var gc interfaces.GetCategory
+	var cbt interfaces.CreateBelongsTo
 
 	if err := cc.ExecRequetOperations(
 		custom.RequestValues{ Params: &gc, JsonBody: &cbt },
 		custom.RequestValidations{
-			Params : types.GetCategorySchema,
-			JsonBody: types.CreateBelongsToSchema,
+			Params : interfaces.GetCategorySchema,
+			JsonBody: interfaces.CreateBelongsToSchema,
 		},
 	); err != nil {
 		return err
@@ -65,7 +65,10 @@ func InsertLinkInCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	ilic := insert_link_in_category.New(cc.Repositories.BelongsTo)
+	ilic := insert_link_in_category.New(
+		cc.Repositories.BelongsTo,
+		cc.Repositories.Category,
+		cc.Repositories.Link)
 	err = ilic.Execute(
 		linkUid,
 		categoryUid,
@@ -80,11 +83,11 @@ func InsertLinkInCategory(echoContext echo.Context) error {
 
 func RemoveLinkFromCategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var gbt types.GetBelongsTo
+	var gbt interfaces.GetBelongsTo
 
 	if err := cc.ExecRequetParamsOperations(
 		&gbt,
-		&types.GetBelongsToSchema,
+		&interfaces.GetBelongsToSchema,
 	); err != nil {
 		return err
 	}
@@ -111,8 +114,8 @@ func RemoveLinkFromCategory(echoContext echo.Context) error {
 
 func ToggleMainCategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var gbt types.GetBelongsTo
-	var ubt types.UpdateBelongsTo
+	var gbt interfaces.GetBelongsTo
+	var ubt interfaces.UpdateBelongsTo
 
 	if err := cc.ExecRequetOperations(
 		custom.RequestValues{
@@ -120,8 +123,8 @@ func ToggleMainCategory(echoContext echo.Context) error {
 			JsonBody: &ubt,
 		},
 		custom.RequestValidations{
-			Params : types.GetBelongsToSchema,
-			JsonBody: types.UpdateBelongsToSchema,
+			Params : interfaces.GetBelongsToSchema,
+			JsonBody: interfaces.UpdateBelongsToSchema,
 		},
 	); err != nil {
 		return err

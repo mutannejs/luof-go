@@ -1,4 +1,4 @@
-package types
+package interfaces
 
 import (
 	z "github.com/Oudwins/zog"

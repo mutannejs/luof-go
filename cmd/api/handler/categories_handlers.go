@@ -1,12 +1,13 @@
-package handlers
+package handler
 
 import (
 	"net/http"
 
 	"github.com/mutannejs/luof-go/cmd/api/custom"
-	"github.com/mutannejs/luof-go/cmd/api/types"
+	"github.com/mutannejs/luof-go/cmd/api/interface"
 	"github.com/mutannejs/luof-go/core/usecase/create_category"
 	"github.com/mutannejs/luof-go/core/usecase/delete_category"
+	"github.com/mutannejs/luof-go/core/usecase/get_all_root_categories"
 	"github.com/mutannejs/luof-go/core/usecase/get_category_by_uid"
 	"github.com/mutannejs/luof-go/core/usecase/get_subcategories"
 	"github.com/mutannejs/luof-go/core/usecase/insert_subcategory"
@@ -17,13 +18,26 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func GetAllRootCategories(echoContext echo.Context) error {
+	var cc = echoContext.(*custom.Context)
+
+	garc := get_all_root_categories.New(cc.Repositories.Category)
+	categories, err := garc.Execute()
+
+	if err != nil {
+		return cc.LogAndReturnErr(err)
+	}
+
+	return cc.JSON(http.StatusOK, categories)
+}
+
 func GetCategoryByUid(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var gc types.GetCategory
+	var gc interfaces.GetCategory
 
 	if err := cc.ExecRequetParamsOperations(
 		&gc,
-		&types.GetCategorySchema,
+		&interfaces.GetCategorySchema,
 	); err != nil {
 		return err
 	}
@@ -45,11 +59,11 @@ func GetCategoryByUid(echoContext echo.Context) error {
 
 func GetSubcategories(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var gc types.GetCategory
+	var gc interfaces.GetCategory
 
 	if err := cc.ExecRequetParamsOperations(
 		&gc,
-		&types.GetCategorySchema,
+		&interfaces.GetCategorySchema,
 	); err != nil {
 		return err
 	}
@@ -75,11 +89,11 @@ func GetSubcategories(echoContext echo.Context) error {
 
 func CreateCategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var c = types.SaveCategory{}
+	var c = interfaces.SaveCategory{}
 
 	if err := cc.ExecRequetJSONOperations(
 		&c,
-		&types.SaveCategorySchema,
+		&interfaces.SaveCategorySchema,
 	); err != nil {
 		return err
 	}
@@ -99,11 +113,11 @@ func CreateCategory(echoContext echo.Context) error {
 
 func DeleteCategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var gc types.GetCategory
+	var gc interfaces.GetCategory
 
 	if err := cc.ExecRequetParamsOperations(
 		&gc,
-		&types.GetCategorySchema,
+		&interfaces.GetCategorySchema,
 	); err != nil {
 		return err
 	}
@@ -125,12 +139,12 @@ func DeleteCategory(echoContext echo.Context) error {
 
 func InsertSubcategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var c = types.GetCategory{}
-	var s = types.SaveSubcategory{}
+	var c = interfaces.GetCategory{}
+	var s = interfaces.SaveSubcategory{}
 
 	if err := cc.ExecRequetOperations(
 		custom.RequestValues{ JsonBody: &s, Params: &c },
-		custom.RequestValidations{ JsonBody: types.SaveSubcategorySchema, Params: types.GetCategorySchema },
+		custom.RequestValidations{ JsonBody: interfaces.SaveSubcategorySchema, Params: interfaces.GetCategorySchema },
 	); err != nil {
 		return err
 	}
@@ -159,11 +173,11 @@ func InsertSubcategory(echoContext echo.Context) error {
 
 func RemoveSubcategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var rs types.RemoveSubcategory
+	var rs interfaces.RemoveSubcategory
 
 	if err := cc.ExecRequetParamsOperations(
 		&rs,
-		&types.RemoveSubcategorySchema,
+		&interfaces.RemoveSubcategorySchema,
 	); err != nil {
 		return err
 	}
@@ -190,12 +204,12 @@ func RemoveSubcategory(echoContext echo.Context) error {
 
 func UpdateCategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
-	var c = types.SaveCategory{}
-	var gc = types.GetCategory{}
+	var c = interfaces.SaveCategory{}
+	var gc = interfaces.GetCategory{}
 
 	if err := cc.ExecRequetOperations(
 		custom.RequestValues{ JsonBody: &c, Params: &gc },
-		custom.RequestValidations{ JsonBody: types.SaveCategorySchema, Params: types.GetCategorySchema },
+		custom.RequestValidations{ JsonBody: interfaces.SaveCategorySchema, Params: interfaces.GetCategorySchema },
 	); err != nil {
 		return err
 	}
