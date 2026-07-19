@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+LERROR_INTERNAL="lerror.Internal"
+
+CHANGED_REPOSITORIES=$(git diff HEAD --name-only \
+    | grep '^adapters/sqlite/.*\.go$' \
+    | grep -v '\(get_repositories\|_test\)\.go$'
+)
+
+REPOSITORIES_WITH_ERRORS=()
+HAS_ERRORS=0
+
+for REP in $CHANGED_REPOSITORIES
+do
+    readarray -t RETURNS_LIST < <(grep return "$REP")
+    RETURNS_COUNT=${#RETURNS_LIST[@]}
+
+    readarray -t SET_INTERNAL_ERROR_LIST < <(grep "$LERROR_INTERNAL" "$REP")
+    SET_INTERNAL_ERROR_COUNT=${#SET_INTERNAL_ERROR_LIST[@]}
+
+    if [ "$RETURNS_COUNT" -gt "$SET_INTERNAL_ERROR_COUNT" ]; then
+        echo "Erro: $REP tem $RETURNS_COUNT chamadas à 'return', porém, tem somente $SET_INTERNAL_ERROR_COUNT chamadas à '$LERROR_INTERNAL'"
+        HAS_ERRORS=1
+    fi
+done
+
+exit $HAS_ERRORS

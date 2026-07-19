@@ -226,7 +226,7 @@ func (cr *Category) GetSubcategories(
 
 	err = rows.Err()
 	rows.Close()
-	
+
 	lerror.Internal(&err)
 	return
 }
@@ -243,7 +243,8 @@ func (cr *Category) HasSubcategories(
 	if err == sql.ErrNoRows {
 		err = nil
 	}
-
+	
+	lerror.Internal(&err)
 	return
 }
 
@@ -279,7 +280,7 @@ func (cr *Category) IsAncestor(
 	if err == sql.ErrNoRows {
 		err = nil
 	}
-	
+
 	lerror.Internal(&err)
 	return
 }
@@ -303,7 +304,7 @@ func (cr *Category) IsSubcategory(
 	if err == sql.ErrNoRows {
 		err = nil
 	}
-	
+
 	lerror.Internal(&err)
 	return
 }
