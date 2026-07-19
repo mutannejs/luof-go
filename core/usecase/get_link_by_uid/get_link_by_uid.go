@@ -3,6 +3,7 @@ package get_link_by_uid
 import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -27,7 +28,7 @@ func (glbuUseCase *GetLinkByUid) Execute(
 	}
 
 	if !exists {
-		err = domain.LINK_NOT_EXISTS
+		err = lerror.GetNotFound(domain.LINK_NOT_EXISTS)
 	} else {
 		link, err = glbuUseCase.Repo.GetByUid(uid)
 	}

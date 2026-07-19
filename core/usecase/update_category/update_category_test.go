@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -35,8 +36,8 @@ func TestUpdateCategory_NotExists(t *testing.T) {
 		exists,
 		"Não deveria ser possível atualizar uma categoria que não existe")
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		categoryNotExists,
-		err,
 		"Tentar atualizar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 

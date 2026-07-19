@@ -3,6 +3,7 @@ package delete_category
 import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -24,7 +25,7 @@ func (dcUseCase *DeleteCategory) Execute(
 	if err != nil {
 		return
 	} else if !exists {
-		return domain.CATEGORY_NOT_EXISTS
+		return lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	}
 
 	hasLinks, err := dcUseCase.BelongsToRepo.HasLinks(uid)
@@ -32,7 +33,7 @@ func (dcUseCase *DeleteCategory) Execute(
 	if err != nil {
 		return
 	} else if hasLinks {
-		return domain.HAS_LINKS
+		return lerror.GetConflict(domain.HAS_LINKS)
 	}
 
 	hasSubcategories, err := dcUseCase.CategoryRepo.HasSubcategories(uid)
@@ -40,7 +41,7 @@ func (dcUseCase *DeleteCategory) Execute(
 	if err != nil {
 		return
 	} else if hasSubcategories {
-		return domain.HAS_SUBCATEGORIES
+		return lerror.GetConflict(domain.HAS_SUBCATEGORIES)
 	}
 
 	return dcUseCase.CategoryRepo.Delete(uid)

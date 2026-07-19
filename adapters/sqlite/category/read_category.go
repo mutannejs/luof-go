@@ -68,7 +68,7 @@ func (cr *Category) AreRelated(
 		err = nil
 	}
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -83,7 +83,7 @@ func (cr *Category) Exists(uid uuid.UUID) (exists bool, err error) {
 		err = nil
 	}
 	
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -108,7 +108,7 @@ func (cr *Category) GetByUid(uid uuid.UUID) (l domain.Category, err error) {
 		l.SetUid(uid)
 	}
 	
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -131,7 +131,7 @@ func (cr *Category) GetAllRootCategories() (
 		`)
 
 	if err != nil {
-		lerror.Internal(&err)
+		lerror.SetInternal(&err)
 		return
 	}
 
@@ -167,7 +167,7 @@ func (cr *Category) GetAllRootCategories() (
 	err = rows.Err()
 	rows.Close()
 	
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -191,7 +191,7 @@ func (cr *Category) GetSubcategories(
 		uid)
 
 	if err != nil {
-		lerror.Internal(&err)
+		lerror.SetInternal(&err)
 		return
 	}
 
@@ -227,7 +227,7 @@ func (cr *Category) GetSubcategories(
 	err = rows.Err()
 	rows.Close()
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -244,7 +244,7 @@ func (cr *Category) HasSubcategories(
 		err = nil
 	}
 	
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -281,7 +281,7 @@ func (cr *Category) IsAncestor(
 		err = nil
 	}
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -305,6 +305,6 @@ func (cr *Category) IsSubcategory(
 		err = nil
 	}
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }

@@ -3,6 +3,7 @@ package get_links_by_category
 import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -28,7 +29,7 @@ func (glbcUseCase *GetLinksByCategory) Execute(
 	}
 
 	if !exists {
-		err = domain.CATEGORY_NOT_EXISTS
+		err = lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	} else {
 		links, err = glbcUseCase.BelongsToRepo.GetLinksByCategory(uid)
 	}

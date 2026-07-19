@@ -9,6 +9,7 @@ import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/lmigration"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/suite"
 )
@@ -96,7 +97,10 @@ func (ts *TestSuite) TestGetByUid_NotExists() {
 	category, err := ts.cr.GetByUid(uid)
 
 	ts.Empty(category, "Tentar recuperar uma categoria informando um uid inválido deveria retornar um Category vazio")
-	ts.ErrorIs(sql.ErrNoRows, err, "Tentar recuperar uma categoria informando um uid inválido deveria retornar " + sql.ErrNoRows.Error())
+	ts.ErrorIs(
+		ltests.GetMsgError(err),
+		sql.ErrNoRows,
+		"Tentar recuperar uma categoria informando um uid inválido deveria retornar " + sql.ErrNoRows.Error())
 }
 
 func (ts *TestSuite) TestExists() {
@@ -140,7 +144,10 @@ func (ts *TestSuite) TestDelete() {
 
 	_, err = ts.cr.GetByUid(mockUidCategory)
 
-	ts.ErrorIs(sql.ErrNoRows, err, "Tentar recuperar uma categoria previamente deletado deveria retornar " + sql.ErrNoRows.Error())
+	ts.ErrorIs(
+		ltests.GetMsgError(err),
+		sql.ErrNoRows,
+		"Tentar recuperar uma categoria previamente deletada deveria retornar " + sql.ErrNoRows.Error())
 }
 
 func (ts *TestSuite) TestHasSubcategories() {

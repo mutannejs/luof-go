@@ -49,7 +49,7 @@ func NewCategory(
 
 	uid, err = luuid.New()
 	if err != nil {
-		return Category{}, lerror.Internalf("%s: %w", CATEGORY_ERROR_NEW, err)
+		return Category{}, lerror.GetInternalf("%s: %w", CATEGORY_ERROR_NEW, err)
 	}
 
 	var createdAt time.Time = time.Now()

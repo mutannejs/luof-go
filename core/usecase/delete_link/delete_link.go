@@ -3,6 +3,7 @@ package delete_link
 import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -25,7 +26,7 @@ func (dlUseCase *DeleteLink) Execute(
 	}
 
 	if !exists {
-		err = domain.LINK_NOT_EXISTS
+		err = lerror.GetNotFound(domain.LINK_NOT_EXISTS)
 	} else {
 		err = dlUseCase.Repo.Delete(uid)
 	}

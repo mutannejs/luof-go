@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -24,7 +25,7 @@ func (isUseCase *InsertSubcategory) Execute(
 	var isAncestor, isSubcategory bool
 
 	if fatherUid == childUid {
-		return domain.CANNOT_BE_A_SUBCATEGORY_OF_ITSELF
+		return lerror.GetConflict(domain.CANNOT_BE_A_SUBCATEGORY_OF_ITSELF)
 	}
 
 	isSubcategory, err = isUseCase.Repo.IsSubcategory(fatherUid, childUid)
@@ -32,7 +33,7 @@ func (isUseCase *InsertSubcategory) Execute(
 	if err != nil {
 		return
 	} else if isSubcategory {
-		return domain.IS_SUBCATEGORY
+		return lerror.GetConflict(domain.IS_SUBCATEGORY)
 	}
 
 	isAncestor, err = isUseCase.Repo.IsAncestor(childUid, fatherUid)
@@ -40,7 +41,7 @@ func (isUseCase *InsertSubcategory) Execute(
 	if err != nil {
 		return
 	} else if isAncestor {
-		return domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY
+		return lerror.GetConflict(domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY)
 	}
 
 	var exists bool
@@ -50,7 +51,7 @@ func (isUseCase *InsertSubcategory) Execute(
 	if err != nil {
 		return
 	} else if !exists {
-		return domain.FATHER_NOT_EXISTS
+		return lerror.GetNotFound(domain.FATHER_NOT_EXISTS)
 	}
 
 	exists, err = isUseCase.Repo.Exists(childUid)
@@ -58,7 +59,7 @@ func (isUseCase *InsertSubcategory) Execute(
 	if err != nil {
 		return
 	} else if !exists {
-		return domain.CHILD_NOT_EXISTS
+		return lerror.GetNotFound(domain.CHILD_NOT_EXISTS)
 	}
 
 	err = isUseCase.Repo.InsertSubcategory(fatherUid, childUid, time.Now())

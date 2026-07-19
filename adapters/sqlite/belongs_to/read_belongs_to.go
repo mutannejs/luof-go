@@ -28,7 +28,7 @@ func (btr *BelongsTo) Exists(
 		err = nil
 	}
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -52,7 +52,7 @@ func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, er
 		uid)
 
 	if err != nil {
-		lerror.Internal(&err)
+		lerror.SetInternal(&err)
 		return
 	}
 
@@ -89,7 +89,7 @@ func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, er
 	err = rows.Err()
 	rows.Close()
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -106,6 +106,6 @@ func (btr *BelongsTo) HasLinks(
 		err = nil
 	}
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }

@@ -4,7 +4,7 @@ HAS_ERRORS=0
 
 function testRepositoriesInternalError()
 {
-    LERROR_INTERNAL="lerror.Internal"
+    LERROR_INTERNAL="lerror.SetInternal"
 
     CHANGED_REPOSITORIES=$(git diff HEAD --name-only \
         | grep '^adapters/sqlite/.*\.go$' \
@@ -20,7 +20,31 @@ function testRepositoriesInternalError()
         SET_INTERNAL_ERROR_COUNT=${#SET_INTERNAL_ERROR_LIST[@]}
 
         if [ "$RETURNS_COUNT" -gt "$SET_INTERNAL_ERROR_COUNT" ]; then
-            echo "Erro: $REP tem $RETURNS_COUNT chamada(s) à 'return', porém, tem somente $SET_INTERNAL_ERROR_COUNT chamada(s) à '$LERROR_INTERNAL'"
+            echo "Erro: $REP tem $RETURNS_COUNT chamada(s) à 'return', porém, tem $SET_INTERNAL_ERROR_COUNT chamada(s) à '$LERROR_INTERNAL'"
+            HAS_ERRORS=1
+        fi
+    done
+}
+
+function testNotFound()
+{
+    LERROR_NOTFOUND="lerror.GetNotFound"
+
+    CHANGED_USECASES=$(git diff HEAD --name-only \
+        | grep '^core/usecase/.*\.go$' \
+        | grep -v '_test\.go$'
+    )
+
+    for USECASE in $CHANGED_USECASES
+    do
+        readarray -t NOT_EXISTS_LIST < <(grep "!exists" "$USECASE")
+        NOT_EXISTS_COUNT=${#NOT_EXISTS_LIST[@]}
+
+        readarray -t GET_BADREQUEST_ERROR_LIST < <(grep "$LERROR_NOTFOUND" "$USECASE")
+        GET_BADREQUEST_ERROR_COUNT=${#GET_BADREQUEST_ERROR_LIST[@]}
+
+        if [ "$NOT_EXISTS_COUNT" -gt "$GET_BADREQUEST_ERROR_COUNT" ]; then
+            echo "Erro: $USECASE tem $NOT_EXISTS_COUNT verificações de existência de itens do domínio, porém, tem $GET_BADREQUEST_ERROR_COUNT chamada(s) à '$LERROR_NOTFOUND'"
             HAS_ERRORS=1
         fi
     done
@@ -28,7 +52,7 @@ function testRepositoriesInternalError()
 
 function testUuidError()
 {
-    LERROR_INTERNALF="lerror.Internalf"
+    LERROR_INTERNALF="lerror.GetInternalf"
 
     CHANGED_FILES=$(git diff HEAD --name-only)
 
@@ -41,13 +65,14 @@ function testUuidError()
         SET_INTERNALF_ERROR_COUNT=${#SET_INTERNALF_ERROR_LIST[@]}
 
         if [ "$LUUID_NEW_COUNT" -gt "$SET_INTERNALF_ERROR_COUNT" ]; then
-            echo "Erro: $FILE tem $LUUID_NEW_COUNT chamada(s) à 'luuid.New', porém, tem somente $SET_INTERNALF_ERROR_COUNT chamada(s) à '$LERROR_INTERNALF'"
+            echo "Erro: $FILE tem $LUUID_NEW_COUNT chamada(s) à 'luuid.New', porém, tem $SET_INTERNALF_ERROR_COUNT chamada(s) à '$LERROR_INTERNALF'"
             HAS_ERRORS=1
         fi
     done
 }
 
 testRepositoriesInternalError
+testNotFound
 testUuidError
 
 exit $HAS_ERRORS

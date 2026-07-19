@@ -30,7 +30,7 @@ func (cr *Category) Create(l domain.Category) (err error) {
 		l.CreatedAt,
 		l.UpdatedAt)
 		
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -39,7 +39,7 @@ func (cr *Category) Delete(uid uuid.UUID) (err error) {
 		`DELETE FROM category WHERE uid_category = ?`,
 		uid)
 		
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -54,7 +54,7 @@ func (cr *Category) DeleteSubcategory(
 		`,
 		childUid)
 		
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -74,7 +74,7 @@ func (cr *Category) InsertSubcategory(
 		updatedAt,
 		childUid)
 		
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -96,6 +96,6 @@ func (cr *Category) Update(uid uuid.UUID, l domain.Category) (err error) {
 		l.UpdatedAt,
 		uid)
 		
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }

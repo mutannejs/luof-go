@@ -19,7 +19,7 @@ func TestGetAllRootCategories_Empty(t *testing.T) {
 	var repo = repository.NewCategoryMockRepository()
 	var alrc = New(repo)
 
-	repo.On("GetAllRootCategories").Return(make([]domain.Category, 0, 0), nil)
+	repo.On("GetAllRootCategories").Return(make([]domain.Category, 0), nil)
 
 	categories, err := alrc.Execute()
 

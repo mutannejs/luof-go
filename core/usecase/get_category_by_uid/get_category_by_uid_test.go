@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -30,8 +31,8 @@ func TestGetCategoryByUid_NotExists(t *testing.T) {
 		category,
 		"Deveria ser retornado zero para um uid inválido")
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		categoryNotExists,
-		err,
 		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 

@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -51,8 +52,8 @@ func TestInsertSubcategory_AncestorBecomeASubcategory(t *testing.T) {
 	err := is.Execute(alternativeMockUidCategory, mockUidCategory)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		isAncestor,
-		err,
 		"Tentar inserir uma subcategoria em outra categoria, a primeira sendo ancestral da outra, deveria retornar erro contendo " + isAncestor.Error())
 }
 
@@ -91,8 +92,8 @@ func TestInsertSubcategory_ChildNotExists(t *testing.T) {
 	err := is.Execute(alternativeMockUidCategory, mockUidCategory)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		childNotExists,
-		err,
 		"Tentar inserir uma subcategoria que não existe em uma categoria válida deveria retornar erro contendo " + childNotExists.Error())
 }
 
@@ -127,8 +128,8 @@ func TestInsertSubcategory_Exists(t *testing.T) {
 	err := is.Execute(alternativeMockUidCategory, mockUidCategory)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		isSubcategory,
-		err,
 		"Tentar inserir uma subcategoria em outra categoria, ambas já relacionadas, deveria retornar erro contendo " + isSubcategory.Error())
 }
 
@@ -167,8 +168,8 @@ func TestInsertSubcategory_FatherNotExists(t *testing.T) {
 	err := is.Execute(alternativeMockUidCategory, mockUidCategory)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		fatherNotExists,
-		err,
 		"Tentar inserir uma subcategoria válida em uma categoria que não existe deveria retornar erro contendo " + fatherNotExists.Error())
 }
 
@@ -238,7 +239,7 @@ func TestInsertSubcategory_SubcategoryOfItself(t *testing.T) {
 	err := is.Execute(mockUidCategory, mockUidCategory)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		isSameCategory,
-		err,
 		"Tentar inserir uma subcategoria nela mesma deveria retornar erro contendo " + isSameCategory.Error())
 }

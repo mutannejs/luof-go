@@ -3,6 +3,7 @@ package remove_link_from_category
 import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -26,7 +27,7 @@ func (rlfcUseCase *RemoveLinkFromCategory) Execute(
 	if err != nil {
 		return
 	} else if !exists {
-		return domain.NOT_BELONGS
+		return lerror.GetNotFound(domain.NOT_BELONGS)
 	}
 
 	err = rlfcUseCase.Repo.Delete(linkUid, categoryUid)

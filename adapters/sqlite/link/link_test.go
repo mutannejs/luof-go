@@ -8,6 +8,7 @@ import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/lmigration"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/suite"
 )
@@ -76,7 +77,10 @@ func (ts *TestSuite) TestGetByUid_NotExists() {
 	link, err := ts.lr.GetByUid(uid)
 
 	ts.Empty(link, "Tentar recuperar um link informando um uid inválido deveria retornar um Link vazio")
-	ts.ErrorIs(sql.ErrNoRows, err, "Tentar recuperar um link informando um uid inválido deveria retornar " + sql.ErrNoRows.Error())
+	ts.ErrorIs(
+		ltests.GetMsgError(err),
+		sql.ErrNoRows,
+		"Tentar recuperar um link informando um uid inválido deveria retornar " + sql.ErrNoRows.Error())
 }
 
 func (ts *TestSuite) TestExists() {
@@ -121,7 +125,10 @@ func (ts *TestSuite) TestDelete() {
 
 	_, err = ts.lr.GetByUid(mockUidLink)
 
-	ts.ErrorIs(sql.ErrNoRows, err, "Tentar recuperar um link previamente deletado deveria retornar " + sql.ErrNoRows.Error())
+	ts.ErrorIs(
+		ltests.GetMsgError(err),
+		sql.ErrNoRows,
+		"Tentar recuperar um link previamente deletado deveria retornar " + sql.ErrNoRows.Error())
 }
 
 func TestSqliteLink(t *testing.T) {

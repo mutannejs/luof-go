@@ -6,6 +6,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -39,8 +40,8 @@ func TestToggleMainCategory_NotExists(t *testing.T) {
 	err := tmc.Execute(mockUidLink, mockUidCategory, true)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		notBelongs,
-		err,
 		"Tentar alterar a importância da categoria de um link, tal que a relação entre eles não existe, deveria retornar erro contendo " + notBelongs.Error())
 }
 

@@ -30,7 +30,7 @@ func (btr *BelongsTo) Create(
 		insertedAt,
 		isMain)
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -45,7 +45,7 @@ func (btr *BelongsTo) Delete(
 		linkUid,
 		categoryUid)
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -60,7 +60,7 @@ func (btr *BelongsTo) SetHasNoMainCategory(
 		`,
 		linkUid)
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -79,6 +79,6 @@ func (btr *BelongsTo) Update(
 		linkUid,
 		categoryUid)
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }

@@ -20,7 +20,7 @@ func (lr *Link) Exists(uid uuid.UUID) (exists bool, err error) {
 		err = nil
 	}
 	
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }
 
@@ -47,6 +47,6 @@ func (lr *Link) GetByUid(uid uuid.UUID) (l domain.Link, err error) {
 		l.SetUid(uid)
 	}
 
-	lerror.Internal(&err)
+	lerror.SetInternal(&err)
 	return
 }

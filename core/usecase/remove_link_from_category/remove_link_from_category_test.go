@@ -6,6 +6,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -40,8 +41,8 @@ func TestRemoveLinkFromCategory_NotExists(t *testing.T) {
 	err := rlfc.Execute(mockUidLink, mockUidCategory)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		notBelongs,
-		err,
 		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + notBelongs.Error())
 }
 

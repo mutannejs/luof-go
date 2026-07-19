@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -29,9 +30,9 @@ func TestGetLinkByUid_NotExists(t *testing.T) {
 	assert.Zero(
 		link,
 		"Deveria ser retornado zero para um uid inválido")
-	assert.EqualError(
+	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		linkNotExists,
-		err.Error(),
 		"Buscar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
 }
 

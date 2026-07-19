@@ -43,7 +43,7 @@ func NewLink(
 
 	uid, err = luuid.New()
 	if err != nil {
-		return Link{}, lerror.Internalf("%s: %w", LINK_ERROR_NEW, err)
+		return Link{}, lerror.GetInternalf("%s: %w", LINK_ERROR_NEW, err)
 	}
 
 	var createdAt time.Time = time.Now()

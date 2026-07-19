@@ -3,6 +3,7 @@ package toggle_main_category
 import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -27,7 +28,7 @@ func (tmcUseCase *ToggleMainCategory) Execute(
 	if err != nil {
 		return
 	} else if !exists {
-		return domain.NOT_BELONGS
+		return lerror.GetNotFound(domain.NOT_BELONGS)
 	}
 
 	err = tmcUseCase.Repo.Update(linkUid, categoryUid, isMain)

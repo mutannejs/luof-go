@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -29,8 +30,8 @@ func TestDeleteLink_NotExists(t *testing.T) {
 		exists,
 		"Não deveria ser possível deletar um link que não existe")
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		linkNotExists,
-		err,
 		"Tentativa de deletar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
 }
 

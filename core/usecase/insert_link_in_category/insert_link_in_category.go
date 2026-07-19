@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -31,7 +32,7 @@ func (ilicUseCase *InsertLinkInCategory) Execute(
 	if err != nil {
 		return
 	} else if exists {
-		return domain.ALREADY_BELONGS
+		return lerror.GetConflict(domain.ALREADY_BELONGS)
 	}
 
 	exists, err = ilicUseCase.CategoryRepo.Exists(categoryUid)
@@ -39,7 +40,7 @@ func (ilicUseCase *InsertLinkInCategory) Execute(
 	if err != nil {
 		return
 	} else if !exists {
-		return domain.CATEGORY_NOT_EXISTS
+		return lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	}
 
 	exists, err = ilicUseCase.LinkRepo.Exists(linkUid)
@@ -47,7 +48,7 @@ func (ilicUseCase *InsertLinkInCategory) Execute(
 	if err != nil {
 		return
 	} else if !exists {
-		return domain.LINK_NOT_EXISTS
+		return lerror.GetNotFound(domain.LINK_NOT_EXISTS)
 	}
 
 	err = ilicUseCase.BelongsToRepo.SetHasNoMainCategory(linkUid)

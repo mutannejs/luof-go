@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -29,7 +30,7 @@ func (ulUseCase *UpdateLink) Execute(
 	if err != nil {
 		return
 	} else if !exists {
-		return exists, domain.LINK_NOT_EXISTS
+		return exists, lerror.GetNotFound(domain.LINK_NOT_EXISTS)
 	}
 
 	var link domain.Link

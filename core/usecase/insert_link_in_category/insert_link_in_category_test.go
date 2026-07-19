@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -58,9 +59,9 @@ func TestInsertLinkInCategory_CategoryNotExists(t *testing.T) {
 
 	err := ilic.Execute(mockUidLink, mockUidCategory, true)
 
-	assert.Error(
+	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		categoryNotExists,
-		err,
 		"Tentar inserir um link em uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
@@ -105,8 +106,8 @@ func TestInsertLinkInCategory_Exists(t *testing.T) {
 	err := ilic.Execute(mockUidLink, mockUidCategory, false)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		alreadyBelongs,
-		err,
 		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + alreadyBelongs.Error())
 }
 
@@ -150,9 +151,9 @@ func TestInsertLinkInCategory_LinkNotExists(t *testing.T) {
 
 	err := ilic.Execute(mockUidLink, mockUidCategory, true)
 
-	assert.Error(
+	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		linkNotExists,
-		err,
 		"Tentar inserir um link que não existe em uma categoria válida deveria retornar erro contendo " + linkNotExists.Error())
 }
 

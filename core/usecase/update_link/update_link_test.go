@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -35,9 +36,9 @@ func TestUpdateLink_NotExists(t *testing.T) {
 	assert.False(
 		exists,
 		"Não deveria ser possível atualizar um link que não existe")
-	assert.EqualError(
+	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		linkNotExists,
-		err.Error(),
 		"Tentar atualizar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
 }
 

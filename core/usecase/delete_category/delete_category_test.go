@@ -5,6 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -32,8 +33,8 @@ func TestDeleteCategory_NotExists(t *testing.T) {
 	err := dc.Execute(mockUidCategory)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		categoryNotExists,
-		err,
 		"Tentativa de deletar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
 }
 
@@ -71,8 +72,8 @@ func TestDeleteCategory_HasLinks(t *testing.T) {
 	err := dc.Execute(mockUidCategory)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		hasLinks,
-		err,
 		"Tentativa de deletar uma categoria que possui links deveria retornar erro contendo " + hasLinks.Error())
 }
 
@@ -91,7 +92,7 @@ func TestDeleteCategory_HasSubcategories(t *testing.T) {
 	err := dc.Execute(mockUidCategory)
 
 	assert.ErrorIs(
+		ltests.GetMsgError(err),
 		hasSubcategories,
-		err,
 		"Tentativa de deletar uma categoria que possui subcategorias deveria retornar erro contendo " + hasSubcategories.Error())
 }

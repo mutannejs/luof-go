@@ -3,6 +3,7 @@ package remove_subcategory
 import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -26,7 +27,7 @@ func (isUseCase *RemoveSubcategory) Execute(
 	if err != nil {
 		return
 	} else if !isSubcategory {
-		return domain.NOT_IS_SUBCATEGORY
+		return lerror.GetNotFound(domain.NOT_IS_SUBCATEGORY)
 	}
 
 	err = isUseCase.Repo.DeleteSubcategory(childUid)
