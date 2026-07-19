@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -28,7 +29,8 @@ func (cr *Category) Create(l domain.Category) (err error) {
 		l.Description.UseMarkdown,
 		l.CreatedAt,
 		l.UpdatedAt)
-
+		
+	lerror.Internal(&err)
 	return
 }
 
@@ -36,7 +38,8 @@ func (cr *Category) Delete(uid uuid.UUID) (err error) {
 	_, err = cr.DB.Exec(
 		`DELETE FROM category WHERE uid_category = ?`,
 		uid)
-
+		
+	lerror.Internal(&err)
 	return
 }
 
@@ -50,7 +53,8 @@ func (cr *Category) DeleteSubcategory(
 			WHERE uid_category = ?
 		`,
 		childUid)
-
+		
+	lerror.Internal(&err)
 	return
 }
 
@@ -69,7 +73,8 @@ func (cr *Category) InsertSubcategory(
 		fatherUid,
 		updatedAt,
 		childUid)
-
+		
+	lerror.Internal(&err)
 	return
 }
 
@@ -90,6 +95,7 @@ func (cr *Category) Update(uid uuid.UUID, l domain.Category) (err error) {
 		l.CreatedAt,
 		l.UpdatedAt,
 		uid)
-
+		
+	lerror.Internal(&err)
 	return
 }

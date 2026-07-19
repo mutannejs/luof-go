@@ -2,9 +2,9 @@ package domain
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
+	"github.com/mutannejs/luof-go/pkg/lerror"
 	"github.com/mutannejs/luof-go/pkg/luuid"
 
 	"github.com/google/uuid"
@@ -49,7 +49,7 @@ func NewCategory(
 
 	uid, err = luuid.New()
 	if err != nil {
-		return Category{}, fmt.Errorf("%s: %w", CATEGORY_ERROR_NEW, err)
+		return Category{}, lerror.Internalf("%s: %w", CATEGORY_ERROR_NEW, err)
 	}
 
 	var createdAt time.Time = time.Now()

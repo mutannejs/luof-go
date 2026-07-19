@@ -2,6 +2,7 @@ package link
 
 import (
 	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -28,7 +29,8 @@ func (lr *Link) Create(l domain.Link) (err error) {
 		l.Description.UseMarkdown,
 		l.CreatedAt,
 		l.UpdatedAt)
-
+		
+	lerror.Internal(&err)
 	return
 }
 
@@ -36,7 +38,8 @@ func (lr *Link) Delete(uid uuid.UUID) (err error) {
 	_, err = lr.DB.Exec(
 		`DELETE FROM link WHERE uid_link = ?`,
 		uid)
-
+		
+	lerror.Internal(&err)
 	return
 }
 
@@ -59,6 +62,7 @@ func (lr *Link) Update(uid uuid.UUID, l domain.Link) (err error) {
 		l.CreatedAt,
 		l.UpdatedAt,
 		uid)
-
+		
+	lerror.Internal(&err)
 	return
 }

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -67,6 +68,7 @@ func (cr *Category) AreRelated(
 		err = nil
 	}
 
+	lerror.Internal(&err)
 	return
 }
 
@@ -80,7 +82,8 @@ func (cr *Category) Exists(uid uuid.UUID) (exists bool, err error) {
 	if err == sql.ErrNoRows {
 		err = nil
 	}
-
+	
+	lerror.Internal(&err)
 	return
 }
 
@@ -104,7 +107,8 @@ func (cr *Category) GetByUid(uid uuid.UUID) (l domain.Category, err error) {
 	if err == nil {
 		l.SetUid(uid)
 	}
-
+	
+	lerror.Internal(&err)
 	return
 }
 
@@ -127,6 +131,7 @@ func (cr *Category) GetAllRootCategories() (
 		`)
 
 	if err != nil {
+		lerror.Internal(&err)
 		return
 	}
 
@@ -161,7 +166,8 @@ func (cr *Category) GetAllRootCategories() (
 
 	err = rows.Err()
 	rows.Close()
-
+	
+	lerror.Internal(&err)
 	return
 }
 
@@ -185,6 +191,7 @@ func (cr *Category) GetSubcategories(
 		uid)
 
 	if err != nil {
+		lerror.Internal(&err)
 		return
 	}
 
@@ -219,7 +226,8 @@ func (cr *Category) GetSubcategories(
 
 	err = rows.Err()
 	rows.Close()
-
+	
+	lerror.Internal(&err)
 	return
 }
 
@@ -271,7 +279,8 @@ func (cr *Category) IsAncestor(
 	if err == sql.ErrNoRows {
 		err = nil
 	}
-
+	
+	lerror.Internal(&err)
 	return
 }
 
@@ -294,6 +303,7 @@ func (cr *Category) IsSubcategory(
 	if err == sql.ErrNoRows {
 		err = nil
 	}
-
+	
+	lerror.Internal(&err)
 	return
 }

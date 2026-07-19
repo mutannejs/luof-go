@@ -2,9 +2,9 @@ package domain
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
+	"github.com/mutannejs/luof-go/pkg/lerror"
 	"github.com/mutannejs/luof-go/pkg/luuid"
 
 	"github.com/google/uuid"
@@ -43,7 +43,7 @@ func NewLink(
 
 	uid, err = luuid.New()
 	if err != nil {
-		return Link{}, fmt.Errorf("%s: %w", LINK_ERROR_NEW, err)
+		return Link{}, lerror.Internalf("%s: %w", LINK_ERROR_NEW, err)
 	}
 
 	var createdAt time.Time = time.Now()

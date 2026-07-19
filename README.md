@@ -50,6 +50,7 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 ### Próximas etapas
 
 - [ ] Corrigir response status codes da API
+- [ ] Refatorar error handler
 - [ ] Terminar documentação
 
 ### Testes

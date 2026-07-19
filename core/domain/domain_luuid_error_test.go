@@ -20,14 +20,9 @@ func TestNewCategory(t *testing.T) {
 		CategoryMockMap["useMarkdown"].(bool),
 	)
 
-	assert.ErrorIs(
-		CATEGORY_ERROR_NEW,
+	assert.Errorf(
 		err,
-		"Erro na criação de categoria deveria conter o erro " + CATEGORY_ERROR_NEW.Error())
-	assert.ErrorIs(
-		luuid.UUID_ERROR_NEW,
-		err,
-		"Erro na criação de categoria deveria conter o erro " + luuid.UUID_ERROR_NEW.Error())
+		"%s: %s", CATEGORY_ERROR_NEW, luuid.UUID_ERROR_NEW)
 	assert.Zero(
 		category,
 		"A categoria retornada ao ocorrer erro deveria ser zero")
@@ -44,14 +39,9 @@ func TestNewLink(t *testing.T) {
 		LinkMockMap["useMarkdown"].(bool),
 	)
 
-	assert.ErrorIs(
-		LINK_ERROR_NEW,
+	assert.Errorf(
 		err,
-		"Erro na criação de link deveria conter o erro " + LINK_ERROR_NEW.Error())
-	assert.ErrorIs(
-		luuid.UUID_ERROR_NEW,
-		err,
-		"Erro na criação de link deveria conter o erro " + luuid.UUID_ERROR_NEW.Error())
+		"%s: %s", LINK_ERROR_NEW, luuid.UUID_ERROR_NEW)
 	assert.Zero(
 		link,
 		"O link retornado ao ocorrer erro deveria ser zero")

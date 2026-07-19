@@ -31,7 +31,6 @@ func (btr *BelongsTo) Create(
 		isMain)
 
 	lerror.Internal(&err)
-
 	return
 }
 
@@ -47,7 +46,6 @@ func (btr *BelongsTo) Delete(
 		categoryUid)
 
 	lerror.Internal(&err)
-
 	return
 }
 
@@ -63,7 +61,6 @@ func (btr *BelongsTo) SetHasNoMainCategory(
 		linkUid)
 
 	lerror.Internal(&err)
-
 	return
 }
 
@@ -83,6 +80,5 @@ func (btr *BelongsTo) Update(
 		categoryUid)
 
 	lerror.Internal(&err)
-
 	return
 }
