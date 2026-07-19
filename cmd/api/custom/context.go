@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/mutannejs/luof-go/core/repository"
@@ -56,18 +57,24 @@ func (cc *Context) InfoLog() *zerolog.Event {
 }
 
 func (cc *Context) LogAndReturnErr(err error) error {
-	var errMsg = errors.Unwrap(err)
-	var statusError int
+	var statusCodeAndMessages = err.(interface{ Unwrap() []error }).Unwrap()
 
-	if errMsg == nil || strings.HasPrefix(err.Error(), "400") {
-		statusError = http.StatusBadRequest
-		errMsg = err
-	} else if strings.HasPrefix(err.Error(), "500") {
-		statusError = http.StatusInternalServerError
+	if statusCodeAndMessages == nil {
+		cc.ErrLog().Err(err).Send()
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
-	cc.ErrLog().Err(errMsg).Send()
-	return echo.NewHTTPError(statusError, errMsg)
+	var statusCode, errConv = strconv.Atoi(statusCodeAndMessages[0].Error())
+
+	if errConv != nil {
+		cc.ErrLog().Err(err).Send()
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
+	}
+
+	var errContent = statusCodeAndMessages[1]
+
+	cc.ErrLog().Err(errContent).Send()
+	return echo.NewHTTPError(statusCode, errContent)
 }
 
 func (cc *Context) ExecRequetParamsOperations(

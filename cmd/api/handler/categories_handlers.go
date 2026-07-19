@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/mutannejs/luof-go/cmd/api/custom"
-	"github.com/mutannejs/luof-go/cmd/api/interface"
+	"github.com/mutannejs/luof-go/cmd/api/interfaces"
 	"github.com/mutannejs/luof-go/core/usecase/create_category"
 	"github.com/mutannejs/luof-go/core/usecase/delete_category"
 	"github.com/mutannejs/luof-go/core/usecase/get_all_root_categories"

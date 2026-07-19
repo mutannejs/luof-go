@@ -49,8 +49,8 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 
 ### Próximas etapas
 
+- [ ] Corrigir response status codes da API
 - [ ] Terminar documentação
-- [ ] Validar retorno de erro na API
 
 ### Testes
 
@@ -68,6 +68,12 @@ Alguns pacotes possuem possibilidades de testes para ser executados, por exemplo
 
 ```sh
 go test -tags luuid_error
+```
+
+De forma semelhante, é possível rodar o servidor passando a mesma tag:
+
+```sh
+go run -tags=luuid_error ./cmd/api/main.go
 ```
 
 ### Projeto inicial
@@ -88,3 +94,4 @@ Esse repositório é parte de uma reformulação do projeto de mesmo nome dispon
 * Hexagonal Architecture in Go: https://medium.com/@matiasvarela/hexagonal-architecture-in-go-cfd4e436faa3
 * Testing in Go with Testify: https://betterstack.com/community/guides/scaling-go/golang-testify/
 * Padrões de commits: https://github.com/iuricode/padroes-de-commits
+* Quais Códigos de Status HTTP APIs REST Devem Usar?: https://apidog.com/pt/blog/which-http-status-codes-rest-apis-should-use/

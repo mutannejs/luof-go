@@ -130,7 +130,7 @@ func (cr *Category) GetAllRootCategories() (
 		return
 	}
 
-	categories = make([]domain.Category, 0, 0)
+	categories = make([]domain.Category, 0)
 	var c domain.Category
 	var categoryUid uuid.UUID
 	var categoryUidStr string
@@ -188,7 +188,7 @@ func (cr *Category) GetSubcategories(
 		return
 	}
 
-	categories = make([]domain.Category, 0, 0)
+	categories = make([]domain.Category, 0)
 	var c domain.Category
 	var categoryUidStr string
 	var categoryUid uuid.UUID

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/mutannejs/luof-go/cmd/api/custom"
-	"github.com/mutannejs/luof-go/cmd/api/interface"
+	"github.com/mutannejs/luof-go/cmd/api/interfaces"
 	"github.com/mutannejs/luof-go/core/usecase/create_link"
 	"github.com/mutannejs/luof-go/core/usecase/delete_link"
 	"github.com/mutannejs/luof-go/core/usecase/get_link_by_uid"
