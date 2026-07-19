@@ -8,7 +8,6 @@ import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/lmigration"
-	"github.com/mutannejs/luof-go/pkg/luuid"
 
 	"github.com/stretchr/testify/suite"
 )
@@ -72,11 +71,7 @@ func (ts *TestSuite) TestGetByUid_Exists() {
 }
 
 func (ts *TestSuite) TestGetByUid_NotExists() {
-	uid, err := luuid.New()
-
-	if err != nil {
-		ts.Fail(err.Error())
-	}
+	uid := mockUidLink
 
 	link, err := ts.lr.GetByUid(uid)
 
@@ -94,11 +89,7 @@ func (ts *TestSuite) TestExists() {
 }
 
 func (ts *TestSuite) TestNotExists() {
-	uid, err := luuid.New()
-
-	if err != nil {
-		ts.Fail(err.Error())
-	}
+	uid := mockUidLink
 
 	exists, err := ts.lr.Exists(uid)
 

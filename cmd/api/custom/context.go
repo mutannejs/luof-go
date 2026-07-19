@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 	"github.com/mutannejs/luof-go/pkg/luuid"
 
 	"github.com/Oudwins/zog"
@@ -205,7 +206,8 @@ func (cc *Context) logRequest(
 	var logReq *zerolog.Event
 
 	if uid, err := luuid.New(); err != nil {
-		cc.LogAndReturnErr(errors.New(LOG_UID_ERR))
+		err = lerror.Internalf("%s: %w", errors.New(LOG_UID_ERR), err)
+		cc.LogAndReturnErr(err)
 	} else {
 		cc.logUid = uid.String()
 	}
