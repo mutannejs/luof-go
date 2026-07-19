@@ -47,34 +47,41 @@ const (
 	JSON_BODY_ERR = "the request body could not be interpreted in JSON format"
 	PARAMS_ERR = "the path params could not be converted in JSON format"
 	VALIDATE_ERR = "errors occurred during the validation of the request parameters"
+	LOG_KEY_UID = "log_uid"
+	LOG_KEY_METHOD = "method"
+	LOG_KEY_PATH = "path"
+	LOG_KEY_JSON_BODY = "json_body"
+	LOG_KEY_PARAMS_PATH = "params_path"
+	LOG_KEY_ERRORS = "errors"
+	LOG_KEY_STATUS_CODE = "status_code"
 )
 
 func (cc *Context) ErrLog() *zerolog.Event {
-	return log.Error().Str("log_uid", cc.logUid)
+	return log.Error().Str(LOG_KEY_UID, cc.logUid)
 }
 
 func (cc *Context) InfoLog() *zerolog.Event {
-	return log.Info().Str("log_uid", cc.logUid)
+	return log.Info().Str(LOG_KEY_UID, cc.logUid)
 }
 
 func (cc *Context) LogAndReturnErr(err error) error {
 	var statusCodeAndMessages = err.(interface{ Unwrap() []error }).Unwrap()
 
 	if statusCodeAndMessages == nil {
-		cc.ErrLog().Err(err).Send()
+		cc.ErrLog().Int(LOG_KEY_STATUS_CODE, http.StatusInternalServerError).Err(err).Send()
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	var statusCode, errConv = strconv.Atoi(statusCodeAndMessages[0].Error())
 
 	if errConv != nil {
-		cc.ErrLog().Err(err).Send()
+		cc.ErrLog().Int(LOG_KEY_STATUS_CODE, http.StatusInternalServerError).Err(err).Send()
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	var errContent = statusCodeAndMessages[1]
 
-	cc.ErrLog().Err(errContent).Send()
+	cc.ErrLog().Int(LOG_KEY_STATUS_CODE, statusCode).Err(errContent).Send()
 	return echo.NewHTTPError(statusCode, errContent)
 }
 
@@ -219,21 +226,23 @@ func (cc *Context) logRequest(
 	}
 
 	logReq = logReq.
-		Str("method", cc.Request().Method).
-		Str("path", cc.Request().URL.Path)
+		Str(LOG_KEY_METHOD, cc.Request().Method).
+		Str(LOG_KEY_PATH, cc.Request().URL.Path)
 
 	if len(bodyByteSlice) != 0 {
-		logReq = logReq.RawJSON("json_body", bodyByteSlice)
+		logReq = logReq.RawJSON(LOG_KEY_JSON_BODY, bodyByteSlice)
 	}
 
 	if len(paramsByteSlice) != 0 {
-		logReq = logReq.RawJSON("params_path", paramsByteSlice)
+		logReq = logReq.RawJSON(LOG_KEY_PARAMS_PATH, paramsByteSlice)
 	}
 
 	if cc.errorResp != nil {
 		errorsByteSlice, _ := json.Marshal(cc.errorResp.Errors)
-		logReq = logReq.RawJSON("errors", errorsByteSlice)
-		logReq.Msg(cc.errorResp.Message)
+		logReq.
+			RawJSON(LOG_KEY_ERRORS, errorsByteSlice).
+			Int(LOG_KEY_STATUS_CODE, http.StatusBadRequest).
+			Msg(cc.errorResp.Message)
 	} else {
 		logReq.Send()
 	}

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/mutannejs/luof-go/adapters/sqlite"
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/ltests"
@@ -23,7 +22,6 @@ type GetSubcategoriesTestSuite struct {
 
 func (ts *GetSubcategoriesTestSuite) SetupSuite() {
 	env, _ := lenv.LoadTest()
-	db, _ := sqlite.GetConnection(env)
 	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
 
 	c := resty.New()
@@ -31,9 +29,6 @@ func (ts *GetSubcategoriesTestSuite) SetupSuite() {
 
 	postCategory := ltests.GetJSONPost(c, urlBase)
 	postSubcategory := ltests.GetJSONPost(c, urlBase + "/{categoryUid}/subcategories")
-
-	ltests.CleanTable(db, "category")
-	db.Close()
 
 	resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
 	ts.fatherUidString = string(resCategory.Body())

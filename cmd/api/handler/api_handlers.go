@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"strings"
 	"cmp"
 	"net/http"
 	"slices"
@@ -12,12 +13,15 @@ func GetApi(c echo.Context) error {
 	var orderedRoutes = c.Echo().Routes()
 	slices.SortFunc(orderedRoutes, cmpRoutesByPath)
 
-	var respStr = "Available Routes:\n\n"
+	var respStr strings.Builder; respStr.WriteString("Available Routes:\n\n")
 	for _, route := range orderedRoutes {
-		respStr += route.Method + "\t" + route.Path + "\n"
+		respStr.WriteString(route.Method)
+		respStr.WriteString("\t")
+		respStr.WriteString(route.Path)
+		respStr.WriteString("\n")
 	}
 
-	return c.String(http.StatusOK, respStr)
+	return c.String(http.StatusOK, respStr.String())
 }
 
 func cmpRoutesByPath(a, b *echo.Route) int {

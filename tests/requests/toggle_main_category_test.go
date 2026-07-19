@@ -3,7 +3,6 @@ package requests
 import (
 	"testing"
 
-	"github.com/mutannejs/luof-go/adapters/sqlite"
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/ltests"
@@ -22,12 +21,8 @@ type ToggleMainCategoryTestSuite struct {
 
 func (ts *ToggleMainCategoryTestSuite) SetupSuite() {
 	env, _ := lenv.LoadTest()
-	db, _ := sqlite.GetConnection(env)
 	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api"
 	c := resty.New()
-
-	ltests.CleanTable(db, "belongs_to")
-	db.Close()
 
 	ts.patch = ltests.GetJSONPatch(c, urlBase + "/categories/{categoryUid}/links/{linkUid}")
 

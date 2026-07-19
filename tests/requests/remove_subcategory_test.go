@@ -3,7 +3,6 @@ package requests
 import (
 	"testing"
 
-	"github.com/mutannejs/luof-go/adapters/sqlite"
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/ltests"
@@ -24,7 +23,6 @@ type RemoveSubcategoryTestSuite struct {
 
 func (ts *RemoveSubcategoryTestSuite) SetupSuite() {
 	env, _ := lenv.LoadTest()
-	db, _ := sqlite.GetConnection(env)
 	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api/categories"
 
 	c := resty.New()
@@ -32,9 +30,6 @@ func (ts *RemoveSubcategoryTestSuite) SetupSuite() {
 	ts.delete = ltests.GetDelete(c, urlBase + "/{categoryUid}/subcategories/{childUid}")
 	ts.postCategory = ltests.GetJSONPost(c, urlBase)
 	ts.deleteCategory = ltests.GetDelete(c, urlBase + "/{categoryUid}")
-
-	ltests.CleanTable(db, "category")
-	db.Close()
 }
 
 func (ts *RemoveSubcategoryTestSuite) SetupTest() {

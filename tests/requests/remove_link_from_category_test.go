@@ -3,7 +3,6 @@ package requests
 import (
 	"testing"
 
-	"github.com/mutannejs/luof-go/adapters/sqlite"
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/ltests"
@@ -22,7 +21,6 @@ type RemoveLinkFromCategoryTestSuite struct {
 
 func (ts *RemoveLinkFromCategoryTestSuite) SetupSuite() {
 	env, _ := lenv.LoadTest()
-	db, _ := sqlite.GetConnection(env)
 	urlBase := "http://localhost:" + env["SERVER_PORT"] + "/api"
 
 	c := resty.New()
@@ -31,9 +29,6 @@ func (ts *RemoveLinkFromCategoryTestSuite) SetupSuite() {
 
 	postLink := ltests.GetJSONPost(c, urlBase + "/links")
 	postCategory := ltests.GetJSONPost(c, urlBase + "/categories")
-
-	ltests.CleanTable(db, "belongs_to")
-	db.Close()
 
 	resLink, _ := postLink(nil, domain.MockLinkMapRequest)
 	ts.linkUidString = string(resLink.Body())
