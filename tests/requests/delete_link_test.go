@@ -34,6 +34,11 @@ func (ts *DeleteLinkTestSuite) TestDeleteLink() {
 
 	ts.NoError(err)
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar deletar um link passando um uuid válido deveria retornar status 200")
+
 	ts.Empty(
 		string(res.Body()),
 		"Tentar deletar um link passando um uuid válido não deveria retornar nada")
@@ -41,6 +46,11 @@ func (ts *DeleteLinkTestSuite) TestDeleteLink() {
 
 func (ts *DeleteLinkTestSuite) TestDeleteLink_ParamRequired() {
 	res, _ := ts.delete(map[string]string{"linkId": domain.MockUidLink.String()})
+
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar deletar um link passando parâmetros inválidos deveria retornar status 400")
 
 	ts.ElementsMatch([]string{"linkUid"}, ltests.GetErrorKeys(res.Body()))
 }
@@ -51,6 +61,11 @@ func (ts *DeleteLinkTestSuite) TestDeleteLink_NotExists() {
 	expectedJson, resBody := ltests.TrimResponse(
 		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar deletar um link que não existe deveria retornar status 404")
 
 	ts.Equal(
 		expectedJson,

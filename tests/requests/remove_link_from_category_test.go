@@ -16,7 +16,9 @@ type RemoveLinkFromCategoryTestSuite struct {
 	post ltests.RequestFuncType
 	delete ltests.DeleteFuncType
 	linkUidString string
+	alternativeLinkUidString string
 	categoryUidString string
+	alternativeCategoryUidString string
 }
 
 func (ts *RemoveLinkFromCategoryTestSuite) SetupSuite() {
@@ -33,8 +35,14 @@ func (ts *RemoveLinkFromCategoryTestSuite) SetupSuite() {
 	resLink, _ := postLink(nil, domain.MockLinkMapRequest)
 	ts.linkUidString = string(resLink.Body())
 
+	resLink, _ = postLink(nil, domain.MockLinkMapRequest)
+	ts.alternativeLinkUidString = string(resLink.Body())
+
 	resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
 	ts.categoryUidString = string(resCategory.Body())
+
+	resCategory, _ = postCategory(nil, domain.MockCategoryMapRequest)
+	ts.alternativeCategoryUidString = string(resCategory.Body())
 }
 
 func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory() {
@@ -51,6 +59,11 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory() {
 			"categoryUid": ts.categoryUidString,
 			"linkUid": ts.linkUidString,
 		})
+
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar remover um link de uma categoria, ambos relacionados, deveria retornar status 200")
 
 	ts.Empty(
 		res.Body(),
@@ -72,19 +85,73 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_Error() {
 			"linkUid": domain.MockCategory.Name,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar remover um link de uma categoria passando parâmetros inválidos deveria retornar status 400")
+
 	ts.ElementsMatch([]string{"categoryUid", "linkUid"}, ltests.GetErrorKeys(res.Body()))
+}
+
+func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_LinkNotExists() {
+	res, _ := ts.delete(
+		map[string]string{
+			"categoryUid": ts.categoryUidString,
+			"linkUid": domain.MockUidLink.String(),
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
+		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar remover um link de uma categoria que não existe deveria retornar status 404")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar remover um link de uma categoria que não existe deveria retornar erro contendo " + domain.LINK_NOT_EXISTS.Error())
+}
+
+func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_CategoryNotExists() {
+	res, _ := ts.delete(
+		map[string]string{
+			"categoryUid": domain.MockUidCategory.String(),
+			"linkUid": ts.linkUidString,
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar remover um link que não existe de uma categoria deveria retornar status 404")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar remover um link que não existe de uma categoria deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error())
 }
 
 func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_NotExists() {
 	res, _ := ts.delete(
 		map[string]string{
-			"categoryUid": domain.MockUidCategory.String(),
-			"linkUid": domain.MockUidLink.String(),
+			"categoryUid": ts.alternativeCategoryUidString,
+			"linkUid": ts.alternativeLinkUidString,
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
 		ltests.GetResponseMessage(domain.NOT_BELONGS.Error()),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar status 404")
 
 	ts.Equal(
 		expectedJson,

@@ -66,9 +66,14 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory() {
 			"childUid": ts.childUidString,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar inserir uma subcategoria, ambas ainda não relacionadas, deveria retornar status 200")
+
 	ts.Empty(
 		string(res.Body()),
-		"Tentar inserir uma subcategoria, ambas ainda não relacionadas não deveria retornar nada")
+		"Tentar inserir uma subcategoria, ambas ainda não relacionadas, não deveria retornar nada")
 }
 
 func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_Relateds() {
@@ -92,6 +97,11 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_Relateds() {
 			"childUid": ts.netoUidString,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar inserir uma subcategoria, ambas não diretamente relacionadas, deveria retornar status 200")
+
 	ts.Empty(
 		string(res.Body()),
 		"Tentar inserir uma subcategoria, ambas não diretamente relacionadas, não deveria retornar nada")
@@ -105,7 +115,58 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_Error() {
 			"childUid": domain.MockCategory.Name,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar inserir uma subcategoria passando parâmetros inválidos deveria retornar status 400")
+
 	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
+}
+
+func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_FatherNotEXists() {
+	res, _ := ts.post(
+		map[string]string{
+			"categoryUid": domain.MockUidCategory.String()},
+		map[string]string{
+			"childUid": ts.childUidString,
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.FATHER_NOT_EXISTS.Error()),
+		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar inserir uma subcategoria em uma categoria pai que não existe deveria retornar status 404")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar inserir uma subcategoria em uma categoria pai que não existe deveria retornar erro contendo " + domain.FATHER_NOT_EXISTS.Error())
+}
+
+func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_ChildNotEXists() {
+	res, _ := ts.post(
+		map[string]string{
+			"categoryUid": ts.fatherUidString},
+		map[string]string{
+			"childUid": domain.MockUidCategory.String(),
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.CHILD_NOT_EXISTS.Error()),
+		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar inserir uma categoria que não existe em outra deveria retornar status 404")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar inserir uma categoria que não existe em outra deveria retornar erro contendo " + domain.CHILD_NOT_EXISTS.Error())
 }
 
 func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AlreadyExists() {
@@ -126,6 +187,11 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AlreadyExists() {
 	expectedJson, resBody := ltests.TrimResponse(
 		ltests.GetResponseMessage(domain.IS_SUBCATEGORY.Error()),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		409,
+		"Tentar inserir uma subcategoria, ambas já relacionadas, deveria retornar status 409")
 
 	ts.Equal(
 		expectedJson,
@@ -159,9 +225,14 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AncestorNotBecomeASu
 		res.Body())
 
 	ts.Equal(
+		res.StatusCode(),
+		409,
+		"Tentar inserir uma subcategoria, sendo que a relação inversa já existe, deveria retornar status 409")
+
+	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar inserir uma subcategoria, ambas já relacionadas, deveria retornar erro contendo " + domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY.Error())
+		"Tentar inserir uma subcategoria, sendo que a relação inversa já existe, deveria retornar erro contendo " + domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY.Error())
 }
 
 func TestInsertSubcategoryAllTests(t *testing.T) {

@@ -27,6 +27,10 @@ func (ts *CreateCategoryTestSuite) SetupSuite() {
 func (ts *CreateCategoryTestSuite) TestCreateCategory() {
 	res, _ := ts.post(nil, domain.MockCategoryMapRequest)
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar criar uma categoria passando parâmetros válidos deveria retornar status 200")
 	ts.Regexp(
 		ltests.UidRegex,
 		res,
@@ -41,6 +45,11 @@ func (ts *CreateCategoryTestSuite) TestCreateCategory_Error() {
 			"description": domain.MockCategory.Description.Content,
 			"useMarkdown": domain.MockCategory.Name, // não é boolean
 		})
+
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar criar uma categoria passando parâmetros inválidos deveria retornar status 400")
 
 	ts.ElementsMatch([]string{"name", "useMarkdown"}, ltests.GetErrorKeys(res.Body())) 
 }

@@ -102,7 +102,10 @@ func RemoveLinkFromCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	rlfc := remove_link_from_category.New(cc.Repositories.BelongsTo)
+	rlfc := remove_link_from_category.New(
+		cc.Repositories.BelongsTo,
+		cc.Repositories.Category,
+		cc.Repositories.Link)
 	err = rlfc.Execute(linkUid, categoryUid)
 
 	if err != nil {
@@ -140,7 +143,10 @@ func ToggleMainCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	tmc := toggle_main_category.New(cc.Repositories.BelongsTo)
+	tmc := toggle_main_category.New(
+		cc.Repositories.BelongsTo,
+		cc.Repositories.Category,
+		cc.Repositories.Link)
 	err = tmc.Execute(
 		linkUid,
 		categoryUid,

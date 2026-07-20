@@ -64,10 +64,15 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories() {
 	var categoriesJson []map[string]string
 	json.Unmarshal(res.Body(), &categoriesJson)
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar recuperar todas as subcategorias de uma categoria válida deveria retornar status 200")
+
 	ts.Len(
 		categoriesJson,
 		2,
-		"Tentar recuperar todos as subcategorias de uma categoria válida deveria retornar uma lista com todas suas subcategorias")
+		"Tentar recuperar as subcategorias de uma categoria válida deveria retornar uma lista com todas suas subcategorias")
 }
 
 func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_Error() {
@@ -76,6 +81,11 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_Error() {
 			"categoryUid": domain.MockCategory.Name,
 		},
 		nil)
+
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar recuperar as subcategorias de uma categoria passando parâmetros inválidos deveria retornar status 400")
 
 	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
 }
@@ -90,6 +100,11 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_Empty() {
 	expectedJson, resBody := ltests.TrimResponse(
 		[]byte("[]"),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar recuperar as subcategorias de uma categoria vazia deveria retornar status 200")
 
 	ts.Equal(
 		expectedJson,
@@ -107,6 +122,11 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_NotExists() {
 	expectedJson, resBody := ltests.TrimResponse(
 		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar recuperar todas as subcategorias de uma categoria que não existe deveria retornar status 404")
 
 	ts.Equal(
 		expectedJson,

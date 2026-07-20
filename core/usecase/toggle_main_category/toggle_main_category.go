@@ -9,11 +9,13 @@ import (
 )
 
 type ToggleMainCategory struct {
-	Repo repository.BelongsTo
+	BelongsToRepo repository.BelongsTo
+	CategoryRepo repository.Category
+	LinkRepo repository.Link
 }
 
-func New(repo repository.BelongsTo) ToggleMainCategory {
-	return ToggleMainCategory{repo}
+func New(btRepo repository.BelongsTo, cRepo repository.Category, lRepo repository.Link) ToggleMainCategory {
+	return ToggleMainCategory{btRepo, cRepo, lRepo}
 }
 
 func (tmcUseCase *ToggleMainCategory) Execute(
@@ -23,7 +25,23 @@ func (tmcUseCase *ToggleMainCategory) Execute(
 ) (err error) {
 	var exists bool
 
-	exists, err = tmcUseCase.Repo.Exists(linkUid, categoryUid)
+	exists, err = tmcUseCase.CategoryRepo.Exists(categoryUid)
+
+	if err != nil {
+		return
+	} else if !exists {
+		return lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
+	}
+
+	exists, err = tmcUseCase.LinkRepo.Exists(linkUid)
+
+	if err != nil {
+		return
+	} else if !exists {
+		return lerror.GetNotFound(domain.LINK_NOT_EXISTS)
+	}
+
+	exists, err = tmcUseCase.BelongsToRepo.Exists(linkUid, categoryUid)
 
 	if err != nil {
 		return
@@ -31,7 +49,7 @@ func (tmcUseCase *ToggleMainCategory) Execute(
 		return lerror.GetNotFound(domain.NOT_BELONGS)
 	}
 
-	err = tmcUseCase.Repo.Update(linkUid, categoryUid, isMain)
+	err = tmcUseCase.BelongsToRepo.Update(linkUid, categoryUid, isMain)
 
 	return
 }

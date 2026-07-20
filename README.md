@@ -49,8 +49,8 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 
 ### Próximas etapas
 
-- [ ] Corrigir response status codes da API
-- [ ] Refatorar error handler
+- [X] Corrigir response status codes da API
+- [ ] Testar response status codes da API
 - [ ] Terminar documentação
 
 ### Testes

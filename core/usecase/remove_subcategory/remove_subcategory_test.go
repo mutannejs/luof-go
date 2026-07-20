@@ -25,6 +25,10 @@ func TestRemoveSubcategory_Exists(t *testing.T) {
 
 	cRepo.
 		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil).
+		On(
 			"IsSubcategory",
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
@@ -48,6 +52,10 @@ func TestRemoveSubcategory_NotExists(t *testing.T) {
 	var is = New(cRepo)
 
 	cRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil).
 		On(
 			"IsSubcategory",
 			mock.AnythingOfType("uuid.UUID"),

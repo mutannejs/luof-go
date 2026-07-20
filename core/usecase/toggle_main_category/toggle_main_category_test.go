@@ -20,9 +20,11 @@ var (
 
 func TestToggleMainCategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
-
+	
 	var btRepo = repository.NewBelongsToMockRepository()
-	var tmc = New(btRepo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var lRepo = repository.NewLinkMockRepository()
+	var tmc = New(btRepo, cRepo, lRepo)
 
 	btRepo.
 		On(
@@ -37,6 +39,18 @@ func TestToggleMainCategory_NotExists(t *testing.T) {
 			true,
 		).Return(errors.New(""))
 
+	cRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil)
+
+	lRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil)
+
 	err := tmc.Execute(mockUidLink, mockUidCategory, true)
 
 	assert.ErrorIs(
@@ -49,7 +63,9 @@ func TestToggleMainCategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
 	var btRepo = repository.NewBelongsToMockRepository()
-	var tmc = New(btRepo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var lRepo = repository.NewLinkMockRepository()
+	var tmc = New(btRepo, cRepo, lRepo)
 
 	btRepo.
 		On(
@@ -63,6 +79,18 @@ func TestToggleMainCategory_Exists(t *testing.T) {
 			mock.AnythingOfType("uuid.UUID"),
 			false,
 		).Return(nil)
+
+	cRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil)
+
+	lRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil)
 
 	err := tmc.Execute(mockUidLink, mockUidCategory, false)
 

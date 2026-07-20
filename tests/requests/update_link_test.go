@@ -38,6 +38,11 @@ func (ts *UpdateLinkTestSuite) TestUpdateLink() {
 
 	ts.NoError(err)
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar atualizar um link deveria retornar status 200")
+
 	ts.Empty(
 		string(res.Body()),
 		"Tentar atualizar um link passando parâmetros válidos não deveria retornar nada")
@@ -54,6 +59,11 @@ func (ts *UpdateLinkTestSuite) TestUpdateLink_ParamRequired() {
 			"useMarkdown": domain.AlternativeMockLink.Description.Content,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar atualizar um link passando parâmetros inválidos deveria retornar status 400")
+
 	ts.ElementsMatch([]string{"name", "useMarkdown"}, ltests.GetErrorKeys(res.Body()))
 }
 
@@ -66,6 +76,11 @@ func (ts *UpdateLinkTestSuite) TestUpdateLink_NotExists() {
 	expectedJson, resBody := ltests.TrimResponse(
 		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar atualizar um link que não existe deveria retornar status 404")
 
 	ts.Equal(
 		expectedJson,

@@ -9,11 +9,13 @@ import (
 )
 
 type RemoveLinkFromCategory struct {
-	Repo repository.BelongsTo
+	BelongsToRepo repository.BelongsTo
+	CategoryRepo repository.Category
+	LinkRepo repository.Link
 }
 
-func New(repo repository.BelongsTo) RemoveLinkFromCategory {
-	return RemoveLinkFromCategory{repo}
+func New(btRepo repository.BelongsTo, cRepo repository.Category, lRepo repository.Link) RemoveLinkFromCategory {
+	return RemoveLinkFromCategory{btRepo, cRepo, lRepo}
 }
 
 func (rlfcUseCase *RemoveLinkFromCategory) Execute(
@@ -22,7 +24,23 @@ func (rlfcUseCase *RemoveLinkFromCategory) Execute(
 ) (err error) {
 	var exists bool
 
-	exists, err = rlfcUseCase.Repo.Exists(linkUid, categoryUid)
+	exists, err = rlfcUseCase.CategoryRepo.Exists(categoryUid)
+
+	if err != nil {
+		return
+	} else if !exists {
+		return lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
+	}
+
+	exists, err = rlfcUseCase.LinkRepo.Exists(linkUid)
+
+	if err != nil {
+		return
+	} else if !exists {
+		return lerror.GetNotFound(domain.LINK_NOT_EXISTS)
+	}
+
+	exists, err = rlfcUseCase.BelongsToRepo.Exists(linkUid, categoryUid)
 
 	if err != nil {
 		return
@@ -30,7 +48,7 @@ func (rlfcUseCase *RemoveLinkFromCategory) Execute(
 		return lerror.GetNotFound(domain.NOT_BELONGS)
 	}
 
-	err = rlfcUseCase.Repo.Delete(linkUid, categoryUid)
+	err = rlfcUseCase.BelongsToRepo.Delete(linkUid, categoryUid)
 
 	return
 }

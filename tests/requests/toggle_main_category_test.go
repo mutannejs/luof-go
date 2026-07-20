@@ -17,6 +17,7 @@ type ToggleMainCategoryTestSuite struct {
 	patch ltests.RequestFuncType
 	linkUidString string
 	categoryUidString string
+	alternativeCategoryUidString string
 }
 
 func (ts *ToggleMainCategoryTestSuite) SetupSuite() {
@@ -36,6 +37,9 @@ func (ts *ToggleMainCategoryTestSuite) SetupSuite() {
 	resCategory, _ := postCategory(nil, domain.MockCategoryMapRequest)
 	ts.categoryUidString = string(resCategory.Body())
 
+	resCategory, _ = postCategory(nil, domain.AlternativeMockCategoryMapRequest)
+	ts.alternativeCategoryUidString = string(resCategory.Body())
+
 	postBelongsTo(
 		map[string]string{
 			"categoryUid": ts.categoryUidString},
@@ -54,6 +58,11 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory() {
 			"isMain": "false",
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar alternar a categoria principal de um link deveria retornar status 200")
+
 	ts.Empty(
 		string(res.Body()),
 		"Tentar alternar a categoria principal de um link não deveria retornar nada")
@@ -68,14 +77,67 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_Error() {
 			"isMain": domain.MockLink.Name,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar alternar a categoria principal de um link passando parâmetros inválidos deveria retornar status 400")
+
 	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
+}
+
+func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_LinkNotExists() {
+	res, _ := ts.patch(
+		map[string]string{
+			"categoryUid": ts.categoryUidString,
+			"linkUid": domain.MockUidLink.String()},
+		map[string]string{
+			"isMain": "false",
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
+		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar alternar a categoria principal de um link que não existe deveria retornar status 404")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar alternar a categoria principal de um link, ambos não relacionados, deveria retornar erro contendo " + domain.LINK_NOT_EXISTS.Error())
+}
+
+func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_CategoryNotExists() {
+	res, _ := ts.patch(
+		map[string]string{
+			"categoryUid": domain.MockUidCategory.String(),
+			"linkUid": ts.linkUidString},
+		map[string]string{
+			"isMain": "false",
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar alternar a categoria principal de um link, sendo que a categoria não existe, deveria retornar status 404")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar alternar a categoria principal de um link, sendo que a categoria não existe, deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error())
 }
 
 func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_NotExists() {
 	res, _ := ts.patch(
 		map[string]string{
-			"categoryUid": domain.MockUidCategory.String(),
-			"linkUid": domain.MockUidLink.String()},
+			"categoryUid": ts.alternativeCategoryUidString,
+			"linkUid": ts.linkUidString},
 		map[string]string{
 			"isMain": "false",
 		})
@@ -83,6 +145,11 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_NotExists() {
 	expectedJson, resBody := ltests.TrimResponse(
 		ltests.GetResponseMessage(domain.NOT_BELONGS.Error()),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar alternar a categoria principal de um link, ambos não relacionados, deveria retornar status 404")
 
 	ts.Equal(
 		expectedJson,

@@ -40,6 +40,11 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory() {
 
 	ts.NoError(err)
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar deletar uma categoria passando um uuid válido deveria retornar status 200")
+
 	ts.Empty(
 		string(res.Body()),
 		"Tentar deletar uma categoria passando um uuid válido não deveria retornar nada")
@@ -47,6 +52,11 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory() {
 
 func (ts *DeleteCategoryTestSuite) TestDeleteCategory_ParamRequired() {
 	res, _ := ts.delete(map[string]string{"categoryId": domain.MockUidCategory.String()})
+
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar deletar uma categoria passando parâmetros inválidos deveria retornar status 400")
 
 	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body())) 
 }
@@ -57,6 +67,11 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_NotExists() {
 	expectedJson, resBody := ltests.TrimResponse(
 		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar deletar uma categoria que não existe deveria retornar status 404")
 
 	ts.Equal(
 		expectedJson,
@@ -81,6 +96,11 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_HasLinks() {
 		res.Body())
 
 	ts.Equal(
+		res.StatusCode(),
+		409,
+		"Tentar deletar uma categoria com um ou mais links deveria retornar status 409")
+
+	ts.Equal(
 		expectedJson,
 		resBody,
 		"Tentar deletar uma categoria com um ou mais links deveria retornar o erro " + domain.HAS_LINKS.Error())
@@ -100,6 +120,11 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_HasSubcategories() {
 	expectedJson, resBody := ltests.TrimResponse(
 		ltests.GetResponseMessage(domain.HAS_SUBCATEGORIES.Error()),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		409,
+		"Tentar deletar uma categoria com uma ou mais subcategorias deveria retornar status 409")
 
 	ts.Equal(
 		expectedJson,

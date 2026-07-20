@@ -48,9 +48,14 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory() {
 			"isMain": "true",
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar inserir um link em uma categoria, ambos ainda não relacionados, deveria retornar status 200")
+
 	ts.Empty(
 		res.Body(),
-		"Tentar inserir um link em uma categoria, ambos ainda não relacionados não deveria retornar nada")
+		"Tentar inserir um link em uma categoria, ambos ainda não relacionados, não deveria retornar nada")
 }
 
 func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_Error() {
@@ -62,7 +67,60 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_Error() {
 			"isMain": domain.MockCategory.Name,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar inserir um link em uma categoria passando parâmetros inválidos deveria retornar status 400")
+
 	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
+}
+
+func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_LinkNotExists() {
+	res, _ := ts.post(
+		map[string]string{
+			"categoryUid": ts.categoryUidString},
+		map[string]string{
+			"linkUid": domain.MockUidLink.String(),
+			"isMain": "true",
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
+		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar inserir um link que não existe em uma categoria deveria retornar status 404")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar inserir um link que não existe em uma categoria deveria retornar erro contendo " + domain.LINK_NOT_EXISTS.Error())
+}
+
+func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_CategoryNotExists() {
+	res, _ := ts.post(
+		map[string]string{
+			"categoryUid": domain.MockUidCategory.String()},
+		map[string]string{
+			"linkUid": ts.linkUidString,
+			"isMain": "true",
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar inserir um link em uma categoria que não existe deveria retornar status 404")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar inserir um link em uma categoria que não existe deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error())
 }
 
 func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_AlreadyExists() {
@@ -79,6 +137,11 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_AlreadyExists(
 		res.Body())
 
 	ts.Equal(
+		res.StatusCode(),
+		409,
+		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar status 409")
+
+	ts.Equal(
 		expectedJson,
 		resBody,
 		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + domain.ALREADY_BELONGS.Error())
@@ -92,9 +155,14 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_DefaultIsMain(
 			"linkUid": ts.alternativeLinkUidString,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar inserir um link em uma categoria sem informar se ela é a principal deveria retornar status 200")
+
 	ts.Empty(
 		res.Body(),
-		"Tentar inserir um link em uma categoria sem informar se ela é a principal, não deveria retornar nada")
+		"Tentar inserir um link em uma categoria sem informar se ela é a principal não deveria retornar nada")
 }
 
 func TestInsertLinkInCategoryAllTests(t *testing.T) {

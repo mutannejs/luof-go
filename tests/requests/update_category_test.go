@@ -38,6 +38,11 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory() {
 
 	ts.NoError(err)
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar atualizar uma categoria deveria retornar status 200")
+
 	ts.Empty(
 		string(res.Body()),
 		"Tentar atualizar uma categoria passando parâmetros válidos não deveria retornar nada")
@@ -53,6 +58,11 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory_ParamRequired() {
 			"useMarkdown": domain.AlternativeMockCategory.Description.Content,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar atualizar uma categoria passando parâmetros inválidosdeveria retornar status 400")
+
 	ts.ElementsMatch([]string{"name", "useMarkdown"}, ltests.GetErrorKeys(res.Body()))
 }
 
@@ -65,6 +75,11 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory_NotExists() {
 	expectedJson, resBody := ltests.TrimResponse(
 		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar atualizar uma categoria que não existe deveria retornar status 404")
 
 	ts.Equal(
 		expectedJson,

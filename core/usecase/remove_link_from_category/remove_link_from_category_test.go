@@ -22,21 +22,33 @@ func TestRemoveLinkFromCategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
 	var btRepo = repository.NewBelongsToMockRepository()
-	var rlfc = New(btRepo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var lRepo = repository.NewLinkMockRepository()
+	var rlfc = New(btRepo, cRepo, lRepo)
 
 	btRepo.
 		On(
 			"Exists",
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
-		).Return(false, nil)
-
-	btRepo.
+		).Return(false, nil).
 		On(
 			"Delete",
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
 		).Return(errors.New(""))
+
+	cRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil)
+
+	lRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil)
 
 	err := rlfc.Execute(mockUidLink, mockUidCategory)
 
@@ -48,9 +60,11 @@ func TestRemoveLinkFromCategory_NotExists(t *testing.T) {
 
 func TestRemoveLinkFromCategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
-
+	
 	var btRepo = repository.NewBelongsToMockRepository()
-	var rlfc = New(btRepo)
+	var cRepo = repository.NewCategoryMockRepository()
+	var lRepo = repository.NewLinkMockRepository()
+	var rlfc = New(btRepo, cRepo, lRepo)
 
 	btRepo.
 		On(
@@ -65,6 +79,18 @@ func TestRemoveLinkFromCategory_Exists(t *testing.T) {
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
 		).Return(nil)
+
+	cRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil)
+
+	lRepo.
+		On(
+			"Exists",
+			mock.AnythingOfType("uuid.UUID"),
+		).Return(true, nil)
 
 	err := rlfc.Execute(mockUidLink, mockUidCategory)
 

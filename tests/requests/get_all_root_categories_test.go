@@ -45,10 +45,16 @@ func (ts *GetAllRootCategoriesTestSuite) TestGetAllRootCategories() {
 	expectedJson, resBody := ltests.TrimResponse(
 		[]byte("[]"),
 		res.Body())
-		ts.Equal(
-			expectedJson,
-			resBody,
-			"Tentar recuperar todas subcategorias raízes sem que existam categorias salvas deveria retornar um array vazio")
+
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar recuperar todas categorias raízes deveria retornar status 200")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar recuperar todas categorias raízes sem que existam categorias salvas deveria retornar um array vazio")
 
 	resCategory, _ := ts.postCategory(nil, domain.MockCategoryMapRequest)
 	fatherUidString := string(resCategory.Body())
@@ -67,6 +73,11 @@ func (ts *GetAllRootCategoriesTestSuite) TestGetAllRootCategories() {
 	res, _ = ts.get(nil,nil)
 
 	json.Unmarshal(res.Body(), &categoriesJson)
+
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar recuperar todas categorias raízes deveria retornar status 200")
 
 	ts.Len(
 		categoriesJson,

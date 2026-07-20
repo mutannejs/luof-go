@@ -19,6 +19,7 @@ type RemoveSubcategoryTestSuite struct {
 	deleteCategory ltests.DeleteFuncType
 	fatherUidString string
 	childUidString string
+	alternativeCategoryUidString string
 }
 
 func (ts *RemoveSubcategoryTestSuite) SetupSuite() {
@@ -30,6 +31,9 @@ func (ts *RemoveSubcategoryTestSuite) SetupSuite() {
 	ts.delete = ltests.GetDelete(c, urlBase + "/{categoryUid}/subcategories/{childUid}")
 	ts.postCategory = ltests.GetJSONPost(c, urlBase)
 	ts.deleteCategory = ltests.GetDelete(c, urlBase + "/{categoryUid}")
+
+	resCategory, _ := ts.postCategory(nil, domain.MockCategoryMapRequest)
+	ts.alternativeCategoryUidString = string(resCategory.Body())
 }
 
 func (ts *RemoveSubcategoryTestSuite) SetupTest() {
@@ -65,9 +69,14 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory() {
 			"childUid": ts.childUidString,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		200,
+		"Tentar remover uma subcategoria, ambos relacionadas, deveria retornar status 200")
+
 	ts.Empty(
 		string(res.Body()),
-		"Tentar remover uma subcategoria, ambas relacionadas não deveria retornar nada")
+		"Tentar remover uma subcategoria, ambas relacionadas, não deveria retornar nada")
 }
 
 func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_Error() {
@@ -77,10 +86,37 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_Error() {
 			"childUid": domain.MockCategory.Name,
 		})
 
+	ts.Equal(
+		res.StatusCode(),
+		400,
+		"Tentar remover uma subcategoria passando parâmetros inválidos deveria retornar status 400")
+
 	ts.ElementsMatch([]string{"categoryUid", "childUid"}, ltests.GetErrorKeys(res.Body()))
 }
 
-func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_NotExists() {
+func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_FatherNotExists() {
+	res, _ := ts.delete(
+		map[string]string{
+			"categoryUid": domain.MockUidCategory.String(),
+			"childUid": ts.childUidString,
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.FATHER_NOT_EXISTS.Error()),
+		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar remover uma categoria de outra que não existe deveria retornar status 404")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar remover uma categoria de outra que não existe deveria retornar erro contendo " + domain.FATHER_NOT_EXISTS.Error())
+}
+
+func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_ChildNotExists() {
 	res, _ := ts.delete(
 		map[string]string{
 			"categoryUid": ts.fatherUidString,
@@ -88,8 +124,35 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_NotExists() {
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
+		ltests.GetResponseMessage(domain.CHILD_NOT_EXISTS.Error()),
+		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar remover uma categoria que não existe de outra deveria retornar status 404")
+
+	ts.Equal(
+		expectedJson,
+		resBody,
+		"Tentar remover uma subcategoria tal que a relação não existe, deveria retornar erro contendo " + domain.CHILD_NOT_EXISTS.Error())
+}
+
+func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_NotExists() {
+	res, _ := ts.delete(
+		map[string]string{
+			"categoryUid": ts.fatherUidString,
+			"childUid": ts.alternativeCategoryUidString,
+		})
+
+	expectedJson, resBody := ltests.TrimResponse(
 		ltests.GetResponseMessage(domain.NOT_IS_SUBCATEGORY.Error()),
 		res.Body())
+
+	ts.Equal(
+		res.StatusCode(),
+		404,
+		"Tentar remover uma subcategoria tal que a relação não existe deveria retornar status 404")
 
 	ts.Equal(
 		expectedJson,
