@@ -49,8 +49,8 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 
 ### Próximas etapas
 
-- [X] Corrigir response status codes da API
-- [ ] Testar response status codes da API
+- [ ] Adicionar internacionalização
+- [ ] Implementar autorização e autenticação
 - [ ] Terminar documentação
 
 ### Testes
