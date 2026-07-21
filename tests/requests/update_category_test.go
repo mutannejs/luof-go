@@ -40,8 +40,8 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar atualizar uma categoria deveria retornar status 200")
+		204,
+		"Tentar atualizar uma categoria deveria retornar status 204")
 
 	ts.Empty(
 		string(res.Body()),

@@ -36,8 +36,8 @@ func (ts *DeleteLinkTestSuite) TestDeleteLink() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar deletar um link passando um uuid válido deveria retornar status 200")
+		204,
+		"Tentar deletar um link passando um uuid válido deveria retornar status 204")
 
 	ts.Empty(
 		string(res.Body()),

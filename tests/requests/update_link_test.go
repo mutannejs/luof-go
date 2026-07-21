@@ -40,8 +40,8 @@ func (ts *UpdateLinkTestSuite) TestUpdateLink() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar atualizar um link deveria retornar status 200")
+		204,
+		"Tentar atualizar um link deveria retornar status 204")
 
 	ts.Empty(
 		string(res.Body()),

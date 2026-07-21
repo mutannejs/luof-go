@@ -50,8 +50,8 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar inserir um link em uma categoria, ambos ainda não relacionados, deveria retornar status 200")
+		204,
+		"Tentar inserir um link em uma categoria, ambos ainda não relacionados, deveria retornar status 204")
 
 	ts.Empty(
 		res.Body(),
@@ -157,8 +157,8 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_DefaultIsMain(
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar inserir um link em uma categoria sem informar se ela é a principal deveria retornar status 200")
+		204,
+		"Tentar inserir um link em uma categoria sem informar se ela é a principal deveria retornar status 204")
 
 	ts.Empty(
 		res.Body(),

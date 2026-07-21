@@ -68,8 +68,8 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar inserir uma subcategoria, ambas ainda não relacionadas, deveria retornar status 200")
+		204,
+		"Tentar inserir uma subcategoria, ambas ainda não relacionadas, deveria retornar status 204")
 
 	ts.Empty(
 		string(res.Body()),
@@ -99,8 +99,8 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_Relateds() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar inserir uma subcategoria, ambas não diretamente relacionadas, deveria retornar status 200")
+		204,
+		"Tentar inserir uma subcategoria, ambas não diretamente relacionadas, deveria retornar status 204")
 
 	ts.Empty(
 		string(res.Body()),

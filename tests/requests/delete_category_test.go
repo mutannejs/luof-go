@@ -42,8 +42,8 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar deletar uma categoria passando um uuid válido deveria retornar status 200")
+		204,
+		"Tentar deletar uma categoria passando um uuid válido deveria retornar status 204")
 
 	ts.Empty(
 		string(res.Body()),

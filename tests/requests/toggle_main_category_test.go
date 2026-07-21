@@ -60,8 +60,8 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar alternar a categoria principal de um link deveria retornar status 200")
+		204,
+		"Tentar alternar a categoria principal de um link deveria retornar status 204")
 
 	ts.Empty(
 		string(res.Body()),

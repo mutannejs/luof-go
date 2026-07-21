@@ -62,8 +62,8 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar remover um link de uma categoria, ambos relacionados, deveria retornar status 200")
+		204,
+		"Tentar remover um link de uma categoria, ambos relacionados, deveria retornar status 204")
 
 	ts.Empty(
 		res.Body(),

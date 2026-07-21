@@ -29,8 +29,8 @@ func (ts *CreateLinkTestSuite) TestCreateLink() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar criar um link passando parâmetros válidos deveria retornar status 200")
+		201,
+		"Tentar criar um link passando parâmetros válidos deveria retornar status 201")
 
 	ts.Regexp(
 		ltests.UidRegex,

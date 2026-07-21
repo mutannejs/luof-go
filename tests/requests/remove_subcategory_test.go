@@ -71,8 +71,8 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar remover uma subcategoria, ambos relacionadas, deveria retornar status 200")
+		204,
+		"Tentar remover uma subcategoria, ambos relacionadas, deveria retornar status 204")
 
 	ts.Empty(
 		string(res.Body()),
