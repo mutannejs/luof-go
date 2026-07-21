@@ -78,7 +78,7 @@ func InsertLinkInCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusNoContent)
 }
 
 func RemoveLinkFromCategory(echoContext echo.Context) error {
@@ -112,7 +112,7 @@ func RemoveLinkFromCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusNoContent)
 }
 
 func ToggleMainCategory(echoContext echo.Context) error {
@@ -156,5 +156,5 @@ func ToggleMainCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusNoContent)
 }

@@ -80,10 +80,6 @@ func GetSubcategories(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	/*if len(subcategories) == 0 {
-		return cc.JSON(http.StatusOK, make([]any, 0, 0))
-	}*/
-
 	return cc.JSON(http.StatusOK, subcategories)
 }
 
@@ -108,7 +104,7 @@ func CreateCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.String(http.StatusOK, uid.String())
+	return cc.String(http.StatusCreated, uid.String())
 }
 
 func DeleteCategory(echoContext echo.Context) error {
@@ -134,7 +130,7 @@ func DeleteCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusNoContent)
 }
 
 func InsertSubcategory(echoContext echo.Context) error {
@@ -168,7 +164,7 @@ func InsertSubcategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusNoContent)
 }
 
 func RemoveSubcategory(echoContext echo.Context) error {
@@ -199,7 +195,7 @@ func RemoveSubcategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusNoContent)
 }
 
 func UpdateCategory(echoContext echo.Context) error {
@@ -230,5 +226,5 @@ func UpdateCategory(echoContext echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusNoContent)
 }

@@ -62,7 +62,7 @@ func CreateLink(c echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.String(http.StatusOK, uid.String())
+	return cc.String(http.StatusCreated, uid.String())
 }
 
 func DeleteLink(c echo.Context) error {
@@ -88,7 +88,7 @@ func DeleteLink(c echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusNoContent)
 }
 
 func UpdateLink(c echo.Context) error {
@@ -120,5 +120,5 @@ func UpdateLink(c echo.Context) error {
 		return cc.LogAndReturnErr(err)
 	}
 
-	return cc.NoContent(http.StatusOK)
+	return cc.NoContent(http.StatusNoContent)
 }

@@ -29,8 +29,8 @@ func (ts *CreateCategoryTestSuite) TestCreateCategory() {
 
 	ts.Equal(
 		res.StatusCode(),
-		200,
-		"Tentar criar uma categoria passando parâmetros válidos deveria retornar status 200")
+		201,
+		"Tentar criar uma categoria passando parâmetros válidos deveria retornar status 201")
 	ts.Regexp(
 		ltests.UidRegex,
 		res,
