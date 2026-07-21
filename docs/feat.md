@@ -340,6 +340,18 @@ func (cr *Category) DeleteSubcategory(
 }
 ```
 
+#### Migrations
+
+Com a implementação da feature pode ser necessário criar novas migrations. As migrations ficam localizadas no diretório `migrations/banco_de_dados_usado` na raíz do projeto.
+
+Duas migrations devem ser ciadas, uma para alterar o estado atual do banco de dados e outra para reverter essa alteração. A primeira deve ter o nome finalizado por `.up.sql` e a outra por `down.sql`, e ambas devem ter seu nome iniciado pelo timestamp do momento em que ela foi criada seguido por underline e uma breve descrição do que será feito, por exemplo: `1764809880_LinkTable.down.sql`.
+
+Para facilitar a criação das migrations, pode ser utilizado o seguinte comando na raíz do projeto:
+
+```bash
+go run scripts/new_migration/new_migration.go <DescricaoDaMigration>
+```
+
 #### Teste em repositórios
 
 Os testes unitários de um repositório utilizam um banco de dados de teste, mockado durante a execução dos testes e limpo no final. Para que esse comportamento seja respeitado, alguns métodos devem ser definidos e corretamente implementados:
