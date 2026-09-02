@@ -4,7 +4,7 @@ HAS_ERRORS=0
 
 function testRepositoriesInternalError()
 {
-    LERROR_INTERNAL="lerror.SetInternal"
+    LERROR_INTERNAL="lerror.GetInternal"
 
     CHANGED_REPOSITORIES=$(git diff HEAD --name-only \
         | grep '^adapters/sqlite/.*\.go$' \
@@ -52,7 +52,7 @@ function testNotFound()
 
 function testUuidError()
 {
-    LERROR_INTERNALF="lerror.GetInternalf"
+    LERROR_INTERNALF="lerror.GetInternals"
 
     CHANGED_FILES=$(git diff HEAD --name-only)
 

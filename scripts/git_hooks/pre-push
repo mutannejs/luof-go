@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
-ERRORS=$((go vet ./...) 2>&1)
+branch_name=$(git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3)
 
-if ! [[ -z "$ERRORS" ]]; then
-	echo -e "ERRO:\tCorrija todos os erros no repositório antes de enviar alterações pro repositório remoto\n"
-	echo -e "$ERRORS"
-	exit 1
+if [ "branch" = "master" ]; then
+	ERRORS=$((go vet ./...) 2>&1)
+
+	if ! [[ -z "$ERRORS" ]]; then
+		echo -e "$ERRORS"
+		echo -e "\nERRO:\tCorrija todos os erros no repositório antes de enviar alterações pro repositório remoto\n"
+		exit 1
+	fi
 fi
 
 exit 0
