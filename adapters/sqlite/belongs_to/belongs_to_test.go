@@ -64,7 +64,7 @@ func (ts *TestSuite) TearDownSuite() {
 func (ts *TestSuite) TestCreate() {
 	err := ts.btr.Create(mockUidLink, mockUidCategory, time.Now(), false)
 
-	ts.NoError(err, "Tentar relacionar um link a uma categoria, ambos válidos, não deveria retornar erro")
+	ts.Empty(err, "Tentar relacionar um link a uma categoria, ambos válidos, não deveria retornar erro")
 }
 
 func (ts *TestSuite) TestExists() {
@@ -72,14 +72,14 @@ func (ts *TestSuite) TestExists() {
 
 	exists, err := ts.btr.Exists(mockUidLink, mockUidCategory)
 
-	ts.NoError(err, "Exists, se informado uma chave válida não deveria retornar erro")
+	ts.Empty(err, "Exists, se informado uma chave válida não deveria retornar erro")
 	ts.True(exists, "Exists deveria retornar verdadeiro para uma chave válida")
 }
 
 func (ts *TestSuite) TestNotExists() {
 	exists, err := ts.btr.Exists(mockUidLink, mockUidCategory)
 
-	ts.NoError(err, "Exists, se informado uma chave inválida não deveria retornar erro")
+	ts.Empty(err, "Exists, se informado uma chave inválida não deveria retornar erro")
 	ts.False(exists, "Exists deveria retornar falso para uma chave inválida")
 }
 
@@ -88,14 +88,14 @@ func (ts *TestSuite) TestHasLinks() {
 
 	hasLinks, err := ts.btr.HasLinks(mockUidCategory)
 
-	ts.NoError(err, "HasLinks, se informado uma chave válida não deveria retornar erro")
+	ts.Empty(err, "HasLinks, se informado uma chave válida não deveria retornar erro")
 	ts.True(hasLinks, "HasLinks deveria retornar verdadeiro para uma chave de uma categoria com links")
 }
 
 func (ts *TestSuite) TestHasNoLinks() {
 	hasLinks, err := ts.btr.HasLinks(mockUidCategory)
 
-	ts.NoError(err, "HasLinks, se informado uma chave inválida não deveria retornar erro")
+	ts.Empty(err, "HasLinks, se informado uma chave inválida não deveria retornar erro")
 	ts.False(hasLinks, "HasLinks deveria retornar falso para uma chave de uma categoria sem links")
 }
 
@@ -103,7 +103,7 @@ func (ts *TestSuite) TestGetLinksByCategory_Empty() {
 	links, err := ts.btr.GetLinksByCategory(mockUidCategory)
 
 	ts.Empty(links, "Tentar recuperar links de uma categoria vazia deveria retornar uma lista de links vazia")
-	ts.NoError(err, "Tentar recuperar links de uma categoria vazia não deveria retornar erro")
+	ts.Empty(err, "Tentar recuperar links de uma categoria vazia não deveria retornar erro")
 }
 
 func (ts *TestSuite) TestGetLinksByCategory_Exists() {
@@ -111,7 +111,7 @@ func (ts *TestSuite) TestGetLinksByCategory_Exists() {
 	ts.btr.Create(alternativeMockUidLink, mockUidCategory, time.Now(), true)
 	links, err := ts.btr.GetLinksByCategory(mockUidCategory)
 
-	ts.NoError(err, "Tentar recuperar links de uma categoria válida não deveria retornar erro")
+	ts.Empty(err, "Tentar recuperar links de uma categoria válida não deveria retornar erro")
 	ts.Len(links, 2)
 
 	var link domain.Link

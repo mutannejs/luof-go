@@ -1,87 +1,71 @@
 package lerror
 
-import (
-	"errors"
-	"fmt"
+var (
+	BAD_REQUEST = 400
+	NOT_FOUND = 404
+	CONFLICT = 409
+	INTERNAL_SERVER_ERROR = 500
 )
 
-var (
-	BAD_REQUEST = errors.New("400")
-	NOT_FOUND = errors.New("404")
-	CONFLICT = errors.New("409")
-	INTERNAL_SERVER_ERROR = errors.New("500")
-)
+type MsgErrors struct {
+	message string
+	errors []error
+}
+
+func (m *MsgErrors) GetMessage() string {
+	return m.message
+}
+
+type ValueError struct {
+	code int
+	errors []MsgErrors
+}
+
+func (v *ValueError) IsNil() bool {
+	return len(v.errors) == 0
+}
+
+func (v *ValueError) GetErrors() []MsgErrors {
+	return v.errors
+}
 
 // 400: Bad Request
 
-func SetBadRequest(err *error) {
-	setError(BAD_REQUEST, err)
-}
-
-func GetBadRequest(err error) error {
-	setError(BAD_REQUEST, &err)
-	return err
-}
-
-func GetBadRequestf(format string, errs ...error) (err error) {
-	return getErrorf(BAD_REQUEST, format, errs)
-}
-
 // 404: Not Found
 
-func SetNotFound(err *error) {
-	setError(NOT_FOUND, err)
-}
-
-func GetNotFound(err error) error {
-	setError(NOT_FOUND, &err)
-	return err
-}
-
-func GetNotFoundf(format string, errs ...error) (err error) {
-	return getErrorf(NOT_FOUND, format, errs)
+func GetNotFound(errMsg string) ValueError {
+	return getError(BAD_REQUEST, errMsg)
 }
 
 // 409: Conflict
 
-func SetConflict(err *error) {
-	setError(CONFLICT, err)
-}
-
-func GetConflict(err error) error {
-	setError(CONFLICT, &err)
-	return err
-}
-
-func GetConflictf(format string, errs ...error) (err error) {
-	return getErrorf(CONFLICT, format, errs)
+func GetConflict(errMsg string) ValueError {
+	return getError(CONFLICT, errMsg)
 }
 
 // 500: Internal Server Error
 
-func SetInternal(err *error) {
-	setError(INTERNAL_SERVER_ERROR, err)
+func GetInternal(err error) ValueError {
+	if err == nil {
+		return ValueError{}
+	}
+	return getError(INTERNAL_SERVER_ERROR, err.Error())
 }
 
-func GetInternal(err error) error {
-	setError(INTERNAL_SERVER_ERROR, &err)
-	return err
-}
-
-func GetInternalf(format string, errs ...error) (err error) {
-	return getErrorf(INTERNAL_SERVER_ERROR, format, errs)
+func GetInternals(errMsg string, errors ...error) ValueError {
+	return getErrors(INTERNAL_SERVER_ERROR, errMsg, errors...)
 }
 
 // funções auxiliares
 
-func getErrorf(code error, format string, errs []error) (err error) {
-	err = fmt.Errorf(format, errs)
-	setError(code, &err)
-	return
+func getError(code int, errMsg string) ValueError {
+	return getErrors(code, errMsg)
 }
 
-func setError(code error, err *error) {
-	if *err != nil {
-		*err = errors.Join(code, *err)
-	}
+func getErrors(code int, errMsg string, errors ...error) ValueError {
+	return ValueError{
+		code,
+		[]MsgErrors{
+			{errMsg, errors},
+		}}
 }

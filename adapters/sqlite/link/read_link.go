@@ -9,8 +9,8 @@ import (
 	"github.com/google/uuid"
 )
 
-func (lr *Link) Exists(uid uuid.UUID) (exists bool, err error) {
-	err = lr.DB.QueryRow(
+func (lr *Link) Exists(uid uuid.UUID) (exists bool, vErr lerror.ValueError) {
+	var err = lr.DB.QueryRow(
 		`SELECT name FROM link WHERE uid_link = ?`,
 		uid).Scan(new(string))
 
@@ -20,12 +20,12 @@ func (lr *Link) Exists(uid uuid.UUID) (exists bool, err error) {
 		err = nil
 	}
 	
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }
 
-func (lr *Link) GetByUid(uid uuid.UUID) (l domain.Link, err error) {
-	err = lr.DB.QueryRow(
+func (lr *Link) GetByUid(uid uuid.UUID) (l domain.Link, vErr lerror.ValueError) {
+	var err = lr.DB.QueryRow(
 			`SELECT
 				url,
 				name,
@@ -47,6 +47,6 @@ func (lr *Link) GetByUid(uid uuid.UUID) (l domain.Link, err error) {
 		l.SetUid(uid)
 	}
 
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }

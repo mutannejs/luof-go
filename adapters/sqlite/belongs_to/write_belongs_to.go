@@ -13,8 +13,8 @@ func (btr *BelongsTo) Create(
 	categoryUid uuid.UUID,
 	insertedAt time.Time,
 	isMain bool,
-) (err error) {
-	_, err = btr.DB.Exec(
+) (lerror.ValueError) {
+	var _, err = btr.DB.Exec(
 		`
 			INSERT INTO belongs_to (
 				uid_link,
@@ -30,29 +30,27 @@ func (btr *BelongsTo) Create(
 		insertedAt,
 		isMain)
 
-	lerror.SetInternal(&err)
-	return
+	return lerror.GetInternal(err)
 }
 
 func (btr *BelongsTo) Delete(
 	linkUid uuid.UUID,
 	categoryUid uuid.UUID,
-) (err error) {
-	_, err = btr.DB.Exec(
+) (lerror.ValueError) {
+	var _, err = btr.DB.Exec(
 		`
 			DELETE FROM belongs_to WHERE uid_link = ? AND uid_category = ?
 		`,
 		linkUid,
 		categoryUid)
 
-	lerror.SetInternal(&err)
-	return
+	return lerror.GetInternal(err)
 }
 
 func (btr *BelongsTo) SetHasNoMainCategory(
 	linkUid uuid.UUID,
-) (err error) {
-	_, err = btr.DB.Exec(
+) (lerror.ValueError) {
+	var _, err = btr.DB.Exec(
 		`
 			UPDATE belongs_to
 			SET is_main = false
@@ -60,16 +58,15 @@ func (btr *BelongsTo) SetHasNoMainCategory(
 		`,
 		linkUid)
 
-	lerror.SetInternal(&err)
-	return
+	return lerror.GetInternal(err)
 }
 
 func (btr *BelongsTo) Update(
 	linkUid uuid.UUID,
 	categoryUid uuid.UUID,
 	isMain bool,
-) (err error) {
-	_, err = btr.DB.Exec(
+) (lerror.ValueError) {
+	var _, err = btr.DB.Exec(
 		`
 			UPDATE belongs_to
 			SET is_main = ?
@@ -79,6 +76,5 @@ func (btr *BelongsTo) Update(
 		linkUid,
 		categoryUid)
 
-	lerror.SetInternal(&err)
-	return
+	return lerror.GetInternal(err)
 }

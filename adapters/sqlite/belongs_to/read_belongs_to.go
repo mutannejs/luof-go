@@ -12,8 +12,8 @@ import (
 func (btr *BelongsTo) Exists(
 	linkUid uuid.UUID,
 	categoryUid uuid.UUID,
-) (exists bool, err error) {
-	err = btr.DB.QueryRow(
+) (exists bool, vErr lerror.ValueError) {
+	var err = btr.DB.QueryRow(
 		`
 			SELECT uid_category
 			FROM belongs_to
@@ -28,14 +28,14 @@ func (btr *BelongsTo) Exists(
 		err = nil
 	}
 
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }
 
-func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, err error) {
-	var rows *sql.Rows
-
-	rows, err = btr.DB.Query(
+func (btr *BelongsTo) GetLinksByCategory(
+	uid uuid.UUID,
+) (links []domain.Link, vErr lerror.ValueError) {
+	var rows, err = btr.DB.Query(
 		`
 			SELECT
 				l.uid_link,
@@ -52,7 +52,7 @@ func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, er
 		uid)
 
 	if err != nil {
-		lerror.SetInternal(&err)
+		vErr = lerror.GetInternal(err)
 		return
 	}
 
@@ -89,14 +89,14 @@ func (btr *BelongsTo) GetLinksByCategory(uid uuid.UUID) (links []domain.Link, er
 	err = rows.Err()
 	rows.Close()
 
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }
 
 func (btr *BelongsTo) HasLinks(
 	uid uuid.UUID,
-) (hasLinks bool, err error) {
-	err = btr.DB.QueryRow(
+) (hasLinks bool, vErr lerror.ValueError) {
+	var err = btr.DB.QueryRow(
 		`SELECT 1 FROM belongs_to WHERE uid_category = ? LIMIT 1`,
 		uid).Scan(new(int))
 
@@ -106,6 +106,6 @@ func (btr *BelongsTo) HasLinks(
 		err = nil
 	}
 
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }

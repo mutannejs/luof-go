@@ -1,5 +1,9 @@
 package ltests
 
-func GetMsgError(err error) error {
-	return err.(interface{ Unwrap() []error }).Unwrap()[1]
+import(
+	"github.com/mutannejs/luof-go/pkg/lerror"
+)
+
+func GetMsgError(vErr lerror.ValueError) string {
+	return vErr.GetErrors()[0].GetMessage()
 }

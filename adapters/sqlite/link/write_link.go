@@ -7,8 +7,8 @@ import (
 	"github.com/google/uuid"
 )
 
-func (lr *Link) Create(l domain.Link) (err error) {
-	_, err = lr.DB.Exec(
+func (lr *Link) Create(l domain.Link) (lerror.ValueError) {
+	var _, err = lr.DB.Exec(
 		`
 			INSERT INTO link (
 				uid_link,
@@ -29,22 +29,20 @@ func (lr *Link) Create(l domain.Link) (err error) {
 		l.Description.UseMarkdown,
 		l.CreatedAt,
 		l.UpdatedAt)
-		
-	lerror.SetInternal(&err)
-	return
+
+	return lerror.GetInternal(err)
 }
 
-func (lr *Link) Delete(uid uuid.UUID) (err error) {
-	_, err = lr.DB.Exec(
+func (lr *Link) Delete(uid uuid.UUID) (lerror.ValueError) {
+	var _, err = lr.DB.Exec(
 		`DELETE FROM link WHERE uid_link = ?`,
 		uid)
-		
-	lerror.SetInternal(&err)
-	return
+
+	return lerror.GetInternal(err)
 }
 
-func (lr *Link) Update(uid uuid.UUID, l domain.Link) (err error) {
-	_, err = lr.DB.Exec(
+func (lr *Link) Update(uid uuid.UUID, l domain.Link) (lerror.ValueError) {
+	var _, err = lr.DB.Exec(
 		`
 			UPDATE link
 			SET url = ?,
@@ -62,7 +60,6 @@ func (lr *Link) Update(uid uuid.UUID, l domain.Link) (err error) {
 		l.CreatedAt,
 		l.UpdatedAt,
 		uid)
-		
-	lerror.SetInternal(&err)
-	return
+
+	return lerror.GetInternal(err)
 }

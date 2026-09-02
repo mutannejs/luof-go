@@ -12,8 +12,8 @@ import (
 func (cr *Category) AreRelated(
 	firstCategoryUid uuid.UUID,
 	secondCategoryUid uuid.UUID,
-) (areRelated bool, err error) {
-	err = cr.DB.QueryRow(
+) (areRelated bool, vErr lerror.ValueError) {
+	var err = cr.DB.QueryRow(
 		`
 			SELECT father FROM (
 				WITH RECURSIVE descendants
@@ -68,12 +68,12 @@ func (cr *Category) AreRelated(
 		err = nil
 	}
 
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }
 
-func (cr *Category) Exists(uid uuid.UUID) (exists bool, err error) {
-	err = cr.DB.QueryRow(
+func (cr *Category) Exists(uid uuid.UUID) (exists bool, vErr lerror.ValueError) {
+	var err = cr.DB.QueryRow(
 		`SELECT name FROM category WHERE uid_category = ?`,
 		uid).Scan(new(string))
 
@@ -83,12 +83,12 @@ func (cr *Category) Exists(uid uuid.UUID) (exists bool, err error) {
 		err = nil
 	}
 	
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }
 
-func (cr *Category) GetByUid(uid uuid.UUID) (l domain.Category, err error) {
-	err = cr.DB.QueryRow(
+func (cr *Category) GetByUid(uid uuid.UUID) (l domain.Category, vErr lerror.ValueError) {
+	var err = cr.DB.QueryRow(
 			`SELECT
 				name,
 				description,
@@ -108,16 +108,14 @@ func (cr *Category) GetByUid(uid uuid.UUID) (l domain.Category, err error) {
 		l.SetUid(uid)
 	}
 	
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }
 
 func (cr *Category) GetAllRootCategories() (
-	categories []domain.Category, err error,
+	categories []domain.Category, vErr lerror.ValueError,
 ) {
-	var rows *sql.Rows
-
-	rows, err = cr.DB.Query(
+	var rows, err = cr.DB.Query(
 		`
 			SELECT
 				uid_category,
@@ -131,7 +129,7 @@ func (cr *Category) GetAllRootCategories() (
 		`)
 
 	if err != nil {
-		lerror.SetInternal(&err)
+		vErr = lerror.GetInternal(err)
 		return
 	}
 
@@ -167,16 +165,14 @@ func (cr *Category) GetAllRootCategories() (
 	err = rows.Err()
 	rows.Close()
 	
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }
 
 func (cr *Category) GetSubcategories(
 	uid uuid.UUID,
-) (categories []domain.Category, err error) {
-	var rows *sql.Rows
-
-	rows, err = cr.DB.Query(
+) (categories []domain.Category, vErr lerror.ValueError) {
+	var rows, err = cr.DB.Query(
 		`
 			SELECT
 				uid_category,
@@ -191,7 +187,7 @@ func (cr *Category) GetSubcategories(
 		uid)
 
 	if err != nil {
-		lerror.SetInternal(&err)
+		vErr = lerror.GetInternal(err)
 		return
 	}
 
@@ -227,14 +223,14 @@ func (cr *Category) GetSubcategories(
 	err = rows.Err()
 	rows.Close()
 
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }
 
 func (cr *Category) HasSubcategories(
 	uid uuid.UUID,
-) (hasSubcategories bool, err error) {
-	err = cr.DB.QueryRow(
+) (hasSubcategories bool, vErr lerror.ValueError) {
+	var err = cr.DB.QueryRow(
 		`SELECT 1 FROM category WHERE uid_father = ? LIMIT 1`,
 		uid).Scan(new(int))
 
@@ -244,15 +240,15 @@ func (cr *Category) HasSubcategories(
 		err = nil
 	}
 	
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }
 
 func (cr *Category) IsAncestor(
 	ancestorUid uuid.UUID,
 	categoryUid uuid.UUID,
-) (isAncestor bool, err error) {
-	err = cr.DB.QueryRow(
+) (isAncestor bool, vErr lerror.ValueError) {
+	var err = cr.DB.QueryRow(
 		`
 			WITH RECURSIVE ancestors
 				(father, child)
@@ -281,15 +277,15 @@ func (cr *Category) IsAncestor(
 		err = nil
 	}
 
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }
 
 func (cr *Category) IsSubcategory(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,
-) (isSubcategory bool, err error) {
-	err = cr.DB.QueryRow(
+) (isSubcategory bool, vErr lerror.ValueError) {
+	var err = cr.DB.QueryRow(
 		`
 			SELECT name
 			FROM category
@@ -305,6 +301,6 @@ func (cr *Category) IsSubcategory(
 		err = nil
 	}
 
-	lerror.SetInternal(&err)
+	vErr = lerror.GetInternal(err)
 	return
 }

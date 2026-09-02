@@ -18,7 +18,7 @@ func TestNewCategory(t *testing.T) {
 		CategoryMockMap["useMarkdown"].(bool),
 	)
 
-	assert.NoError(
+	assert.Empty(
 		err,
 		"Criação com dados válidos não deveria falhar")
 	assert.NotZero(
@@ -55,7 +55,7 @@ func TestNewLink(t *testing.T) {
 		LinkMockMap["useMarkdown"].(bool),
 	)
 
-	assert.NoError(
+	assert.Empty(
 		err,
 		"criação com dados válidos não deveria falhar")
 	assert.NotZero(

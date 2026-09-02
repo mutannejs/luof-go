@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/golang-migrate/migrate/v4"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 )
 
 type Repositories struct {
@@ -13,7 +14,7 @@ type Repositories struct {
 }
 
 type SettingsValues struct {
-	GetConnection func (map[string]string) (*sql.DB, error)
-	GetMigration func (db *sql.DB) (m *migrate.Migrate, err error)
-	GetRepositories func (db *sql.DB) Repositories
+	GetConnection func (map[string]string) (*sql.DB, lerror.ValueError)
+	GetMigration func (*sql.DB) (*migrate.Migrate, lerror.ValueError)
+	GetRepositories func (*sql.DB) Repositories
 }

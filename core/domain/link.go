@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	LINK_ERROR_NEW = errors.New("error instantiate new link")
+	LINK_ERROR_NEW = "error instantiate new link"
 	LINK_NOT_EXISTS = errors.New("the searched link does not exist")
 )
 
@@ -37,19 +37,20 @@ func NewLink(
 	name string,
 	contentDescription string,
 	useMarkdown bool,
-) (Link, error) {
+) (link Link, vError lerror.ValueError) {
 	var uid uuid.UUID
 	var err error
 
 	uid, err = luuid.New()
 	if err != nil {
-		return Link{}, lerror.GetInternalf("%s: %w", LINK_ERROR_NEW, err)
+		vError = lerror.GetInternals(LINK_ERROR_NEW, err)
+		return
 	}
 
 	var createdAt time.Time = time.Now()
 	var updatedAt time.Time
 	var description = Description{contentDescription, useMarkdown}
-	var link = Link{uid, url, name, description, createdAt, updatedAt}
+	link = Link{uid, url, name, description, createdAt, updatedAt}
 
-	return link, nil
+	return
 }

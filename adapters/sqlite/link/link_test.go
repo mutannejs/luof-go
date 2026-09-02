@@ -53,7 +53,7 @@ func (ts *TestSuite) TearDownSuite() {
 func (ts *TestSuite) TestCreate() {
 	err := ts.lr.Create(mockLink)
 
-	ts.NoError(err, "Tentar criar um link válido não deveria retornar erro")
+	ts.Empty(err, "Tentar criar um link válido não deveria retornar erro")
 }
 
 func (ts *TestSuite) TestGetByUid_Exists() {
@@ -61,7 +61,7 @@ func (ts *TestSuite) TestGetByUid_Exists() {
 
 	link, err := ts.lr.GetByUid(mockUidLink)
 
-	ts.NoError(err, "Tentar recuperar um link informando um uid válido não deveria retornar erro")
+	ts.Empty(err, "Tentar recuperar um link informando um uid válido não deveria retornar erro")
 	ts.Equal(mockUidLink, link.GetUid())
 	ts.Equal(mockLink.Url, link.Url)
 	ts.Equal(mockLink.Name, link.Name)
@@ -77,9 +77,9 @@ func (ts *TestSuite) TestGetByUid_NotExists() {
 	link, err := ts.lr.GetByUid(uid)
 
 	ts.Empty(link, "Tentar recuperar um link informando um uid inválido deveria retornar um Link vazio")
-	ts.ErrorIs(
+	ts.Equal(
 		ltests.GetMsgError(err),
-		sql.ErrNoRows,
+		sql.ErrNoRows.Error(),
 		"Tentar recuperar um link informando um uid inválido deveria retornar " + sql.ErrNoRows.Error())
 }
 
@@ -88,7 +88,7 @@ func (ts *TestSuite) TestExists() {
 
 	exists, err := ts.lr.Exists(mockUidLink)
 
-	ts.NoError(err, "Exists se informado um uid válido não deveria retornar erro")
+	ts.Empty(err, "Exists se informado um uid válido não deveria retornar erro")
 	ts.True( exists, "Exists deveria retornar verdadeiro para um uid válido")
 }
 
@@ -97,7 +97,7 @@ func (ts *TestSuite) TestNotExists() {
 
 	exists, err := ts.lr.Exists(uid)
 
-	ts.NoError(err, "Exists se informado um uid inválido não deveria retornar erro")
+	ts.Empty(err, "Exists se informado um uid inválido não deveria retornar erro")
 	ts.False( exists, "Exists deveria retornar falso para um uid válido")
 }
 
@@ -106,7 +106,7 @@ func (ts *TestSuite) TestUpdate() {
 
 	err := ts.lr.Update(mockUidLink, alternativeMockLink)
 
-	ts.NoError(err, "Tentar atualizar um link com uid válido não deveria retornar erro")
+	ts.Empty(err, "Tentar atualizar um link com uid válido não deveria retornar erro")
 
 	link, _ := ts.lr.GetByUid(mockUidLink)
 
@@ -121,13 +121,13 @@ func (ts *TestSuite) TestDelete() {
 
 	err := ts.lr.Delete(mockUidLink)
 
-	ts.NoError(err, "Tentar deletar um link válido não deveria retornar erro")
+	ts.Empty(err, "Tentar deletar um link válido não deveria retornar erro")
 
 	_, err = ts.lr.GetByUid(mockUidLink)
 
-	ts.ErrorIs(
+	ts.Equal(
 		ltests.GetMsgError(err),
-		sql.ErrNoRows,
+		sql.ErrNoRows.Error(),
 		"Tentar recuperar um link previamente deletado deveria retornar " + sql.ErrNoRows.Error())
 }
 

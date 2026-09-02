@@ -9,8 +9,8 @@ import (
 	"github.com/google/uuid"
 )
 
-func (cr *Category) Create(l domain.Category) (err error) {
-	_, err = cr.DB.Exec(
+func (cr *Category) Create(l domain.Category) (lerror.ValueError) {
+	var _, err = cr.DB.Exec(
 		`
 			INSERT INTO category (
 				uid_category,
@@ -30,23 +30,21 @@ func (cr *Category) Create(l domain.Category) (err error) {
 		l.CreatedAt,
 		l.UpdatedAt)
 		
-	lerror.SetInternal(&err)
-	return
+	return lerror.GetInternal(err)
 }
 
-func (cr *Category) Delete(uid uuid.UUID) (err error) {
-	_, err = cr.DB.Exec(
+func (cr *Category) Delete(uid uuid.UUID) (lerror.ValueError) {
+	var _, err = cr.DB.Exec(
 		`DELETE FROM category WHERE uid_category = ?`,
 		uid)
 		
-	lerror.SetInternal(&err)
-	return
+	return lerror.GetInternal(err)
 }
 
 func (cr *Category) DeleteSubcategory(
 	childUid uuid.UUID,
-) (err error) {
-	_, err = cr.DB.Exec(
+) (lerror.ValueError) {
+	var _, err = cr.DB.Exec(
 		`
 			UPDATE category
 			SET uid_father = null
@@ -54,16 +52,15 @@ func (cr *Category) DeleteSubcategory(
 		`,
 		childUid)
 		
-	lerror.SetInternal(&err)
-	return
+	return lerror.GetInternal(err)
 }
 
 func (cr *Category) InsertSubcategory(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,
 	updatedAt time.Time,
-) (err error) {
-	_, err = cr.DB.Exec(
+) (lerror.ValueError) {
+	var _, err = cr.DB.Exec(
 		`
 			UPDATE category
 			SET uid_father = ?,
@@ -74,12 +71,14 @@ func (cr *Category) InsertSubcategory(
 		updatedAt,
 		childUid)
 		
-	lerror.SetInternal(&err)
-	return
+	return lerror.GetInternal(err)
 }
 
-func (cr *Category) Update(uid uuid.UUID, l domain.Category) (err error) {
-	_, err = cr.DB.Exec(
+func (cr *Category) Update(
+	uid uuid.UUID,
+	l domain.Category,
+) (lerror.ValueError) {
+	var _, err = cr.DB.Exec(
 		`
 			UPDATE category
 			SET name = ?,
@@ -96,6 +95,5 @@ func (cr *Category) Update(uid uuid.UUID, l domain.Category) (err error) {
 		l.UpdatedAt,
 		uid)
 		
-	lerror.SetInternal(&err)
-	return
+	return lerror.GetInternal(err)
 }
