@@ -52,10 +52,10 @@ func TestRemoveLinkFromCategory_NotExists(t *testing.T) {
 
 	err := rlfc.Execute(mockUidLink, mockUidCategory)
 
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		notBelongs,
-		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + notBelongs.Error())
+		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + notBelongs)
 }
 
 func TestRemoveLinkFromCategory_Exists(t *testing.T) {
@@ -94,7 +94,7 @@ func TestRemoveLinkFromCategory_Exists(t *testing.T) {
 
 	err := rlfc.Execute(mockUidLink, mockUidCategory)
 
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Tentar remover um link de uma categoria, tal que essa relação existe, não deveria retornar erro")
 }

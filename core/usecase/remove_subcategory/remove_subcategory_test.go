@@ -40,8 +40,8 @@ func TestRemoveSubcategory_Exists(t *testing.T) {
 
 	err := is.Execute(alternativeMockUidCategory, mockUidCategory)
 
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Tentar remover uma subcategoria válida não deveria retornar erro")
 }
 
@@ -68,8 +68,8 @@ func TestRemoveSubcategory_NotExists(t *testing.T) {
 
 	err := is.Execute(alternativeMockUidCategory, mockUidCategory)
 
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		notIsSubcategory,
-		"Tentar remover uma categoria de outra, sem que ela seja uma subcategoria direta desta, deveria retornar erro contendo " + notIsSubcategory.Error())
+		"Tentar remover uma categoria de outra, sem que ela seja uma subcategoria direta desta, deveria retornar erro contendo " + notIsSubcategory)
 }

@@ -132,7 +132,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_FatherNotEXists() {
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.FATHER_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.FATHER_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -143,7 +143,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_FatherNotEXists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar inserir uma subcategoria em uma categoria pai que não existe deveria retornar erro contendo " + domain.FATHER_NOT_EXISTS.Error())
+		"Tentar inserir uma subcategoria em uma categoria pai que não existe deveria retornar erro contendo " + domain.FATHER_NOT_EXISTS)
 }
 
 func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_ChildNotEXists() {
@@ -155,7 +155,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_ChildNotEXists() {
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.CHILD_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.CHILD_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -166,7 +166,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_ChildNotEXists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar inserir uma categoria que não existe em outra deveria retornar erro contendo " + domain.CHILD_NOT_EXISTS.Error())
+		"Tentar inserir uma categoria que não existe em outra deveria retornar erro contendo " + domain.CHILD_NOT_EXISTS)
 }
 
 func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AlreadyExists() {
@@ -185,7 +185,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AlreadyExists() {
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.IS_SUBCATEGORY.Error()),
+		ltests.GetResponseMessage(domain.IS_SUBCATEGORY),
 		res.Body())
 
 	ts.Equal(
@@ -196,7 +196,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AlreadyExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar inserir uma subcategoria, ambas já relacionadas, deveria retornar erro contendo " + domain.IS_SUBCATEGORY.Error())
+		"Tentar inserir uma subcategoria, ambas já relacionadas, deveria retornar erro contendo " + domain.IS_SUBCATEGORY)
 }
 
 func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AncestorNotBecomeASubcategory() {
@@ -221,7 +221,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AncestorNotBecomeASu
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY.Error()),
+		ltests.GetResponseMessage(domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY),
 		res.Body())
 
 	ts.Equal(
@@ -232,7 +232,7 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AncestorNotBecomeASu
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar inserir uma subcategoria, sendo que a relação inversa já existe, deveria retornar erro contendo " + domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY.Error())
+		"Tentar inserir uma subcategoria, sendo que a relação inversa já existe, deveria retornar erro contendo " + domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY)
 }
 
 func TestInsertSubcategoryAllTests(t *testing.T) {

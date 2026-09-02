@@ -21,24 +21,24 @@ func New(repo repository.Category) InsertSubcategory {
 func (isUseCase *InsertSubcategory) Execute(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,
-) (err error) {
+) (vErr lerror.ValueError) {
 	var isAncestor, isSubcategory bool
 
 	if fatherUid == childUid {
 		return lerror.GetConflict(domain.CANNOT_BE_A_SUBCATEGORY_OF_ITSELF)
 	}
 
-	isSubcategory, err = isUseCase.Repo.IsSubcategory(fatherUid, childUid)
+	isSubcategory, vErr = isUseCase.Repo.IsSubcategory(fatherUid, childUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if isSubcategory {
 		return lerror.GetConflict(domain.IS_SUBCATEGORY)
 	}
 
-	isAncestor, err = isUseCase.Repo.IsAncestor(childUid, fatherUid)
+	isAncestor, vErr = isUseCase.Repo.IsAncestor(childUid, fatherUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if isAncestor {
 		return lerror.GetConflict(domain.ANCESTOR_NOT_BECOME_A_SUBCATEGORY)
@@ -46,23 +46,23 @@ func (isUseCase *InsertSubcategory) Execute(
 
 	var exists bool
 
-	exists, err = isUseCase.Repo.Exists(fatherUid)
+	exists, vErr = isUseCase.Repo.Exists(fatherUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.FATHER_NOT_EXISTS)
 	}
 
-	exists, err = isUseCase.Repo.Exists(childUid)
+	exists, vErr = isUseCase.Repo.Exists(childUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.CHILD_NOT_EXISTS)
 	}
 
-	err = isUseCase.Repo.InsertSubcategory(fatherUid, childUid, time.Now())
+	vErr = isUseCase.Repo.InsertSubcategory(fatherUid, childUid, time.Now())
 
 	return
 }

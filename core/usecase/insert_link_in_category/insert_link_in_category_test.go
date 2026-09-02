@@ -59,10 +59,10 @@ func TestInsertLinkInCategory_CategoryNotExists(t *testing.T) {
 
 	err := ilic.Execute(mockUidLink, mockUidCategory, true)
 
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		categoryNotExists,
-		"Tentar inserir um link em uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
+		"Tentar inserir um link em uma categoria que não existe deveria retornar erro contendo " + categoryNotExists)
 }
 
 func TestInsertLinkInCategory_Exists(t *testing.T) {
@@ -105,10 +105,10 @@ func TestInsertLinkInCategory_Exists(t *testing.T) {
 
 	err := ilic.Execute(mockUidLink, mockUidCategory, false)
 
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		alreadyBelongs,
-		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + alreadyBelongs.Error())
+		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + alreadyBelongs)
 }
 
 func TestInsertLinkInCategory_LinkNotExists(t *testing.T) {
@@ -151,10 +151,10 @@ func TestInsertLinkInCategory_LinkNotExists(t *testing.T) {
 
 	err := ilic.Execute(mockUidLink, mockUidCategory, true)
 
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		linkNotExists,
-		"Tentar inserir um link que não existe em uma categoria válida deveria retornar erro contendo " + linkNotExists.Error())
+		"Tentar inserir um link que não existe em uma categoria válida deveria retornar erro contendo " + linkNotExists)
 }
 
 func TestInsertLinkInCategory_NotExists(t *testing.T) {
@@ -197,7 +197,7 @@ func TestInsertLinkInCategory_NotExists(t *testing.T) {
 
 	err := ilic.Execute(mockUidLink, mockUidCategory, true)
 
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Tentar inserir um link em uma categoria, ambos ainda não relacionados, não deveria retornar erro")
 }

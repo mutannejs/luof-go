@@ -19,19 +19,19 @@ func New(btRepo repository.BelongsTo, cRepo repository.Category) GetLinksByCateg
 
 func (glbcUseCase *GetLinksByCategory) Execute(
 	uid uuid.UUID,
-) (links []domain.Link, err error) {
+) (links []domain.Link, vErr lerror.ValueError) {
 	var exists bool
 	
-	exists, err = glbcUseCase.CategoryRepo.Exists(uid)
+	exists, vErr = glbcUseCase.CategoryRepo.Exists(uid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	}
 
 	if !exists {
-		err = lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
+		vErr = lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	} else {
-		links, err = glbcUseCase.BelongsToRepo.GetLinksByCategory(uid)
+		links, vErr = glbcUseCase.BelongsToRepo.GetLinksByCategory(uid)
 	}
 
 	return

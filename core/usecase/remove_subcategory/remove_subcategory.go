@@ -19,20 +19,20 @@ func New(repo repository.Category) RemoveSubcategory {
 func (isUseCase *RemoveSubcategory) Execute(
 	fatherUid uuid.UUID,
 	childUid uuid.UUID,
-) (err error) {
+) (vErr lerror.ValueError) {
 	var exists bool
 
-	exists, err = isUseCase.Repo.Exists(fatherUid)
+	exists, vErr = isUseCase.Repo.Exists(fatherUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.FATHER_NOT_EXISTS)
 	}
 
-	exists, err = isUseCase.Repo.Exists(childUid)
+	exists, vErr = isUseCase.Repo.Exists(childUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.CHILD_NOT_EXISTS)
@@ -40,15 +40,15 @@ func (isUseCase *RemoveSubcategory) Execute(
 
 	var isSubcategory bool
 
-	isSubcategory, err = isUseCase.Repo.IsSubcategory(fatherUid, childUid)
+	isSubcategory, vErr = isUseCase.Repo.IsSubcategory(fatherUid, childUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !isSubcategory {
 		return lerror.GetNotFound(domain.NOT_IS_SUBCATEGORY)
 	}
 
-	err = isUseCase.Repo.DeleteSubcategory(childUid)
+	vErr = isUseCase.Repo.DeleteSubcategory(childUid)
 
 	return
 }

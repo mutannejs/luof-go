@@ -1,7 +1,6 @@
 package domain
 
 import (
-	"errors"
 	"time"
 
 	"github.com/mutannejs/luof-go/pkg/lerror"
@@ -12,7 +11,7 @@ import (
 
 var (
 	LINK_ERROR_NEW = "error instantiate new link"
-	LINK_NOT_EXISTS = errors.New("the searched link does not exist")
+	LINK_NOT_EXISTS = "the searched link does not exist"
 )
 
 type Link struct {

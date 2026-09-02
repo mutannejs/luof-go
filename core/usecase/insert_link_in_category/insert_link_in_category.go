@@ -24,35 +24,35 @@ func (ilicUseCase *InsertLinkInCategory) Execute(
 	linkUid uuid.UUID,
 	categoryUid uuid.UUID,
 	isMain bool,
-) (err error) {
+) (vErr lerror.ValueError) {
 	var exists bool
 
-	exists, err = ilicUseCase.BelongsToRepo.Exists(linkUid, categoryUid)
+	exists, vErr = ilicUseCase.BelongsToRepo.Exists(linkUid, categoryUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if exists {
 		return lerror.GetConflict(domain.ALREADY_BELONGS)
 	}
 
-	exists, err = ilicUseCase.CategoryRepo.Exists(categoryUid)
+	exists, vErr = ilicUseCase.CategoryRepo.Exists(categoryUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	}
 
-	exists, err = ilicUseCase.LinkRepo.Exists(linkUid)
+	exists, vErr = ilicUseCase.LinkRepo.Exists(linkUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.LINK_NOT_EXISTS)
 	}
 
-	err = ilicUseCase.BelongsToRepo.SetHasNoMainCategory(linkUid)
-	err = ilicUseCase.BelongsToRepo.Create(linkUid, categoryUid, time.Now(), isMain)
+	vErr = ilicUseCase.BelongsToRepo.SetHasNoMainCategory(linkUid)
+	vErr = ilicUseCase.BelongsToRepo.Create(linkUid, categoryUid, time.Now(), isMain)
 
 	return
 }

@@ -29,10 +29,10 @@ func TestDeleteLink_NotExists(t *testing.T) {
 	assert.False(
 		exists,
 		"Não deveria ser possível deletar um link que não existe")
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		linkNotExists,
-		"Tentativa de deletar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
+		"Tentativa de deletar um link que não existe deveria retornar erro contendo " + linkNotExists)
 }
 
 func TestDeleteLink_Exists(t *testing.T) {
@@ -49,7 +49,7 @@ func TestDeleteLink_Exists(t *testing.T) {
 	assert.True(
 		exists,
 		"Deveria ser possível deletar um link válido")
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Deletar um link válido não deveria retornar erro")
 }

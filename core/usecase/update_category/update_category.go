@@ -23,21 +23,21 @@ func (ucUseCase *UpdateCategory) Execute(
 	name string,
 	description string,
 	useMarkdown bool,
-) (exists bool, err error) {
-	exists, err = ucUseCase.Repo.Exists(uid)
+) (exists bool, vErr lerror.ValueError) {
+	exists, vErr = ucUseCase.Repo.Exists(uid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return exists, lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	}
 
 	var category domain.Category
-	category, err = domain.NewCategory(name, description, useMarkdown)
+	category, vErr = domain.NewCategory(name, description, useMarkdown)
 
-	if err == nil {
+	if vErr.IsNil() {
 		category.UpdatedAt = time.Now()
-		err = ucUseCase.Repo.Update(uid, category)
+		vErr = ucUseCase.Repo.Update(uid, category)
 	}
 
 	return

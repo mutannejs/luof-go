@@ -102,7 +102,7 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_FatherNotExists() {
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.FATHER_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.FATHER_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -113,7 +113,7 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_FatherNotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar remover uma categoria de outra que não existe deveria retornar erro contendo " + domain.FATHER_NOT_EXISTS.Error())
+		"Tentar remover uma categoria de outra que não existe deveria retornar erro contendo " + domain.FATHER_NOT_EXISTS)
 }
 
 func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_ChildNotExists() {
@@ -124,7 +124,7 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_ChildNotExists() {
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.CHILD_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.CHILD_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -135,7 +135,7 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_ChildNotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar remover uma subcategoria tal que a relação não existe, deveria retornar erro contendo " + domain.CHILD_NOT_EXISTS.Error())
+		"Tentar remover uma subcategoria tal que a relação não existe, deveria retornar erro contendo " + domain.CHILD_NOT_EXISTS)
 }
 
 func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_NotExists() {
@@ -146,7 +146,7 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_NotExists() {
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.NOT_IS_SUBCATEGORY.Error()),
+		ltests.GetResponseMessage(domain.NOT_IS_SUBCATEGORY),
 		res.Body())
 
 	ts.Equal(
@@ -157,7 +157,7 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_NotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar remover uma subcategoria tal que a relação não existe, deveria retornar erro contendo " + domain.NOT_IS_SUBCATEGORY.Error())
+		"Tentar remover uma subcategoria tal que a relação não existe, deveria retornar erro contendo " + domain.NOT_IS_SUBCATEGORY)
 }
 
 func TestRemoveSubcategoryAllTests(t *testing.T) {

@@ -31,10 +31,10 @@ func TestGetLinksByCategory_CategoryNotExists(t *testing.T) {
 	assert.Zero(
 		links,
 		"Deveria ser retornado zero para um uid que não pertence a nenhuma categoria existente")
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		categoryNotExists,
-		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
+		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists)
 }
 
 func TestGetLinksByCategory_CategoryExists(t *testing.T) {
@@ -57,7 +57,7 @@ func TestGetLinksByCategory_CategoryExists(t *testing.T) {
 		links,
 		mockLinks[1],
 		"Todos os links armazenados no repositório devem ser retornados pela função")
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Buscar por uma categoria válida não deveria retornar erro")
 }

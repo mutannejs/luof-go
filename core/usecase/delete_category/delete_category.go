@@ -19,26 +19,26 @@ func New(btRepo repository.BelongsTo, cRepo repository.Category) DeleteCategory 
 
 func (dcUseCase *DeleteCategory) Execute(
 	uid uuid.UUID,
-) (err error) {
-	exists, err := dcUseCase.CategoryRepo.Exists(uid)
+) (vErr lerror.ValueError) {
+	exists, vErr := dcUseCase.CategoryRepo.Exists(uid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	}
 
-	hasLinks, err := dcUseCase.BelongsToRepo.HasLinks(uid)
+	hasLinks, vErr := dcUseCase.BelongsToRepo.HasLinks(uid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if hasLinks {
 		return lerror.GetConflict(domain.HAS_LINKS)
 	}
 
-	hasSubcategories, err := dcUseCase.CategoryRepo.HasSubcategories(uid)
+	hasSubcategories, vErr := dcUseCase.CategoryRepo.HasSubcategories(uid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if hasSubcategories {
 		return lerror.GetConflict(domain.HAS_SUBCATEGORIES)

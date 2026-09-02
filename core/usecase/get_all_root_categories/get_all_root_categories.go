@@ -3,6 +3,7 @@ package get_all_root_categories
 import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 )
 
 type GetAllRootCategories struct {
@@ -15,8 +16,8 @@ func New(repo repository.Category) GetAllRootCategories {
 
 func (garcUseCase *GetAllRootCategories) Execute() (
 	categories []domain.Category,
-	err error,
+	vErr lerror.ValueError,
 ) {
-	categories, err = garcUseCase.Repo.GetAllRootCategories()
+	categories, vErr = garcUseCase.Repo.GetAllRootCategories()
 	return
 }

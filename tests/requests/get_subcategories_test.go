@@ -120,7 +120,7 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_NotExists() {
 		nil)
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -131,7 +131,7 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_NotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar recuperar as subcategorias de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error())
+		"Tentar recuperar as subcategorias de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS)
 }
 
 func TestGetSubcategoriesAllTests(t *testing.T) {

@@ -18,17 +18,17 @@ func New(repo repository.Link) DeleteLink {
 
 func (dlUseCase *DeleteLink) Execute(
 	uid uuid.UUID,
-) (exists bool, err error) {
-	exists, err = dlUseCase.Repo.Exists(uid)
+) (exists bool, vErr lerror.ValueError) {
+	exists, vErr = dlUseCase.Repo.Exists(uid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	}
 
 	if !exists {
-		err = lerror.GetNotFound(domain.LINK_NOT_EXISTS)
+		vErr = lerror.GetNotFound(domain.LINK_NOT_EXISTS)
 	} else {
-		err = dlUseCase.Repo.Delete(uid)
+		vErr = dlUseCase.Repo.Delete(uid)
 	}
 
 	return

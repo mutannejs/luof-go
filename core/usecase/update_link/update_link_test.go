@@ -36,10 +36,10 @@ func TestUpdateLink_NotExists(t *testing.T) {
 	assert.False(
 		exists,
 		"Não deveria ser possível atualizar um link que não existe")
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		linkNotExists,
-		"Tentar atualizar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
+		"Tentar atualizar um link que não existe deveria retornar erro contendo " + linkNotExists)
 }
 
 func TestUpdateLink_Exists(t *testing.T) {
@@ -83,7 +83,7 @@ func TestUpdateLink_Exists(t *testing.T) {
 	assert.True(
 		exists,
 		"Deveria ser possível atualizar um link válido")
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Atualizar um link válido não deveria retornar erro")
 }

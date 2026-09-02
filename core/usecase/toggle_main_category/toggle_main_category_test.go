@@ -53,10 +53,10 @@ func TestToggleMainCategory_NotExists(t *testing.T) {
 
 	err := tmc.Execute(mockUidLink, mockUidCategory, true)
 
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		notBelongs,
-		"Tentar alterar a importância da categoria de um link, tal que a relação entre eles não existe, deveria retornar erro contendo " + notBelongs.Error())
+		"Tentar alterar a importância da categoria de um link, tal que a relação entre eles não existe, deveria retornar erro contendo " + notBelongs)
 }
 
 func TestToggleMainCategory_Exists(t *testing.T) {
@@ -94,7 +94,7 @@ func TestToggleMainCategory_Exists(t *testing.T) {
 
 	err := tmc.Execute(mockUidLink, mockUidCategory, false)
 
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Tentar inserir um link em uma categoria, ambos já relacionados, não deveria retornar erro")
 }

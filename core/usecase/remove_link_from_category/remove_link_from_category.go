@@ -21,34 +21,34 @@ func New(btRepo repository.BelongsTo, cRepo repository.Category, lRepo repositor
 func (rlfcUseCase *RemoveLinkFromCategory) Execute(
 	linkUid uuid.UUID,
 	categoryUid uuid.UUID,
-) (err error) {
+) (vErr lerror.ValueError) {
 	var exists bool
 
-	exists, err = rlfcUseCase.CategoryRepo.Exists(categoryUid)
+	exists, vErr = rlfcUseCase.CategoryRepo.Exists(categoryUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	}
 
-	exists, err = rlfcUseCase.LinkRepo.Exists(linkUid)
+	exists, vErr = rlfcUseCase.LinkRepo.Exists(linkUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.LINK_NOT_EXISTS)
 	}
 
-	exists, err = rlfcUseCase.BelongsToRepo.Exists(linkUid, categoryUid)
+	exists, vErr = rlfcUseCase.BelongsToRepo.Exists(linkUid, categoryUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.NOT_BELONGS)
 	}
 
-	err = rlfcUseCase.BelongsToRepo.Delete(linkUid, categoryUid)
+	vErr = rlfcUseCase.BelongsToRepo.Delete(linkUid, categoryUid)
 
 	return
 }

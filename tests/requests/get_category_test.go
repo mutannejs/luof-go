@@ -64,7 +64,7 @@ func (ts *GetCategoryTestSuite) TestGetCategory_NotExists() {
 	res, _ := ts.get(map[string]string{"categoryUid": domain.MockUidCategory.String()}, nil)
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -75,7 +75,7 @@ func (ts *GetCategoryTestSuite) TestGetCategory_NotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar recuperar uma categoria passando um uuid inválido deveria retornar o erro " + domain.CATEGORY_NOT_EXISTS.Error())
+		"Tentar recuperar uma categoria passando um uuid inválido deveria retornar o erro " + domain.CATEGORY_NOT_EXISTS)
 }
 
 func TestGetCategoryAllTests(t *testing.T) {

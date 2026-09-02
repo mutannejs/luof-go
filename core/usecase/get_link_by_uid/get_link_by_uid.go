@@ -18,19 +18,19 @@ func New(repo repository.Link) GetLinkByUid {
 
 func (glbuUseCase *GetLinkByUid) Execute(
 	uid uuid.UUID,
-) (link domain.Link, err error) {
+) (link domain.Link, vErr lerror.ValueError) {
 	var exists bool
 
-	exists, err = glbuUseCase.Repo.Exists(uid)
+	exists, vErr = glbuUseCase.Repo.Exists(uid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	}
 
 	if !exists {
-		err = lerror.GetNotFound(domain.LINK_NOT_EXISTS)
+		vErr = lerror.GetNotFound(domain.LINK_NOT_EXISTS)
 	} else {
-		link, err = glbuUseCase.Repo.GetByUid(uid)
+		link, vErr = glbuUseCase.Repo.GetByUid(uid)
 	}
 
 	return

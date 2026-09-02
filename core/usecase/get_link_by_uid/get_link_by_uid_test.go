@@ -30,10 +30,10 @@ func TestGetLinkByUid_NotExists(t *testing.T) {
 	assert.Zero(
 		link,
 		"Deveria ser retornado zero para um uid inválido")
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		linkNotExists,
-		"Buscar um link que não existe deveria retornar erro contendo " + linkNotExists.Error())
+		"Buscar um link que não existe deveria retornar erro contendo " + linkNotExists)
 }
 
 func TestGetLinkByUid_Exists(t *testing.T) {
@@ -51,7 +51,7 @@ func TestGetLinkByUid_Exists(t *testing.T) {
 		mockLink,
 		link,
 		"O link retornado pela função deve ser o mesmo retornado pelo repositório")
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Buscar um link válido não deveria retornar erro")
 }

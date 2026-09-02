@@ -85,7 +85,7 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_LinkNotExists(
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -96,7 +96,7 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_LinkNotExists(
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar inserir um link que não existe em uma categoria deveria retornar erro contendo " + domain.LINK_NOT_EXISTS.Error())
+		"Tentar inserir um link que não existe em uma categoria deveria retornar erro contendo " + domain.LINK_NOT_EXISTS)
 }
 
 func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_CategoryNotExists() {
@@ -109,7 +109,7 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_CategoryNotExi
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -120,7 +120,7 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_CategoryNotExi
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar inserir um link em uma categoria que não existe deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error())
+		"Tentar inserir um link em uma categoria que não existe deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS)
 }
 
 func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_AlreadyExists() {
@@ -133,7 +133,7 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_AlreadyExists(
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.ALREADY_BELONGS.Error()),
+		ltests.GetResponseMessage(domain.ALREADY_BELONGS),
 		res.Body())
 
 	ts.Equal(
@@ -144,7 +144,7 @@ func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_AlreadyExists(
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + domain.ALREADY_BELONGS.Error())
+		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + domain.ALREADY_BELONGS)
 }
 
 func (ts *InsertLinkInCategoryTestSuite) TestInsertLinkInCategory_DefaultIsMain() {

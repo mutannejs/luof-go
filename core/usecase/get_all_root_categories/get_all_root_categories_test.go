@@ -23,8 +23,8 @@ func TestGetAllRootCategories_Empty(t *testing.T) {
 
 	categories, err := alrc.Execute()
 
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Buscar todas as categorias raízes não deveria retornar erro")
 	assert.Len(
 		categories,
@@ -42,8 +42,8 @@ func TestGetAllRootCategories_NoEmpty(t *testing.T) {
 
 	categories, err := alrc.Execute()
 
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Buscar todas as categorias raízes não deveria retornar erro")
 	assert.Len(
 		categories,

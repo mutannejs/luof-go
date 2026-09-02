@@ -3,6 +3,7 @@ package create_link
 import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -20,13 +21,13 @@ func (clUseCase *CreateLink) Execute(
 	name string,
 	description string,
 	useMarkdown bool,
-) (uid uuid.UUID, err error) {
+) (uid uuid.UUID, vErr lerror.ValueError) {
 	var link domain.Link
 
-	link, err = domain.NewLink(url, name, description, useMarkdown)
+	link, vErr = domain.NewLink(url, name, description, useMarkdown)
 
-	if err == nil {
-		err = clUseCase.Repo.Create(link)
+	if vErr.IsNil() {
+		vErr = clUseCase.Repo.Create(link)
 		uid = link.GetUid()
 	}
 

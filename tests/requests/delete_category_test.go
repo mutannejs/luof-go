@@ -65,7 +65,7 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_NotExists() {
 	res, _ := ts.delete(map[string]string{"categoryUid": domain.MockUidCategory.String()})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -76,7 +76,7 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_NotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar deletar uma categoria passando um uuid inválido deveria retornar o erro " + domain.LINK_NOT_EXISTS.Error())
+		"Tentar deletar uma categoria passando um uuid inválido deveria retornar o erro " + domain.LINK_NOT_EXISTS)
 }
 
 func (ts *DeleteCategoryTestSuite) TestDeleteCategory_HasLinks() {
@@ -92,7 +92,7 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_HasLinks() {
 	res, _ = ts.delete(map[string]string{"categoryUid": res.String()})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.HAS_LINKS.Error()),
+		ltests.GetResponseMessage(domain.HAS_LINKS),
 		res.Body())
 
 	ts.Equal(
@@ -103,7 +103,7 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_HasLinks() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar deletar uma categoria com um ou mais links deveria retornar o erro " + domain.HAS_LINKS.Error())
+		"Tentar deletar uma categoria com um ou mais links deveria retornar o erro " + domain.HAS_LINKS)
 }
 
 func (ts *DeleteCategoryTestSuite) TestDeleteCategory_HasSubcategories() {
@@ -118,7 +118,7 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_HasSubcategories() {
 	res, _ = ts.delete(map[string]string{"categoryUid": res.String()})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.HAS_SUBCATEGORIES.Error()),
+		ltests.GetResponseMessage(domain.HAS_SUBCATEGORIES),
 		res.Body())
 
 	ts.Equal(
@@ -129,7 +129,7 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_HasSubcategories() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar deletar uma categoria com uma ou mais subcategorias deveria retornar o erro " + domain.HAS_SUBCATEGORIES.Error())
+		"Tentar deletar uma categoria com uma ou mais subcategorias deveria retornar o erro " + domain.HAS_SUBCATEGORIES)
 }
 
 func TestDeleteCategoryAllTests(t *testing.T) {

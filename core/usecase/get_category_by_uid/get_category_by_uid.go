@@ -18,19 +18,19 @@ func New(repo repository.Category) GetCategoryByUid {
 
 func (gcbuUseCase *GetCategoryByUid) Execute(
 	uid uuid.UUID,
-) (category domain.Category, err error) {
+) (category domain.Category, vErr lerror.ValueError) {
 	var exists bool
 
-	exists, err = gcbuUseCase.Repo.Exists(uid)
+	exists, vErr = gcbuUseCase.Repo.Exists(uid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	}
 
 	if !exists {
-		err = lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
+		vErr = lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	} else {
-		category, err = gcbuUseCase.Repo.GetByUid(uid)
+		category, vErr = gcbuUseCase.Repo.GetByUid(uid)
 	}
 
 	return

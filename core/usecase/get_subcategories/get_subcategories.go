@@ -18,19 +18,19 @@ func New(cRepo repository.Category) GetSubcategories {
 
 func (gsUseCase *GetSubcategories) Execute(
 	uid uuid.UUID,
-) (subcategories []domain.Category, err error) {
+) (subcategories []domain.Category, vErr lerror.ValueError) {
 	var exists bool
 	
-	exists, err = gsUseCase.CategoryRepo.Exists(uid)
+	exists, vErr = gsUseCase.CategoryRepo.Exists(uid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	}
 
 	if !exists {
-		err = lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
+		vErr = lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	} else {
-		subcategories, err = gsUseCase.CategoryRepo.GetSubcategories(uid)
+		subcategories, vErr = gsUseCase.CategoryRepo.GetSubcategories(uid)
 	}
 
 	return

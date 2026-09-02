@@ -105,7 +105,7 @@ func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_NotExists() {
 		nil)
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -116,7 +116,7 @@ func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_NotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar recuperar os link de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error()) 
+		"Tentar recuperar os link de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS) 
 }
 
 func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_Empty() {

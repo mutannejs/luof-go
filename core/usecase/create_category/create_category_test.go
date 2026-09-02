@@ -43,7 +43,7 @@ func TestCreateCategory(t *testing.T) {
 	assert.NotZero(
 		uid,
 		"Criação com dados válidos deveria retornar um uuid diferente de zero")
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Criação com dados válidos não deveria retornar erro")
 }

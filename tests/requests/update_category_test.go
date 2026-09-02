@@ -73,7 +73,7 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory_NotExists() {
 		domain.MockCategoryMapRequest)
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -84,7 +84,7 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory_NotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar atualizar uma categoria passando um uuid inválido deveria retornar o erro " + domain.CATEGORY_NOT_EXISTS.Error())
+		"Tentar atualizar uma categoria passando um uuid inválido deveria retornar o erro " + domain.CATEGORY_NOT_EXISTS)
 }
 
 func TestUpdateCategoryAllTests(t *testing.T) {

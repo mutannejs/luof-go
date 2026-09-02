@@ -101,7 +101,7 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_LinkNotExi
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -112,7 +112,7 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_LinkNotExi
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar remover um link de uma categoria que não existe deveria retornar erro contendo " + domain.LINK_NOT_EXISTS.Error())
+		"Tentar remover um link de uma categoria que não existe deveria retornar erro contendo " + domain.LINK_NOT_EXISTS)
 }
 
 func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_CategoryNotExists() {
@@ -123,7 +123,7 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_CategoryNo
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -134,7 +134,7 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_CategoryNo
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar remover um link que não existe de uma categoria deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error())
+		"Tentar remover um link que não existe de uma categoria deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS)
 }
 
 func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_NotExists() {
@@ -145,7 +145,7 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_NotExists(
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.NOT_BELONGS.Error()),
+		ltests.GetResponseMessage(domain.NOT_BELONGS),
 		res.Body())
 
 	ts.Equal(
@@ -156,7 +156,7 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_NotExists(
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + domain.NOT_BELONGS.Error())
+		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + domain.NOT_BELONGS)
 }
 
 func TestRemoveLinkFromCategoryAllTests(t *testing.T) {

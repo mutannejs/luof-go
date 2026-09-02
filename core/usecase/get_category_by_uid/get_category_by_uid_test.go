@@ -30,10 +30,10 @@ func TestGetCategoryByUid_NotExists(t *testing.T) {
 	assert.Zero(
 		category,
 		"Deveria ser retornado zero para um uid inválido")
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		categoryNotExists,
-		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
+		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists)
 }
 
 func TestGetCategoryByUid_Exists(t *testing.T) {
@@ -51,7 +51,7 @@ func TestGetCategoryByUid_Exists(t *testing.T) {
 		mockCategory,
 		category,
 		"A categoria retornada pela função deve ser a mesma retornada pelo repositório")
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Buscar uma categoria válida não deveria retornar erro")
 }

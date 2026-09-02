@@ -74,7 +74,7 @@ func (ts *UpdateLinkTestSuite) TestUpdateLink_NotExists() {
 		domain.MockLinkMapRequest)
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -85,7 +85,7 @@ func (ts *UpdateLinkTestSuite) TestUpdateLink_NotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar atualizar um link passando um uuid inválido deveria retornar o erro " + domain.LINK_NOT_EXISTS.Error())
+		"Tentar atualizar um link passando um uuid inválido deveria retornar o erro " + domain.LINK_NOT_EXISTS)
 }
 
 func TestUpdateLinkAllTests(t *testing.T) {

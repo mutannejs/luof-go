@@ -3,6 +3,7 @@ package create_category
 import (
 	"github.com/mutannejs/luof-go/core/domain"
 	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
 )
@@ -19,13 +20,13 @@ func (ccUseCase *CreateCategory) Execute(
 	name string,
 	description string,
 	useMarkdown bool,
-) (uid uuid.UUID, err error) {
+) (uid uuid.UUID, vErr lerror.ValueError) {
 	var category domain.Category
 
-	category, err = domain.NewCategory(name, description, useMarkdown)
+	category, vErr = domain.NewCategory(name, description, useMarkdown)
 
-	if err == nil {
-		err = ccUseCase.Repo.Create(category)
+	if vErr.IsNil() {
+		vErr = ccUseCase.Repo.Create(category)
 		uid = category.GetUid()
 	}
 

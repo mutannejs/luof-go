@@ -30,10 +30,10 @@ func TestGetSubcategories_CategoryNotExists(t *testing.T) {
 	assert.Zero(
 		subcategories,
 		"Deveria ser retornado zero para um uid que não pertence a nenhuma categoria existente")
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		categoryNotExists,
-		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
+		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists)
 }
 
 func TestGetSubcategories_CategoryExists(t *testing.T) {
@@ -55,8 +55,8 @@ func TestGetSubcategories_CategoryExists(t *testing.T) {
 		subcategories,
 		mockCategories[1],
 		"Todas as subcategorias no repositório devem ser retornadas pela função")
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Buscar por uma categoria válida não deveria retornar erro")
 }
 
@@ -77,7 +77,7 @@ func TestGetSubcategories_EmptyCategory(t *testing.T) {
 		subcategories,
 		0,
 		"Buscar as subcategorias de uma categoria vazia deveria retornar um array vazio")
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Buscar por uma categoria válida não deveria retornar erro")
 }

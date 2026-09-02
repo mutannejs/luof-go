@@ -22,34 +22,34 @@ func (tmcUseCase *ToggleMainCategory) Execute(
 	linkUid uuid.UUID,
 	categoryUid uuid.UUID,
 	isMain bool,
-) (err error) {
+) (vErr lerror.ValueError) {
 	var exists bool
 
-	exists, err = tmcUseCase.CategoryRepo.Exists(categoryUid)
+	exists, vErr = tmcUseCase.CategoryRepo.Exists(categoryUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.CATEGORY_NOT_EXISTS)
 	}
 
-	exists, err = tmcUseCase.LinkRepo.Exists(linkUid)
+	exists, vErr = tmcUseCase.LinkRepo.Exists(linkUid)
 
-	if err != nil {
+	if vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.LINK_NOT_EXISTS)
 	}
 
-	exists, err = tmcUseCase.BelongsToRepo.Exists(linkUid, categoryUid)
+	exists, vErr = tmcUseCase.BelongsToRepo.Exists(linkUid, categoryUid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.NOT_BELONGS)
 	}
 
-	err = tmcUseCase.BelongsToRepo.Update(linkUid, categoryUid, isMain)
+	vErr = tmcUseCase.BelongsToRepo.Update(linkUid, categoryUid, isMain)
 
 	return
 }

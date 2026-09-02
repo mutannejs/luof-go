@@ -95,7 +95,7 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_LinkNotExists() {
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.LINK_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -106,7 +106,7 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_LinkNotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar alternar a categoria principal de um link, ambos não relacionados, deveria retornar erro contendo " + domain.LINK_NOT_EXISTS.Error())
+		"Tentar alternar a categoria principal de um link, ambos não relacionados, deveria retornar erro contendo " + domain.LINK_NOT_EXISTS)
 }
 
 func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_CategoryNotExists() {
@@ -119,7 +119,7 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_CategoryNotExists(
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS.Error()),
+		ltests.GetResponseMessage(domain.CATEGORY_NOT_EXISTS),
 		res.Body())
 
 	ts.Equal(
@@ -130,7 +130,7 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_CategoryNotExists(
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar alternar a categoria principal de um link, sendo que a categoria não existe, deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS.Error())
+		"Tentar alternar a categoria principal de um link, sendo que a categoria não existe, deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS)
 }
 
 func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_NotExists() {
@@ -143,7 +143,7 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_NotExists() {
 		})
 
 	expectedJson, resBody := ltests.TrimResponse(
-		ltests.GetResponseMessage(domain.NOT_BELONGS.Error()),
+		ltests.GetResponseMessage(domain.NOT_BELONGS),
 		res.Body())
 
 	ts.Equal(
@@ -154,7 +154,7 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_NotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar alternar a categoria principal de um link, ambos não relacionados, deveria retornar erro contendo " + domain.NOT_BELONGS.Error())
+		"Tentar alternar a categoria principal de um link, ambos não relacionados, deveria retornar erro contendo " + domain.NOT_BELONGS)
 }
 
 func TestToggleMainCategoryAllTests(t *testing.T) {

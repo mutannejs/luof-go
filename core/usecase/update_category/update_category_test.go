@@ -35,10 +35,10 @@ func TestUpdateCategory_NotExists(t *testing.T) {
 	assert.False(
 		exists,
 		"Não deveria ser possível atualizar uma categoria que não existe")
-	assert.ErrorIs(
+	assert.Equal(
 		ltests.GetMsgError(err),
 		categoryNotExists,
-		"Tentar atualizar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Error())
+		"Tentar atualizar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists)
 }
 
 func TestUpdateCategory_Exists(t *testing.T) {
@@ -80,7 +80,7 @@ func TestUpdateCategory_Exists(t *testing.T) {
 	assert.True(
 		exists,
 		"Deveria ser possível atualizar uma categoria válida")
-	assert.NoError(
-		err,
+	assert.True(
+		err.IsNil(),
 		"Atualizar uma categoria válida não deveria retornar erro")
 }

@@ -24,21 +24,21 @@ func (ulUseCase *UpdateLink) Execute(
 	name string,
 	description string,
 	useMarkdown bool,
-) (exists bool, err error) {
-	exists, err = ulUseCase.Repo.Exists(uid)
+) (exists bool, vErr lerror.ValueError) {
+	exists, vErr = ulUseCase.Repo.Exists(uid)
 
-	if err != nil {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return exists, lerror.GetNotFound(domain.LINK_NOT_EXISTS)
 	}
 
 	var link domain.Link
-	link, err = domain.NewLink(url, name, description, useMarkdown)
+	link, vErr = domain.NewLink(url, name, description, useMarkdown)
 
-	if err == nil {
+	if vErr.IsNil() {
 		link.UpdatedAt = time.Now()
-		err = ulUseCase.Repo.Update(uid, link)
+		vErr = ulUseCase.Repo.Update(uid, link)
 	}
 
 	return
