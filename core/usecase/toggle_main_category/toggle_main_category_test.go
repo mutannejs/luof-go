@@ -1,7 +1,6 @@
 package toggle_main_category
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
@@ -37,7 +36,7 @@ func TestToggleMainCategory_NotExists(t *testing.T) {
 			mock.AnythingOfType("uuid.UUID"),
 			mock.AnythingOfType("uuid.UUID"),
 			true,
-		).Return(errors.New(""))
+		).Return(nil)
 
 	cRepo.
 		On(

@@ -35,7 +35,7 @@ func (tmcUseCase *ToggleMainCategory) Execute(
 
 	exists, vErr = tmcUseCase.LinkRepo.Exists(linkUid)
 
-	if vErr.IsNil() {
+	if !vErr.IsNil() {
 		return
 	} else if !exists {
 		return lerror.GetNotFound(domain.LINK_NOT_EXISTS)
