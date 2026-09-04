@@ -428,7 +428,7 @@ func GetCategoryByUid(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
 	var gc interfaces.GetCategory
 
-	if err := cc.ExecRequetParamsOperations(
+	if err := cc.Init().RequestParamsOperations(
 		&gc,
 		&interfaces.GetCategorySchema,
 	); err != nil {
@@ -437,22 +437,22 @@ func GetCategoryByUid(echoContext echo.Context) error {
 
 	uid, err := uuid.Parse(gc.CategoryUid)
 	if err != nil {
-		return cc.LogAndReturnErr(err)
+		return cc.Log.ReturnErr(vErr)
 	}
 
 	gcbu := get_category_by_uid.New(cc.Repositories.Category)
 	c, err := gcbu.Execute(uid)
 
 	if err != nil {
-		return cc.LogAndReturnErr(err)
+		return cc.Log.ReturnErr(vErr)
 	}
 
 	return cc.JSON(http.StatusOK, c)
 }
 ```
 
-* Os métodos que tratam os parâmetros da requisição já logam possíveis erros, não é neceesário chamar `cc.LogAndReturnErr(err)` no corpo do if.
-* O uuid já foi validado em `cc.ExecRequetParamsOperations`, por isso não é chamado algum método que sete o erro como 400 Bad Request, por sua vez, `cc.LogAndReturnErr` sempre retorna `http.StatusInternalServerError`.
+* Os métodos que tratam os parâmetros da requisição já logam possíveis erros, não é neceesário chamar `cc.Log.ReturnErr(vErr)` no corpo do if.
+* O uuid já foi validado em `cc.Init().RequestParamsOperations`, por isso não é chamado algum método que sete o erro como 400 Bad Request, por sua vez, `cc.LogAndReturnErr` sempre retorna `http.StatusInternalServerError`.
 
 Quando a requisição executa sem erros, ela deve retornar:
 

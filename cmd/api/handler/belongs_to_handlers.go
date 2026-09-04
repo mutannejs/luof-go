@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/mutannejs/luof-go/cmd/api/custom"
+	"github.com/mutannejs/luof-go/cmd/api/custom/custom_request"
 	"github.com/mutannejs/luof-go/cmd/api/interfaces"
 	"github.com/mutannejs/luof-go/core/usecase/get_links_by_category"
 	"github.com/mutannejs/luof-go/core/usecase/insert_link_in_category"
@@ -18,7 +19,7 @@ func GetLinksByCategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
 	var gc interfaces.GetCategory
 
-	if err := cc.ExecRequetParamsOperations(
+	if err := cc.Init().RequestParamsOperations(
 		&gc,
 		&interfaces.GetCategorySchema,
 	); err != nil {
@@ -27,14 +28,14 @@ func GetLinksByCategory(echoContext echo.Context) error {
 
 	categoryUid, err := uuid.Parse(gc.CategoryUid)
 	if err != nil {
-		return cc.LogAndReturnErr(err)
+		return cc.Log.ReturnInternalErr(err)
 	}
 
 	glbc := get_links_by_category.New(cc.Repositories.BelongsTo, cc.Repositories.Category)
-	links, err := glbc.Execute(categoryUid)
+	links, vErr := glbc.Execute(categoryUid)
 
-	if err != nil {
-		return cc.LogAndReturnErr(err)
+	if !vErr.IsNil() {
+		return cc.Log.ReturnErr(vErr)
 	}
 
 	return cc.JSON(http.StatusOK, links)
@@ -45,9 +46,9 @@ func InsertLinkInCategory(echoContext echo.Context) error {
 	var gc interfaces.GetCategory
 	var cbt interfaces.CreateBelongsTo
 
-	if err := cc.ExecRequetOperations(
-		custom.RequestValues{ Params: &gc, JsonBody: &cbt },
-		custom.RequestValidations{
+	if err := cc.Init().RequestOperations(
+		custom_request.RequestValues{ Params: &gc, JsonBody: &cbt },
+		custom_request.RequestValidations{
 			Params : interfaces.GetCategorySchema,
 			JsonBody: interfaces.CreateBelongsToSchema,
 		},
@@ -57,25 +58,25 @@ func InsertLinkInCategory(echoContext echo.Context) error {
 
 	linkUid, err := uuid.Parse(cbt.LinkUid)
 	if err != nil {
-		return cc.LogAndReturnErr(err)
+		return cc.Log.ReturnInternalErr(err)
 	}
 
 	categoryUid, err := uuid.Parse(gc.CategoryUid)
 	if err != nil {
-		return cc.LogAndReturnErr(err)
+		return cc.Log.ReturnInternalErr(err)
 	}
 
 	ilic := insert_link_in_category.New(
 		cc.Repositories.BelongsTo,
 		cc.Repositories.Category,
 		cc.Repositories.Link)
-	err = ilic.Execute(
+	vErr := ilic.Execute(
 		linkUid,
 		categoryUid,
 		cbt.IsMain)
 
-	if err != nil {
-		return cc.LogAndReturnErr(err)
+	if !vErr.IsNil() {
+		return cc.Log.ReturnErr(vErr)
 	}
 
 	return cc.NoContent(http.StatusNoContent)
@@ -85,7 +86,7 @@ func RemoveLinkFromCategory(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
 	var gbt interfaces.GetBelongsTo
 
-	if err := cc.ExecRequetParamsOperations(
+	if err := cc.Init().RequestParamsOperations(
 		&gbt,
 		&interfaces.GetBelongsToSchema,
 	); err != nil {
@@ -94,22 +95,22 @@ func RemoveLinkFromCategory(echoContext echo.Context) error {
 
 	categoryUid, err := uuid.Parse(gbt.CategoryUid)
 	if err != nil {
-		return cc.LogAndReturnErr(err)
+		return cc.Log.ReturnInternalErr(err)
 	}
 
 	linkUid, err := uuid.Parse(gbt.LinkUid)
 	if err != nil {
-		return cc.LogAndReturnErr(err)
+		return cc.Log.ReturnInternalErr(err)
 	}
 
 	rlfc := remove_link_from_category.New(
 		cc.Repositories.BelongsTo,
 		cc.Repositories.Category,
 		cc.Repositories.Link)
-	err = rlfc.Execute(linkUid, categoryUid)
+	vErr := rlfc.Execute(linkUid, categoryUid)
 
-	if err != nil {
-		return cc.LogAndReturnErr(err)
+	if !vErr.IsNil() {
+		return cc.Log.ReturnErr(vErr)
 	}
 
 	return cc.NoContent(http.StatusNoContent)
@@ -120,12 +121,12 @@ func ToggleMainCategory(echoContext echo.Context) error {
 	var gbt interfaces.GetBelongsTo
 	var ubt interfaces.UpdateBelongsTo
 
-	if err := cc.ExecRequetOperations(
-		custom.RequestValues{
+	if err := cc.Init().RequestOperations(
+		custom_request.RequestValues{
 			Params: &gbt,
 			JsonBody: &ubt,
 		},
-		custom.RequestValidations{
+		custom_request.RequestValidations{
 			Params : interfaces.GetBelongsToSchema,
 			JsonBody: interfaces.UpdateBelongsToSchema,
 		},
@@ -135,25 +136,25 @@ func ToggleMainCategory(echoContext echo.Context) error {
 
 	categoryUid, err := uuid.Parse(gbt.CategoryUid)
 	if err != nil {
-		return cc.LogAndReturnErr(err)
+		return cc.Log.ReturnInternalErr(err)
 	}
 
 	linkUid, err := uuid.Parse(gbt.LinkUid)
 	if err != nil {
-		return cc.LogAndReturnErr(err)
+		return cc.Log.ReturnInternalErr(err)
 	}
 
 	tmc := toggle_main_category.New(
 		cc.Repositories.BelongsTo,
 		cc.Repositories.Category,
 		cc.Repositories.Link)
-	err = tmc.Execute(
+	vErr := tmc.Execute(
 		linkUid,
 		categoryUid,
 		ubt.IsMain)
 
-	if err != nil {
-		return cc.LogAndReturnErr(err)
+	if !vErr.IsNil() {
+		return cc.Log.ReturnErr(vErr)
 	}
 
 	return cc.NoContent(http.StatusNoContent)
