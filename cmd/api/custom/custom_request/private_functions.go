@@ -17,6 +17,13 @@ const (
 	VALIDATE_BODY_ERR = "errors occurred during the validation of the request body"
 )
 
+// Valida o corpo da requisição, em formato json, e os retorna
+// encodado em []byte.
+//
+// Adiciona a vErr um registro contendo: Message [VALIDATE_BODY_ERR]
+// e em Errors todos os erros de validação caso algum campo do corpo
+// da requisição seja inválido; ou Messsage [JSON_BODY_ERR] se não
+// foi possível validar e encodar o corpo da requisição em []byte
 func (cr *CRequest) getEncodedJsonBody(
 	values RequestValues, 
 	validations RequestValidations,
@@ -43,6 +50,13 @@ func (cr *CRequest) getEncodedJsonBody(
 	return
 }
 
+// Valida os parâmetros da requisição e os retorna em formato
+// json encodado em []byte.
+//
+// Adiciona a vErr um registro contendo: Message [VALIDATE_PARAMS_ERR]
+// e em Errors todos os erros de validação caso algum parâmetro seja
+// inválido; ou Messsage [PARAMS_ERR] se não foi possível validar e
+// encodar os parâmetros em []byte
 func (cr *CRequest) getEncodedParams(
 	values RequestValues, 
 	validations RequestValidations,

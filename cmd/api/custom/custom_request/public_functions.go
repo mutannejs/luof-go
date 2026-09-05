@@ -8,6 +8,10 @@ import (
 	"github.com/mutannejs/luof-go/pkg/lerror"
 )
 
+// Valida os parâmetros enviados na URL com base no schema
+// passado em "validation", e atribui os parâmetros à
+// variável passada em "values". Retorna erro descritivo
+// se a validação ou conversão dos dados falhou
 func (cr *CRequest) RequestParamsOperations(
 	paramsValue any,
 	validation **zog.StructSchema,
@@ -18,6 +22,10 @@ func (cr *CRequest) RequestParamsOperations(
 	)
 }
 
+// Valida o corpo json enviado na request com base no schema
+// passado em "validation", e atribui o corpo da request à
+// estrutura passada em "values". Retorna erro descritivo se
+// a validação ou conversão dos dados falhou
 func (cr *CRequest) RequestJSONOperations(
 	jsonValue any,
 	validation **zog.StructSchema,
@@ -28,6 +36,10 @@ func (cr *CRequest) RequestJSONOperations(
 	)
 }
 
+// Valida os campos enviados na request com base nos schemas
+// passados em "validations", e atribui os campos da request
+// às estrutura passadas em "values". Retorna erro
+// descritivo se a validação ou conversão dos dados falhou
 func (cr *CRequest) RequestOperations(
 	values RequestValues,
 	validations RequestValidations,
