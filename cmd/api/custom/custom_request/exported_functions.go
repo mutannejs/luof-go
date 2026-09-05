@@ -40,10 +40,10 @@ func (cr *CRequest) RequestOperations(
 
 	var vErr lerror.ValueError
 
-	bodyByteSlice := cr.setJsonBody(values, validations, &vErr)
-	paramsByteSlice := cr.setParamsByteSlice(values, validations, &vErr)
+	body := cr.getEncodedJsonBody(values, validations, &vErr)
+	params := cr.getEncodedParams(values, validations, &vErr)
 
-	cr.log.LogRequest(bodyByteSlice, paramsByteSlice, cr.method, cr.path, vErr)
+	cr.log.LogRequest(body, params, cr.method, cr.path, vErr)
 
 	if !vErr.IsNil() {
 		return echo.NewHTTPError(http.StatusBadRequest, vErr.GetErrors())

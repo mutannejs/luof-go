@@ -11,15 +11,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+const (
+	LOG_UID_ERR = "error generating new log_uid"
+)
+
 type Context struct {
 	echo.Context
 	Repositories repository.Repositories
 	Log custom_log.CLog
 }
-
-const (
-	LOG_UID_ERR = "error generating new log_uid"
-)
 
 func (cc *Context) Init() *custom_request.CRequest {
 	cc.Log = custom_log.CLog{}

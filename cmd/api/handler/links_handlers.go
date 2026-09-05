@@ -34,7 +34,7 @@ func GetLinkByUid(c echo.Context) error {
 	glbu := get_link_by_uid.New(cc.Repositories.Link)
 	l, vErr := glbu.Execute(uid)
 
-	if err != nil {
+	if vErr.IsNil() {
 		return cc.Log.ReturnErr(vErr)
 	}
 

@@ -10,6 +10,10 @@ func (m *MsgErrors) GetMessage() string {
 	return m.message
 }
 
+func (m *MsgErrors) GetErrors() []error {
+	return m.errors
+}
+
 type ValueError struct {
 	code int
 	errors []MsgErrors
