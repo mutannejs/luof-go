@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/Oudwins/zog"
-	"github.com/labstack/echo/v4"
 	"github.com/mutannejs/luof-go/pkg/lerror"
 )
 
@@ -58,7 +57,7 @@ func (cr *CRequest) RequestOperations(
 	cr.log.LogRequest(body, params, cr.method, cr.path, vErr)
 
 	if !vErr.IsNil() {
-		return echo.NewHTTPError(http.StatusBadRequest, vErr.GetErrors())
+		return cr.sendJson(http.StatusBadRequest, vErr.GetErrors())
 	}
 
 	return nil

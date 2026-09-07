@@ -31,7 +31,7 @@ func GetInternal(err error) ValueError {
 	return getError(INTERNAL_SERVER_ERROR, err.Error())
 }
 
-func GetInternals(errMsg string, errors ...error) ValueError {
+func GetInternals(errMsg string, errors ...string) ValueError {
 	return getErrors(INTERNAL_SERVER_ERROR, errMsg, errors...)
 }
 
@@ -41,7 +41,7 @@ func getError(code int, errMsg string) ValueError {
 	return getErrors(code, errMsg)
 }
 
-func getErrors(code int, errMsg string, errors ...error) ValueError {
+func getErrors(code int, errMsg string, errors ...string) ValueError {
 	return ValueError{
 		code,
 		[]MsgErrors{

@@ -28,7 +28,7 @@ func (cc *Context) Init() *custom_request.CRequest {
 	var err error
 
 	if uid, err = luuid.New(); err != nil {
-		vErr := lerror.GetInternals(LOG_UID_ERR, err)
+		vErr := lerror.GetInternals(LOG_UID_ERR, err.Error())
 		err = cc.Log.ReturnErr(vErr)
 	} else {
 		cc.Log.SetUid(uid.String())
@@ -40,5 +40,6 @@ func (cc *Context) Init() *custom_request.CRequest {
 		cc.Path(),
 		cc.Request().Body,
 		cc.Param,
+		cc.JSON,
 		err)
 }

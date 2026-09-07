@@ -2,7 +2,7 @@ package custom_request
 
 import (
 	"encoding/json"
-	"errors"
+	"strconv"
 	"testing"
 
 	"github.com/mutannejs/luof-go/cmd/api/custom/custom_log"
@@ -21,7 +21,7 @@ var (
 	jsonSuccess, _ = json.Marshal(map[string]string{
 		"name": domain.AlternativeMockCategory.Name,
 		"description": domain.AlternativeMockCategory.Description.Content,
-		"useMarkdown": "false",
+		"useMarkdown": strconv.FormatBool(domain.AlternativeMockCategory.Description.UseMarkdown),
 	})
 	jsonError, _ = json.Marshal(map[string]string{
 		"description": domain.AlternativeMockCategory.Description.Content,
@@ -42,6 +42,7 @@ func TestGetPathParams(t *testing.T) {
 		urlBase,
 		&BodySuccess{},
 		getGetParam(categoryUid),
+		nil,
 		nil)
 
 	params := cr.getPathParams()
@@ -63,6 +64,7 @@ func TestSetValidateErr_Success(t *testing.T) {
 		urlBase,
 		&BodySuccess{},
 		getGetParam(categoryUid),
+		nil,
 		nil)
 		
 	var validations = interfaces.GetCategorySchema
@@ -86,6 +88,7 @@ func TestSetValidateErr_Errors(t *testing.T) {
 		urlBase,
 		&BodySuccess{},
 		getGetParam(categoryUid),
+		nil,
 		nil)
 
 	var validations = interfaces.GetCategorySchema
@@ -95,7 +98,7 @@ func TestSetValidateErr_Errors(t *testing.T) {
 	var issues = validations.Parse(paramsError, &gc)
 	cr.setValidateErr(issues, &vErr, VALIDATE_PARAMS_ERR)
 
-	var expectedErrors = []error{errors.New("categoryUid: must be a valid UUID")}
+	var expectedErrors = []string{"categoryUid: must be a valid UUID"}
 	var expectedMessage = VALIDATE_PARAMS_ERR
 
 	assert.ElementsMatch(
@@ -118,6 +121,7 @@ func TestGetEncodedParams_Success(t *testing.T) {
 		urlBase,
 		&BodySuccess{},
 		getGetParam(categoryUid),
+		nil,
 		nil)
 
 	var validations = interfaces.GetCategorySchema
@@ -143,6 +147,7 @@ func TestGetEncodedParams_Error(t *testing.T) {
 		urlBase,
 		&BodySuccess{},
 		getGetParam(paramsError["categoryUid"]),
+		nil,
 		nil)
 
 	var validations = interfaces.GetCategorySchema
@@ -155,7 +160,7 @@ func TestGetEncodedParams_Error(t *testing.T) {
 		&vErr)
 
 	var expectedParams, _ = json.Marshal(paramsError)
-	var expectedErrors = []error{errors.New("categoryUid: must be a valid UUID")}
+	var expectedErrors = []string{"categoryUid: must be a valid UUID"}
 	var expectedMessage = VALIDATE_PARAMS_ERR
 
 	assert.Equal(
@@ -183,6 +188,7 @@ func TestGetEncodedJsonBody_Success(t *testing.T) {
 		urlBase,
 		&BodySuccess{},
 		getGetParam(categoryUid),
+		nil,
 		nil)
 
 	var validations = interfaces.SaveCategorySchema
@@ -208,6 +214,7 @@ func TestGetEncodedJsonBody_Error(t *testing.T) {
 		urlBase,
 		&BodyError{},
 		getGetParam(categoryUid),
+		nil,
 		nil)
 
 	var validations = interfaces.SaveCategorySchema
@@ -231,10 +238,10 @@ func TestGetEncodedJsonBody_Error(t *testing.T) {
 
 	assert.ElementsMatch(
 		vErr.GetErrors()[0].GetErrors(),
-		[]error{
-			errors.New("name: is required"),
-			errors.New("useMarkdown: value is invalid"),
-		})
+		[]string{
+			"name: is required",
+			"useMarkdown: value is invalid"},
+	)
 }
 
 /*

@@ -1,17 +1,16 @@
 package lerror
 
-
 type MsgErrors struct {
-	message string
-	errors []error
+	Message string `json:"message"`
+	Errors []string `json:"errors"`
 }
 
 func (m *MsgErrors) GetMessage() string {
-	return m.message
+	return m.Message
 }
 
-func (m *MsgErrors) GetErrors() []error {
-	return m.errors
+func (m *MsgErrors) GetErrors() []string {
+	return m.Errors
 }
 
 type ValueError struct {
@@ -31,7 +30,7 @@ func (v *ValueError) GetErrors() []MsgErrors {
 	return v.errors
 }
 
-func (v *ValueError) AppendErr(msg string, errors ...error) {
+func (v *ValueError) AppendErr(msg string, errors ...string) {
 	v.errors = append(
 		v.errors,
 		MsgErrors{msg, errors})

@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var (
+const (
 	ANCESTOR_NOT_BECOME_A_SUBCATEGORY = "one ancestral category of another cannot become a subcategory of it"
 	ARE_RELATED = "both categories are already related"
 	CANNOT_BE_A_SUBCATEGORY_OF_ITSELF = "a category cannot be a subcategory of itself"
@@ -48,7 +48,7 @@ func NewCategory(
 
 	uid, err = luuid.New()
 	if err != nil {
-		vError = lerror.GetInternals(CATEGORY_ERROR_NEW, err)
+		vError = lerror.GetInternals(CATEGORY_ERROR_NEW, err.Error())
 		return
 	}
 

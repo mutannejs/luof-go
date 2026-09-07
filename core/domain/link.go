@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var (
+const (
 	LINK_ERROR_NEW = "error instantiate new link"
 	LINK_NOT_EXISTS = "the searched link does not exist"
 )
@@ -42,7 +42,7 @@ func NewLink(
 
 	uid, err = luuid.New()
 	if err != nil {
-		vError = lerror.GetInternals(LINK_ERROR_NEW, err)
+		vError = lerror.GetInternals(LINK_ERROR_NEW, err.Error())
 		return
 	}
 

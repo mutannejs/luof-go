@@ -12,7 +12,8 @@ type CRequest struct {
 	method string
 	path string
 	body io.ReadCloser
-	getParam func (name string) string
+	getParam func(name string) string
+	sendJson func(code int, i any) error
 	err error
 }
 
@@ -31,8 +32,9 @@ func New(
 	method string,
 	path string,
 	body io.ReadCloser,
-	getParam func (name string) string,
+	getParam func(name string) string,
+	sendJson func(code int, i any) error,
 	err error,
 ) *CRequest {
-	return &CRequest{log, method, path, body, getParam, err}
+	return &CRequest{log, method, path, body, getParam, sendJson, err}
 }

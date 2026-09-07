@@ -2,7 +2,6 @@ package custom_request
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 
 	"github.com/mutannejs/luof-go/pkg/lerror"
@@ -109,13 +108,10 @@ func (cr * CRequest) setValidateErr(
 		return
 	}
 
-	var errs = make([]error, len(parseErrs))
+	var errs = make([]string, len(parseErrs))
 
 	for index, issue := range parseErrs {
-		errs[index] = fmt.Errorf(
-			"%s: %s",
-			strings.Join(issue.Path, "."),
-			issue.Message)
+		errs[index] = strings.Join(issue.Path, ".") + ": " + issue.Message
 	}
 
 	vErr.AppendErr(msgError, errs...)
