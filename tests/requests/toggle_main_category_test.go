@@ -59,8 +59,8 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		204,
+		res.StatusCode(),
 		"Tentar alternar a categoria principal de um link deveria retornar status 204")
 
 	ts.Empty(
@@ -78,11 +78,11 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_Error() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		400,
+		res.StatusCode(),
 		"Tentar alternar a categoria principal de um link passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
+	ts.ElementsMatch([]any{"categoryUid"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_LinkNotExists() {
@@ -99,8 +99,8 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_LinkNotExists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar alternar a categoria principal de um link que não existe deveria retornar status 404")
 
 	ts.Equal(
@@ -123,8 +123,8 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_CategoryNotExists(
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar alternar a categoria principal de um link, sendo que a categoria não existe, deveria retornar status 404")
 
 	ts.Equal(
@@ -147,8 +147,8 @@ func (ts *ToggleMainCategoryTestSuite) TestToggleMainCategory_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar alternar a categoria principal de um link, ambos não relacionados, deveria retornar status 404")
 
 	ts.Equal(

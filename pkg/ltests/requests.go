@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"strings"
 
+	"github.com/mutannejs/luof-go/pkg/lerror"
+
 	"github.com/go-resty/resty/v2"
 )
 
@@ -80,15 +82,19 @@ func GetDelete(c *resty.Client, urlBase string) DeleteFuncType {
 	}
 }
 
-func GetErrorKeys(res []byte) (keys []string) {
-	var errors map[string]any
+func GetFirstErrorKeys(res []byte) (keys []string) {
+	var errors []lerror.MsgErrors
 
 	if err := json.Unmarshal(res, &errors); err != nil {
 		return nil
 	}
 
-	for key := range errors["errors"].(map[string]any) {
-		keys = append(keys, key)
+	errs := errors[0].GetErrors()
+	for _, err := range errs {
+		key, _, found := strings.Cut(err, ":")
+		if found {
+			keys = append(keys, key)
+		}
 	}
 
 	return
@@ -107,10 +113,19 @@ func DeleteKeyInByteSlice(value []byte, key string) []byte {
 
 func GetResponseMessage(message string) (expectedJson []byte) {
 	expectedJson, _ = json.Marshal(
-		map[string]string{"message": message})
+		[]lerror.MsgErrors{
+			{
+				Message: message,
+				Errors: make([]string, 0),
+			},
+		})
 	return
 }
 
 func TrimResponse(mes, resp []byte) (string, string) {
 	return strings.TrimSpace(string(mes)), strings.TrimSpace(string(resp))
+}
+
+func GetMsgError(vErr lerror.ValueError) string {
+	return vErr.GetErrors()[0].GetMessage()
 }

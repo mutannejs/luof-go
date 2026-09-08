@@ -9,7 +9,7 @@ const BAD_REQUEST = 400
 const NOT_FOUND = 404
 
 func GetNotFound(errMsg string) ValueError {
-	return getError(BAD_REQUEST, errMsg)
+	return getError(NOT_FOUND, errMsg)
 }
 
 // 409: Conflict
@@ -42,9 +42,15 @@ func getError(code int, errMsg string) ValueError {
 }
 
 func getErrors(code int, errMsg string, errors ...string) ValueError {
+	var errs = make([]string, 0)
+
+	if errors != nil {
+		errs = errors
+	}
+
 	return ValueError{
 		code,
 		[]MsgErrors{
-			{errMsg, errors},
+			{errMsg, errs},
 		}}
 }

@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	urlBase = "http://localhost:8123/api/categories/:categoryUid"
+	urlBase = "http://localhost:8123/api/categories/"
 )
 
 var (
@@ -39,7 +39,8 @@ func TestGetPathParams(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		nil,
@@ -61,7 +62,8 @@ func TestSetValidateErr_Success(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		nil,
@@ -85,7 +87,8 @@ func TestSetValidateErr_Errors(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		nil,
@@ -118,7 +121,8 @@ func TestGetEncodedParams_Success(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		nil,
@@ -144,7 +148,8 @@ func TestGetEncodedParams_Error(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + paramsError["categoryUid"],
 		&BodySuccess{},
 		getGetParam(paramsError["categoryUid"]),
 		nil,
@@ -185,7 +190,8 @@ func TestGetEncodedJsonBody_Success(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		nil,
@@ -211,7 +217,8 @@ func TestGetEncodedJsonBody_Error(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodyError{},
 		getGetParam(categoryUid),
 		nil,

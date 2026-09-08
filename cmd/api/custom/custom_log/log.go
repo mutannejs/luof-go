@@ -87,7 +87,7 @@ func (l *CLog) ReturnErr(vErr lerror.ValueError) error {
 		Int(LOG_KEY_STATUS_CODE, vErr.GetCode()).
 		RawJSON(LOG_KEY_ERRORS, errorsByteSlice).
 		Send()
-	return echo.NewHTTPError(http.StatusInternalServerError, err)
+	return echo.NewHTTPError(vErr.GetCode(), vErr.GetErrors())
 }
 
 /**
@@ -98,7 +98,7 @@ func (l *CLog) LogRequest(
 	paramsByteSlice []byte,
 	bodyByteSlice []byte,
 	method string,
-	path string,
+	resolvedPath string,
 	vErr lerror.ValueError,
 ) {
 	var logReq *zerolog.Event
@@ -111,7 +111,7 @@ func (l *CLog) LogRequest(
 
 	logReq = logReq.
 		Str(LOG_KEY_METHOD, method).
-		Str(LOG_KEY_PATH, path)
+		Str(LOG_KEY_PATH, resolvedPath)
 
 	if len(bodyByteSlice) != 0 {
 		logReq = logReq.RawJSON(LOG_KEY_JSON_BODY, bodyByteSlice)

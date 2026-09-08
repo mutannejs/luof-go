@@ -15,6 +15,7 @@ type CRequest struct {
 	log *custom_log.CLog
 	method string
 	path string
+	resolvedPath string
 	body io.ReadCloser
 	getParam func(name string) string
 	sendJson func(code int, i any) error
@@ -46,10 +47,11 @@ func New(
 	log *custom_log.CLog,
 	method string,
 	path string,
+	resolvedPath string,
 	body io.ReadCloser,
 	getParam func(name string) string,
 	sendJson func(code int, i any) error,
 	err error,
 ) *CRequest {
-	return &CRequest{log, method, path, body, getParam, sendJson, err}
+	return &CRequest{log, method, path, resolvedPath, body, getParam, sendJson, err}
 }

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Oudwins/zog"
+	"github.com/labstack/echo/v4"
 	"github.com/mutannejs/luof-go/pkg/lerror"
 )
 
@@ -50,14 +51,18 @@ func (cr *CRequest) RequestOperations(
 	}
 
 	var vErr lerror.ValueError
+	var params, body []byte
 
-	body := cr.getEncodedJsonBody(values, validations, &vErr)
-	params := cr.getEncodedParams(values, validations, &vErr)
+	body = cr.getEncodedParams(values, validations, &vErr)
 
-	cr.log.LogRequest(body, params, cr.method, cr.path, vErr)
+	if vErr.IsNil() {
+		params = cr.getEncodedJsonBody(values, validations, &vErr)
+	}
+
+	cr.log.LogRequest(params, body, cr.method, cr.resolvedPath, vErr)
 
 	if !vErr.IsNil() {
-		return cr.sendJson(http.StatusBadRequest, vErr.GetErrors())
+		return echo.NewHTTPError(http.StatusBadRequest, vErr.GetErrors())
 	}
 
 	return nil

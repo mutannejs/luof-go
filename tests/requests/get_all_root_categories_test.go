@@ -47,8 +47,8 @@ func (ts *GetAllRootCategoriesTestSuite) TestGetAllRootCategories() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		200,
+		res.StatusCode(),
 		"Tentar recuperar todas categorias raízes deveria retornar status 200")
 
 	ts.Equal(
@@ -75,8 +75,8 @@ func (ts *GetAllRootCategoriesTestSuite) TestGetAllRootCategories() {
 	json.Unmarshal(res.Body(), &categoriesJson)
 
 	ts.Equal(
-		res.StatusCode(),
 		200,
+		res.StatusCode(),
 		"Tentar recuperar todas categorias raízes deveria retornar status 200")
 
 	ts.Len(

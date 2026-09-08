@@ -28,8 +28,8 @@ func (ts *CreateLinkTestSuite) TestCreateLink() {
 	res, _ := ts.post(nil, domain.MockLinkMapRequest)
 
 	ts.Equal(
-		res.StatusCode(),
 		201,
+		res.StatusCode(),
 		"Tentar criar um link passando parâmetros válidos deveria retornar status 201")
 
 	ts.Regexp(
@@ -49,11 +49,11 @@ func (ts *CreateLinkTestSuite) TestCreateLink_Error() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		400,
+		res.StatusCode(),
 		"Tentar criar um link passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]string{"url", "name", "useMarkdown"}, ltests.GetErrorKeys(res.Body())) 
+	ts.ElementsMatch([]any{"url", "name", "useMarkdown"}, ltests.GetFirstErrorKeys(res.Body())) 
 }
 
 func TestCreateLinkAllTests(t *testing.T) {

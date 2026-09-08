@@ -39,8 +39,8 @@ func (ts *GetLinkTestSuite) TestGetLink() {
 	resBody := ltests.DeleteKeyInByteSlice(res.Body(), "CreatedAt")
 
 	ts.Equal(
-		res.StatusCode(),
 		200,
+		res.StatusCode(),
 		"Tentar recuperar um link passando um uuid válido deveria retornar status 200")
 
 	ts.JSONEq(
@@ -53,11 +53,11 @@ func (ts *GetLinkTestSuite) TestGetLink_ParamRequired() {
 	res, _ := ts.get(map[string]string{"linkId": domain.MockUidLink.String()}, nil)
 
 	ts.Equal(
-		res.StatusCode(),
 		400,
+		res.StatusCode(),
 		"Tentar recuperar um link passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]string{"linkUid"}, ltests.GetErrorKeys(res.Body())) 
+	ts.ElementsMatch([]any{"linkUid"}, ltests.GetFirstErrorKeys(res.Body())) 
 }
 
 func (ts *GetLinkTestSuite) TestGetLink_NotExists() {
@@ -68,8 +68,8 @@ func (ts *GetLinkTestSuite) TestGetLink_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar recuperar um link que não existe deveria retornar status 404")
 
 	ts.Equal(

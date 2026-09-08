@@ -61,8 +61,8 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		204,
+		res.StatusCode(),
 		"Tentar remover um link de uma categoria, ambos relacionados, deveria retornar status 204")
 
 	ts.Empty(
@@ -86,11 +86,11 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_Error() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		400,
+		res.StatusCode(),
 		"Tentar remover um link de uma categoria passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]string{"categoryUid", "linkUid"}, ltests.GetErrorKeys(res.Body()))
+	ts.ElementsMatch([]any{"categoryUid", "linkUid"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_LinkNotExists() {
@@ -105,8 +105,8 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_LinkNotExi
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar remover um link de uma categoria que não existe deveria retornar status 404")
 
 	ts.Equal(
@@ -127,8 +127,8 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_CategoryNo
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar remover um link que não existe de uma categoria deveria retornar status 404")
 
 	ts.Equal(
@@ -149,8 +149,8 @@ func (ts *RemoveLinkFromCategoryTestSuite) TestRemoveLinkFromCategory_NotExists(
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar status 404")
 
 	ts.Equal(

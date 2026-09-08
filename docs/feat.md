@@ -531,8 +531,8 @@ func (ts *CreateCategoryTestSuite) TestCreateCategory() {
 	res, _ := ts.post(nil, domain.MockCategoryMapRequest)
 
 	ts.Equal(
-		res.StatusCode(),
 		201,
+		res.StatusCode(),
 		"Tentar criar uma categoria passando parâmetros válidos deveria retornar status 201")
 	ts.Regexp(
 		ltests.UidRegex,

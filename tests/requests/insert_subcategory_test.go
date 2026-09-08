@@ -67,8 +67,8 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		204,
+		res.StatusCode(),
 		"Tentar inserir uma subcategoria, ambas ainda não relacionadas, deveria retornar status 204")
 
 	ts.Empty(
@@ -98,8 +98,8 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_Relateds() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		204,
+		res.StatusCode(),
 		"Tentar inserir uma subcategoria, ambas não diretamente relacionadas, deveria retornar status 204")
 
 	ts.Empty(
@@ -116,11 +116,11 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_Error() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		400,
+		res.StatusCode(),
 		"Tentar inserir uma subcategoria passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
+	ts.ElementsMatch([]any{"categoryUid"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_FatherNotEXists() {
@@ -136,8 +136,8 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_FatherNotEXists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar inserir uma subcategoria em uma categoria pai que não existe deveria retornar status 404")
 
 	ts.Equal(
@@ -159,8 +159,8 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_ChildNotEXists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar inserir uma categoria que não existe em outra deveria retornar status 404")
 
 	ts.Equal(
@@ -189,8 +189,8 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AlreadyExists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		409,
+		res.StatusCode(),
 		"Tentar inserir uma subcategoria, ambas já relacionadas, deveria retornar status 409")
 
 	ts.Equal(
@@ -225,8 +225,8 @@ func (ts *InsertSubcategoryTestSuite) TestInsertSubcategory_AncestorNotBecomeASu
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		409,
+		res.StatusCode(),
 		"Tentar inserir uma subcategoria, sendo que a relação inversa já existe, deveria retornar status 409")
 
 	ts.Equal(

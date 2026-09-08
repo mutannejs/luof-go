@@ -34,7 +34,8 @@ func TestRequestParamsOperations_Success(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		sendJson,
@@ -63,7 +64,8 @@ func TestRequestParamsOperations_Error(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + paramsError["categoryUid"],
 		&BodySuccess{},
 		getGetParam(paramsError["categoryUid"]),
 		sendJson,
@@ -94,7 +96,8 @@ func TestRequestJSONOperations_Success(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		sendJson,
@@ -133,7 +136,8 @@ func TestRequestJSONOperations_Error(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodyError{},
 		getGetParam(categoryUid),
 		sendJson,
@@ -164,7 +168,8 @@ func TestRequestOperations_Success(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		sendJson,
@@ -212,7 +217,8 @@ func TestRequestOperations_ParamsError(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + paramsError["categoryUid"],
 		&BodySuccess{},
 		getGetParam(paramsError["categoryUid"]),
 		sendJson,
@@ -247,7 +253,8 @@ func TestRequestOperations_JsonError(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase,
+		urlBase + ":categoryUid",
+		urlBase + categoryUid,
 		&BodyError{},
 		getGetParam(categoryUid),
 		sendJson,

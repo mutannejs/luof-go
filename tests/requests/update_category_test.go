@@ -39,8 +39,8 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory() {
 	ts.NoError(err)
 
 	ts.Equal(
-		res.StatusCode(),
 		204,
+		res.StatusCode(),
 		"Tentar atualizar uma categoria deveria retornar status 204")
 
 	ts.Empty(
@@ -59,11 +59,11 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory_ParamRequired() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		400,
+		res.StatusCode(),
 		"Tentar atualizar uma categoria passando parâmetros inválidosdeveria retornar status 400")
 
-	ts.ElementsMatch([]string{"name", "useMarkdown"}, ltests.GetErrorKeys(res.Body()))
+	ts.ElementsMatch([]any{"name", "useMarkdown"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func (ts *UpdateCategoryTestSuite) TestUpdateCategory_NotExists() {
@@ -77,8 +77,8 @@ func (ts *UpdateCategoryTestSuite) TestUpdateCategory_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar atualizar uma categoria que não existe deveria retornar status 404")
 
 	ts.Equal(

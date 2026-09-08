@@ -2,3 +2,4 @@ sql_queries/
 testdata/
 luof-go*
 .env
+.vscode/

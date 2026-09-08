@@ -65,8 +65,8 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories() {
 	json.Unmarshal(res.Body(), &categoriesJson)
 
 	ts.Equal(
-		res.StatusCode(),
 		200,
+		res.StatusCode(),
 		"Tentar recuperar todas as subcategorias de uma categoria válida deveria retornar status 200")
 
 	ts.Len(
@@ -83,11 +83,11 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_Error() {
 		nil)
 
 	ts.Equal(
-		res.StatusCode(),
 		400,
+		res.StatusCode(),
 		"Tentar recuperar as subcategorias de uma categoria passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body()))
+	ts.ElementsMatch([]any{"categoryUid"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_Empty() {
@@ -102,8 +102,8 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_Empty() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		200,
+		res.StatusCode(),
 		"Tentar recuperar as subcategorias de uma categoria vazia deveria retornar status 200")
 
 	ts.Equal(
@@ -124,8 +124,8 @@ func (ts *GetSubcategoriesTestSuite) TestGetSubcategories_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar recuperar todas as subcategorias de uma categoria que não existe deveria retornar status 404")
 
 	ts.Equal(

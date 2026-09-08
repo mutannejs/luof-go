@@ -38,6 +38,7 @@ func (cc *Context) Init() *custom_request.CRequest {
 		&cc.Log,
 		cc.Request().Method,
 		cc.Path(),
+		cc.Request().URL.Path,
 		cc.Request().Body,
 		cc.Param,
 		cc.JSON,

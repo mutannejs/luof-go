@@ -70,8 +70,8 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		204,
+		res.StatusCode(),
 		"Tentar remover uma subcategoria, ambos relacionadas, deveria retornar status 204")
 
 	ts.Empty(
@@ -87,11 +87,11 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_Error() {
 		})
 
 	ts.Equal(
-		res.StatusCode(),
 		400,
+		res.StatusCode(),
 		"Tentar remover uma subcategoria passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]string{"categoryUid", "childUid"}, ltests.GetErrorKeys(res.Body()))
+	ts.ElementsMatch([]any{"categoryUid", "childUid"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_FatherNotExists() {
@@ -106,8 +106,8 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_FatherNotExists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar remover uma categoria de outra que não existe deveria retornar status 404")
 
 	ts.Equal(
@@ -128,8 +128,8 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_ChildNotExists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar remover uma categoria que não existe de outra deveria retornar status 404")
 
 	ts.Equal(
@@ -150,8 +150,8 @@ func (ts *RemoveSubcategoryTestSuite) TestRemoveSubcategory_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar remover uma subcategoria tal que a relação não existe deveria retornar status 404")
 
 	ts.Equal(

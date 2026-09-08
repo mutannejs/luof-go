@@ -39,8 +39,8 @@ func (ts *GetCategoryTestSuite) TestGetCategory() {
 	resBody := ltests.DeleteKeyInByteSlice(res.Body(), "CreatedAt")
 
 	ts.Equal(
-		res.StatusCode(),
 		200,
+		res.StatusCode(),
 		"Tentar recuperar uma categoria passando um uuid válido deveria retornar status 200")
 
 	ts.JSONEq(
@@ -50,14 +50,14 @@ func (ts *GetCategoryTestSuite) TestGetCategory() {
 }
 
 func (ts *GetCategoryTestSuite) TestGetCategory_ParamRequired() {
-	res, _ := ts.get(map[string]string{"categoryId": domain.MockUidCategory.String()}, nil)
+	res, _ := ts.get(map[string]string{"categoryUid": "teste"}, nil)
 
 	ts.Equal(
-		res.StatusCode(),
 		400,
+		res.StatusCode(),
 		"Tentar recuperar uma categoria passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]string{"categoryUid"}, ltests.GetErrorKeys(res.Body())) 
+	ts.ElementsMatch([]any{"categoryUid"}, ltests.GetFirstErrorKeys(res.Body())) 
 }
 
 func (ts *GetCategoryTestSuite) TestGetCategory_NotExists() {
@@ -68,8 +68,8 @@ func (ts *GetCategoryTestSuite) TestGetCategory_NotExists() {
 		res.Body())
 
 	ts.Equal(
-		res.StatusCode(),
 		404,
+		res.StatusCode(),
 		"Tentar recuperar uma categoria que não existe deveria retornar status 404")
 
 	ts.Equal(
