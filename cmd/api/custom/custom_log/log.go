@@ -13,32 +13,50 @@ import (
 
 const (
 	LOG_KEY_ERRORS = "errors"
+	LOG_KEY_JSON_BODY = "json_body"
+	LOG_KEY_METHOD = "method"
+	LOG_KEY_PARAMS_PATH = "params_path"
+	LOG_KEY_PATH = "path"
 	LOG_KEY_STATUS_CODE = "status_code"
 	LOG_KEY_UID = "log_uid"
 	UNKNOWN_ERROR = "unknown error"
-
-	LOG_KEY_METHOD = "method"
-	LOG_KEY_PATH = "path"
-	LOG_KEY_JSON_BODY = "json_body"
-	LOG_KEY_PARAMS_PATH = "params_path"
 )
 
+/**
+ * Armazena um identificador usado para relacionar logs
+ * feitos na mesma requisição
+ */
 type CLog struct {
 	logUid string
 }
 
+/**
+ * Seta logUid
+ */
 func (l *CLog) SetUid(logUid string) {
 	l.logUid = logUid
 }
 
+/**
+ * Inicia um log de erro identificado pelo identificador
+ * armazenado na estrutura
+ */
 func (l *CLog) ErrLog() *zerolog.Event {
 	return log.Error().Str(LOG_KEY_UID, l.logUid)
 }
 
+/**
+ * Inicia um log de informação identificado pelo identificador
+ * armazenado na estrutura
+ */
 func (l *CLog) InfoLog() *zerolog.Event {
 	return log.Info().Str(LOG_KEY_UID, l.logUid)
 }
 
+/**
+ * Loga o erro passado como argumento e retorna [*echo.HTTPError] com
+ * código 500 e o erro informado
+ */
 func (l *CLog) ReturnInternalErr(err error) error {
 	if err == nil {
 		err = errors.New(UNKNOWN_ERROR)
@@ -51,6 +69,10 @@ func (l *CLog) ReturnInternalErr(err error) error {
 	return echo.NewHTTPError(http.StatusInternalServerError, err)
 }
 
+/**
+ * Loga o erro passado como argumento e retorna [*echo.HTTPError] com
+ * o código e erro informados
+ */
 func (l *CLog) ReturnErr(vErr lerror.ValueError) error {
 	if vErr.IsNil() {
 		return l.ReturnInternalErr(nil)
@@ -68,6 +90,10 @@ func (l *CLog) ReturnErr(vErr lerror.ValueError) error {
 	return echo.NewHTTPError(http.StatusInternalServerError, err)
 }
 
+/**
+ * Loga método, caminho, corpo e parâmetros recebidos na requisição,
+ * e qualquer erro que tenha ocorrido
+ */
 func (l *CLog) LogRequest(
 	paramsByteSlice []byte,
 	bodyByteSlice []byte,

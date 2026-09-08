@@ -12,8 +12,8 @@ import (
 const (
 	JSON_BODY_ERR = "the request body could not be interpreted in JSON format"
 	PARAMS_ERR = "the path params could not be converted in JSON format"
-	VALIDATE_PARAMS_ERR = "errors occurred during the validation of the request parameters"
 	VALIDATE_BODY_ERR = "errors occurred during the validation of the request body"
+	VALIDATE_PARAMS_ERR = "errors occurred during the validation of the request parameters"
 )
 
 // Valida o corpo da requisição, em formato json, e os retorna
