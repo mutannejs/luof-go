@@ -4,6 +4,10 @@ package lerror
 
 const BAD_REQUEST = 400
 
+func GetBadRequests(errMsg string, errors ...string) ValueError {
+	return getErrors(BAD_REQUEST, errMsg, errors...)
+}
+
 // 404: Not Found
 
 const NOT_FOUND = 404

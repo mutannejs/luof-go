@@ -53,10 +53,10 @@ func (cr *CRequest) RequestOperations(
 	var vErr lerror.ValueError
 	var params, body []byte
 
-	body = cr.getEncodedParams(values, validations, &vErr)
+	params = cr.getEncodedParams(values, validations, &vErr)
 
 	if vErr.IsNil() {
-		params = cr.getEncodedJsonBody(values, validations, &vErr)
+		body = cr.getEncodedJsonBody(values, validations, &vErr)
 	}
 
 	cr.log.LogRequest(params, body, cr.method, cr.resolvedPath, vErr)

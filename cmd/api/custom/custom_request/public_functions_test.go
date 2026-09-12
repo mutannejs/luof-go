@@ -5,6 +5,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/labstack/echo/v4"
 	"github.com/mutannejs/luof-go/cmd/api/custom/custom_log"
 	"github.com/mutannejs/luof-go/cmd/api/interfaces"
 	"github.com/mutannejs/luof-go/core/domain"
@@ -34,8 +35,8 @@ func TestRequestParamsOperations_Success(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase + ":categoryUid",
-		urlBase + categoryUid,
+		urlBase + ":categoryUid/",
+		urlBase + categoryUid + "/",
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		sendJson,
@@ -64,7 +65,7 @@ func TestRequestParamsOperations_Error(t *testing.T) {
 	var cr *CRequest = New(
 		&custom_log.CLog{},
 		"GET",
-		urlBase + ":categoryUid",
+		urlBase + ":categoryUid/",
 		urlBase + paramsError["categoryUid"],
 		&BodySuccess{},
 		getGetParam(paramsError["categoryUid"]),
@@ -78,15 +79,20 @@ func TestRequestParamsOperations_Error(t *testing.T) {
 		&interfaces.GetCategorySchema,
 	)
 
-	expected, _ := json.Marshal(paramsErr)
+	firstMsgErrs := getFirstMsgErrs(err)
 
 	assert.Error(
 		err,
-		"Se passado parâmetros inválidos na request, RequestParamsOperations deveria retornar um erro " + VALIDATE_PARAMS_ERR)
+		"Se passado parâmetros inválidos na request, RequestParamsOperations deveria retornar erro")
 
 	assert.Equal(
-		string(expected),
-		err.Error(),
+		paramsErr[0].GetMessage(),
+		firstMsgErrs.GetMessage(),
+		"Se passado parâmetros inválidos na request, RequestParamsOperations deveria retornar a mensagem de erro: " + VALIDATE_PARAMS_ERR)
+
+	assert.ElementsMatch(
+		paramsErr[0].GetErrors(),
+		firstMsgErrs.GetErrors(),
 		"Se passado parâmetros inválidos na request, RequestParamsOperations deveria retornar quais parâmetros são inválidos")
 }
 
@@ -95,9 +101,9 @@ func TestRequestJSONOperations_Success(t *testing.T) {
 
 	var cr *CRequest = New(
 		&custom_log.CLog{},
-		"GET",
-		urlBase + ":categoryUid",
-		urlBase + categoryUid,
+		"POST",
+		urlBase + ":categoryUid/",
+		urlBase + categoryUid + "/",
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		sendJson,
@@ -135,9 +141,9 @@ func TestRequestJSONOperations_Error(t *testing.T) {
 
 	var cr *CRequest = New(
 		&custom_log.CLog{},
-		"GET",
-		urlBase + ":categoryUid",
-		urlBase + categoryUid,
+		"POST",
+		urlBase + ":categoryUid/",
+		urlBase + categoryUid + "/",
 		&BodyError{},
 		getGetParam(categoryUid),
 		sendJson,
@@ -150,15 +156,20 @@ func TestRequestJSONOperations_Error(t *testing.T) {
 		&interfaces.SaveCategorySchema,
 	)
 
-	expected, _ := json.Marshal(jsonErr)
+	firstMsgErrs := getFirstMsgErrs(err)
 
 	assert.Error(
 		err,
-		"Se passado um corpo json inválido na request, RequestJSONOperations deveria retornar um erro " + VALIDATE_BODY_ERR)
+		"Se passado um corpo json inválido na request, RequestJSONOperations deveria retornar erro")
 
 	assert.Equal(
-		string(expected),
-		err.Error(),
+		jsonErr[0].GetMessage(),
+		firstMsgErrs.GetMessage(),
+		"Se passado um corpo json inválido na request, RequestJSONOperations deveria retornar a mensagem de erro: " + VALIDATE_BODY_ERR)
+
+	assert.ElementsMatch(
+		jsonErr[0].GetErrors(),
+		firstMsgErrs.GetErrors(),
 		"Se passado um corpo json inválido na request, RequestJSONOperations deveria retornar quais campos são inválidos")
 }
 
@@ -167,9 +178,9 @@ func TestRequestOperations_Success(t *testing.T) {
 
 	var cr *CRequest = New(
 		&custom_log.CLog{},
-		"GET",
-		urlBase + ":categoryUid",
-		urlBase + categoryUid,
+		"POST",
+		urlBase + ":categoryUid/",
+		urlBase + categoryUid + "/",
 		&BodySuccess{},
 		getGetParam(categoryUid),
 		sendJson,
@@ -216,8 +227,8 @@ func TestRequestOperations_ParamsError(t *testing.T) {
 
 	var cr *CRequest = New(
 		&custom_log.CLog{},
-		"GET",
-		urlBase + ":categoryUid",
+		"POST",
+		urlBase + ":categoryUid/",
 		urlBase + paramsError["categoryUid"],
 		&BodySuccess{},
 		getGetParam(paramsError["categoryUid"]),
@@ -235,15 +246,20 @@ func TestRequestOperations_ParamsError(t *testing.T) {
 		},
 	)
 
-	expected, _ := json.Marshal(paramsErr)
+	firstMsgErrs := getFirstMsgErrs(err)
 
 	assert.Error(
 		err,
-		"Se passado parâmetros inválidos na request, RequestJSONOperations deveria retornar erro" + VALIDATE_PARAMS_ERR)
+		"Se passado parâmetros inválidos na request, RequestJSONOperations deveria retornar erro")
 
 	assert.Equal(
-		string(expected),
-		err.Error(),
+		paramsErr[0].GetMessage(),
+		firstMsgErrs.GetMessage(),
+		"Se passado parâmetros inválidos na request, RequestJSONOperations deveria retornar a mensagem de erro: " + VALIDATE_PARAMS_ERR)
+
+	assert.ElementsMatch(
+		paramsErr[0].GetErrors(),
+		firstMsgErrs.GetErrors(),
 		"Se passado parâmetros inválidos na request, RequestJSONOperations deveria retornar quais parâmetros são inválidos")
 }
 
@@ -252,9 +268,9 @@ func TestRequestOperations_JsonError(t *testing.T) {
 
 	var cr *CRequest = New(
 		&custom_log.CLog{},
-		"GET",
-		urlBase + ":categoryUid",
-		urlBase + categoryUid,
+		"POST",
+		urlBase + ":categoryUid/",
+		urlBase + categoryUid + "/",
 		&BodyError{},
 		getGetParam(categoryUid),
 		sendJson,
@@ -271,8 +287,7 @@ func TestRequestOperations_JsonError(t *testing.T) {
 		},
 	)
 
-	var response []lerror.MsgErrors
-	json.Unmarshal([]byte(err.Error()), &response)
+	firstMsgErrs := getFirstMsgErrs(err)
 
 	assert.Error(
 		err,
@@ -280,12 +295,12 @@ func TestRequestOperations_JsonError(t *testing.T) {
 
 	assert.Equal(
 		jsonErr[0].GetMessage(),
-		response[0].GetMessage(),
-		"Se passado um corpo json inválido na request, RequestOperations deveria retornar um erro " + VALIDATE_BODY_ERR)
+		firstMsgErrs.GetMessage(),
+		"Se passado um corpo json inválido na request, RequestOperations deveria retornar a mensagem de erro: " + VALIDATE_BODY_ERR)
 
 	assert.ElementsMatch(
 		jsonErr[0].GetErrors(),
-		response[0].GetErrors(),
+		firstMsgErrs.GetErrors(),
 		"Se passado um corpo json inválido na request, RequestOperations deveria retornar quais campos são inválidos")
 }
 
@@ -296,4 +311,9 @@ Helper
 func sendJson(_ int, i any) error {
 	json, _ := json.Marshal(i)
 	return errors.New(string(json))
+}
+
+func getFirstMsgErrs(err error) lerror.MsgErrors {
+	var response *echo.HTTPError = err.(*echo.HTTPError)
+	return response.Message.([]lerror.MsgErrors)[0]
 }

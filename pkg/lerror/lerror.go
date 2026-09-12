@@ -31,17 +31,19 @@ func (v *ValueError) GetErrors() []MsgErrors {
 }
 
 func (v *ValueError) AppendErr(msg string, errors ...string) {
-	var errs = make([]string, 0)
+	var errs []string
 
 	if errors != nil {
 		errs = errors
+	} else {
+		errs = make([]string, 0)
 	}
+
+	var mE = MsgErrors{msg, errs}
 
 	if v.errors == nil {
-		v.errors = make([]MsgErrors, 0)
+		v.errors = []MsgErrors{mE}
+	} else {
+		v.errors = append(v.errors, mE)
 	}
-
-	v.errors = append(
-		v.errors,
-		MsgErrors{msg, errs})
 }
