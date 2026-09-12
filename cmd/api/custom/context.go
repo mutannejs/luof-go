@@ -22,6 +22,32 @@ type Context struct {
 }
 
 func (cc *Context) Init() *custom_request.CRequest {
+	var err = cc.initLog()
+
+	return custom_request.New(
+		&cc.Log,
+		cc.Request().Method,
+		cc.Path(),
+		cc.Request().URL.Path,
+		cc.Request().Body,
+		cc.Param,
+		cc.JSON,
+		err)
+}
+
+func (cc *Context) LogRoute() error {
+	if err := cc.initLog(); err != nil {
+		return err
+	}
+
+	cc.Log.LogRoute(
+		cc.Request().URL.Path,
+		cc.Request().Method)
+
+	return nil
+}
+
+func (cc *Context) initLog() error {
 	cc.Log = custom_log.CLog{}
 
 	var uid uuid.UUID
@@ -34,13 +60,5 @@ func (cc *Context) Init() *custom_request.CRequest {
 		cc.Log.SetUid(uid.String())
 	}
 
-	return custom_request.New(
-		&cc.Log,
-		cc.Request().Method,
-		cc.Path(),
-		cc.Request().URL.Path,
-		cc.Request().Body,
-		cc.Param,
-		cc.JSON,
-		err)
+	return err
 }

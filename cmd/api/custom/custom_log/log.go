@@ -91,6 +91,16 @@ func (l *CLog) ReturnErr(vErr lerror.ValueError) error {
 }
 
 /**
+ * Loga método e caminho da requisição
+ */
+func (l *CLog) LogRoute(method, resolvedPath string) {
+	l.InfoLog().
+		Str(LOG_KEY_METHOD, method).
+		Str(LOG_KEY_PATH, resolvedPath).
+		Send()
+}
+
+/**
  * Loga método, caminho, corpo e parâmetros recebidos na requisição,
  * e qualquer erro que tenha ocorrido
  */

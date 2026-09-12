@@ -22,6 +22,10 @@ import (
 func GetAllRootCategories(echoContext echo.Context) error {
 	var cc = echoContext.(*custom.Context)
 
+	if err := cc.LogRoute(); err != nil {
+		return err
+	}
+
 	garc := get_all_root_categories.New(cc.Repositories.Category)
 	categories, vErr := garc.Execute()
 
