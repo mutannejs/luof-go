@@ -3,9 +3,9 @@ package main
 import (
 	"database/sql"
 	"errors"
-	"time"
 
 	"github.com/mutannejs/luof-go/adapters"
+	"github.com/mutannejs/luof-go/cmd/api/custom/custom_log"
 	"github.com/mutannejs/luof-go/cmd/api/middleware"
 	"github.com/mutannejs/luof-go/cmd/api/route"
 	"github.com/mutannejs/luof-go/core/repository"
@@ -13,7 +13,6 @@ import (
 	"github.com/mutannejs/luof-go/pkg/lmigration"
 
 	"github.com/labstack/echo/v4"
-	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
@@ -29,8 +28,8 @@ func main() {
 		repoSettings adapters.RepositorySettings
 	)
 
-	zerolog.TimeFieldFormat = time.DateTime
 	env, err = lenv.Load()
+	custom_log.SetConfig(env)
 
 	if err != nil {
 		log.Error().Err(err).Msg("error loading env")
