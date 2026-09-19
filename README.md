@@ -47,12 +47,6 @@ Essa modelagem deve servir como base para que as operações abaixo sejam realiz
 * Operações de CRUD sobre **categorias**
 * Operações e agrupamentos simples de **links** por **categorias**
 
-### Próximas etapas
-
-- [ ] Adicionar internacionalização
-- [ ] Implementar autorização e autenticação
-- [ ] Terminar documentação
-
 ### Testes
 
 Os testes foram implementados utilizando o Testify. Para executar os testes definidos em um pacote, basta entrar na pasta do pacote e executar:
@@ -77,10 +71,6 @@ De forma semelhante, é possível rodar o servidor passando a mesma tag:
 go run -tags=luuid_error ./cmd/api/main.go
 ```
 
-### Projeto inicial
-
-Esse repositório é parte de uma reformulação do projeto de mesmo nome disponibilizado no repositório https://github.com/mutannejs/luof, projeto implementando em **C** e somente com CLI.
-
 ### Comandos Úteis
 
 * `go vet ./...`: valida todos os arquivos go do projeto
@@ -96,3 +86,11 @@ Esse repositório é parte de uma reformulação do projeto de mesmo nome dispon
 * Testing in Go with Testify: https://betterstack.com/community/guides/scaling-go/golang-testify/
 * Padrões de commits: https://github.com/iuricode/padroes-de-commits
 * Quais Códigos de Status HTTP APIs REST Devem Usar?: https://apidog.com/pt/blog/which-http-status-codes-rest-apis-should-use/
+
+### Próximos passos
+
+O _todo_ foi movido para um arquivo markdown separado: [TODO.md](TODO.md)
+
+### Projeto inicial
+
+Esse repositório é parte de uma reformulação do projeto de mesmo nome disponibilizado no repositório https://github.com/mutannejs/luof, projeto implementando em **C** e somente com CLI.
