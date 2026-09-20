@@ -12,7 +12,7 @@ import (
 var (
 	UUID_ERROR_NEW = li18n.Msg2Error(&i18n.Message{
 		ID: "UUID_ERROR_NEW",
-		Description: "Erro retornado quando uuid.New falha",
+		Description: "Retornado quando uuid.New falha",
 		Other: "error generating new uuid",
 	})
 )

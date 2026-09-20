@@ -1,11 +1,15 @@
 package lerror
 
+import (
+	"github.com/nicksnyder/go-i18n/v2/i18n"
+)
+
 type MsgErrors struct {
-	Message string `json:"message"`
+	Message *i18n.Message `json:"message"`
 	Errors []string `json:"errors"`
 }
 
-func (m *MsgErrors) GetMessage() string {
+func (m *MsgErrors) GetMessage() *i18n.Message {
 	return m.Message
 }
 
@@ -30,7 +34,7 @@ func (v *ValueError) GetErrors() []MsgErrors {
 	return v.errors
 }
 
-func (v *ValueError) AppendErr(msg string, errors ...string) {
+func (v *ValueError) AppendErr(msg *i18n.Message, errors ...string) {
 	var errs []string
 
 	if errors != nil {

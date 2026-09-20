@@ -13,7 +13,7 @@ import (
 var (
 	LENV_ERROR_LOAD = li18n.Msg2Error(&i18n.Message{
 		ID: "LENV_ERROR_LOAD",
-		Description: "Erro retornado quando uuid.New falha",
+		Description: "Retornado quando lpath.getRootPath falha",
 		Other: "error load enviroment variables",
 	})
 )

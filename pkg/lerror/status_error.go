@@ -1,10 +1,14 @@
 package lerror
 
+import (
+	"github.com/nicksnyder/go-i18n/v2/i18n"
+)
+
 // 400: Bad Request
 
 const BAD_REQUEST = 400
 
-func GetBadRequests(errMsg string, errors ...string) ValueError {
+func GetBadRequests(errMsg *i18n.Message, errors ...string) ValueError {
 	return getErrors(BAD_REQUEST, errMsg, errors...)
 }
 
@@ -12,7 +16,7 @@ func GetBadRequests(errMsg string, errors ...string) ValueError {
 
 const NOT_FOUND = 404
 
-func GetNotFound(errMsg string) ValueError {
+func GetNotFound(errMsg *i18n.Message) ValueError {
 	return getError(NOT_FOUND, errMsg)
 }
 
@@ -20,7 +24,7 @@ func GetNotFound(errMsg string) ValueError {
 
 const CONFLICT = 409
 
-func GetConflict(errMsg string) ValueError {
+func GetConflict(errMsg *i18n.Message) ValueError {
 	return getError(CONFLICT, errMsg)
 }
 
@@ -28,24 +32,17 @@ func GetConflict(errMsg string) ValueError {
 
 const INTERNAL_SERVER_ERROR = 500
 
-func GetInternal(err error) ValueError {
-	if err == nil {
-		return ValueError{}
-	}
-	return getError(INTERNAL_SERVER_ERROR, err.Error())
-}
-
-func GetInternals(errMsg string, errors ...string) ValueError {
+func GetInternals(errMsg *i18n.Message, errors ...string) ValueError {
 	return getErrors(INTERNAL_SERVER_ERROR, errMsg, errors...)
 }
 
 // funções auxiliares
 
-func getError(code int, errMsg string) ValueError {
+func getError(code int, errMsg *i18n.Message) ValueError {
 	return getErrors(code, errMsg)
 }
 
-func getErrors(code int, errMsg string, errors ...string) ValueError {
+func getErrors(code int, errMsg *i18n.Message, errors ...string) ValueError {
 	var errs = make([]string, 0)
 
 	if errors != nil {

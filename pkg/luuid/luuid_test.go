@@ -40,6 +40,6 @@ func TestNew(t *testing.T) {
 		assert.EqualError(
 			UUID_ERROR_NEW,
 			err.Error(),
-			"O erro retornado por New deveria ser " + UUID_ERROR_NEW.Error())
+			"O Retornado por New deveria ser " + UUID_ERROR_NEW.Error())
 	}
 }

@@ -7,11 +7,20 @@ import (
 	"github.com/mutannejs/luof-go/pkg/luuid"
 
 	"github.com/google/uuid"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
-const (
-	LINK_ERROR_NEW = "error instantiate new link"
-	LINK_NOT_EXISTS = "the searched link does not exist"
+var (
+	LINK_ERROR_NEW = &i18n.Message{
+		ID: "LINK_ERROR_NEW",
+		Description: "Retornado quando uuid.New falha",
+		Other: "error instantiate new link",
+	}
+	LINK_NOT_EXISTS = &i18n.Message{
+		ID: "LINK_NOT_EXISTS",
+		Description: "Retornado quando consultado um link que não existe",
+		Other: "the searched link does not exist",
+	}
 )
 
 type Link struct {
