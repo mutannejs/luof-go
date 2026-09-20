@@ -11,4 +11,5 @@ func SetMiddleware(e *echo.Echo, repositories repository.Repositories) {
 	e.Pre(middleware.AddTrailingSlash())
 
 	e.Use(contextMiddleware(repositories))
+	e.Use(i18nMiddleware())
 }

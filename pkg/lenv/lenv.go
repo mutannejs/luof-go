@@ -1,16 +1,21 @@
 package lenv
 
 import (
-	"errors"
 	"flag"
 
+	"github.com/mutannejs/luof-go/pkg/li18n"
 	"github.com/mutannejs/luof-go/pkg/lpath"
 
 	"github.com/joho/godotenv"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 var (
-	LENV_ERROR_LOAD = errors.New("error load enviroment variables")
+	LENV_ERROR_LOAD = li18n.Msg2Error(&i18n.Message{
+		ID: "LENV_ERROR_LOAD",
+		Description: "Erro retornado quando uuid.New falha",
+		Other: "error load enviroment variables",
+	})
 )
 
 func Load() (env map[string]string, err error) {

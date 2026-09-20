@@ -7,6 +7,7 @@ import (
 	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lerror"
 	"github.com/mutannejs/luof-go/pkg/luuid"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 
 	"github.com/labstack/echo/v4"
 )
@@ -19,6 +20,7 @@ type Context struct {
 	echo.Context
 	Repositories repository.Repositories
 	Log custom_log.CLog
+	Localizer *i18n.Localizer
 }
 
 func (cc *Context) Init() *custom_request.CRequest {

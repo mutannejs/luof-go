@@ -1,0 +1,7 @@
+[LENV_ERROR_LOAD]
+description = "Erro retornado quando uuid.New falha"
+other = "error load enviroment variables"
+
+[UUID_ERROR_NEW]
+description = "Erro retornado quando uuid.New falha"
+other = "error generating new uuid"
