@@ -1,19 +1,23 @@
 package custom
 
 import (
-	"github.com/google/uuid"
 	"github.com/mutannejs/luof-go/cmd/api/custom/custom_log"
 	"github.com/mutannejs/luof-go/cmd/api/custom/custom_request"
 	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lerror"
 	"github.com/mutannejs/luof-go/pkg/luuid"
-	"github.com/nicksnyder/go-i18n/v2/i18n"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
-const (
-	LOG_UID_ERR = "error generating new log_uid"
+var (
+	LOG_UID_ERR = &i18n.Message{
+		ID: "LOG_UID_ERR",
+		Description: "Retornado quando uuid.New falha",
+		Other: "error generating new log_uid",
+	}
 )
 
 type Context struct {
@@ -56,7 +60,7 @@ func (cc *Context) initLog() error {
 	var err error
 
 	if uid, err = luuid.New(); err != nil {
-		vErr := lerror.GetInternals(LOG_UID_ERR, err.Error())
+		vErr := lerror.GetInternals(LOG_UID_ERR, err)
 		err = cc.Log.ReturnErr(vErr)
 	} else {
 		cc.Log.SetUid(uid.String())

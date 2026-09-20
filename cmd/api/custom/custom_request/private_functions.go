@@ -5,15 +5,32 @@ import (
 	"strings"
 
 	"github.com/mutannejs/luof-go/pkg/lerror"
-
+	
 	"github.com/Oudwins/zog"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
-const (
-	JSON_BODY_ERR = "the request body could not be interpreted in JSON format"
-	PARAMS_ERR = "the path params could not be converted in JSON format"
-	VALIDATE_BODY_ERR = "errors occurred during the validation of the request body"
-	VALIDATE_PARAMS_ERR = "errors occurred during the validation of the request parameters"
+var (
+	JSON_BODY_ERR = &i18n.Message{
+		ID: "JSON_BODY_ERR",
+		Description: "Retornado quando o corpo da requisição não pode ser interpretada como JSON",
+		Other: "the request body could not be interpreted in JSON format",
+	}
+	PARAMS_ERR = &i18n.Message{
+		ID: "PARAMS_ERR",
+		Description: "Retornado quando os parâmetros da requisição não podem ser convertidas para JSON",
+		Other: "the path params could not be converted in JSON format",
+	}
+	VALIDATE_BODY_ERR = &i18n.Message{
+		ID: "VALIDATE_BODY_ERR",
+		Description: "Retornado quando a validação do corpo da requisição falha",
+		Other: "errors occurred during the validation of the request body",
+	}
+	VALIDATE_PARAMS_ERR = &i18n.Message{
+		ID: "VALIDATE_PARAMS_ERR",
+		Description: "Retornado quando a validação dos parâmetros da requisição falha",
+		Other: "errors occurred during the validation of the request parameters",
+	}
 )
 
 // Valida o corpo da requisição, em formato json, e os retorna
@@ -102,7 +119,7 @@ func (cr *CRequest) getPathParams() map[string]any {
 func (cr * CRequest) setValidateErr(
 	parseErrs zog.ZogIssueList,
 	vErr *lerror.ValueError,
-	msgError string,
+	msgError *i18n.Message,
 ) {
 	if parseErrs == nil {
 		return

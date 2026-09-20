@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/mutannejs/luof-go/pkg/lerror"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 
 	"github.com/go-resty/resty/v2"
 )
@@ -111,7 +112,7 @@ func DeleteKeyInByteSlice(value []byte, key string) []byte {
 	return valueByteSlice
 }
 
-func GetResponseMessage(message string) (expectedJson []byte) {
+func GetResponseMessage(message *i18n.Message) (expectedJson []byte) {
 	expectedJson, _ = json.Marshal(
 		[]lerror.MsgErrors{
 			{

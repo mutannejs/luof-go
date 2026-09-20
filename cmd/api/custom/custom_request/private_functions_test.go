@@ -112,7 +112,7 @@ func TestSetValidateErr_Errors(t *testing.T) {
 	assert.Equal(
 		expectedMessage,
 		vErr.GetErrors()[0].GetMessage(),
-		"Se passado um uuid inválido ao setValidateErr, deveria ser retornado a seguinte mensagem: " + VALIDATE_PARAMS_ERR)
+		"Se passado um uuid inválido ao setValidateErr, deveria ser retornado a seguinte mensagem: " + VALIDATE_PARAMS_ERR.Other)
 }
 
 func TestGetEncodedParams_Success(t *testing.T) {
@@ -181,7 +181,7 @@ func TestGetEncodedParams_Error(t *testing.T) {
 	assert.Equal(
 		expectedMessage,
 		vErr.GetErrors()[0].GetMessage(),
-		"Se passado um uuid inválido no CRequest, getEncodedParams deveria retornar a seguinte mensagem: " + VALIDATE_PARAMS_ERR)
+		"Se passado um uuid inválido no CRequest, getEncodedParams deveria retornar a seguinte mensagem: " + VALIDATE_PARAMS_ERR.Other)
 }
 
 func TestGetEncodedJsonBody_Success(t *testing.T) {
@@ -241,7 +241,7 @@ func TestGetEncodedJsonBody_Error(t *testing.T) {
 	assert.Equal(
 		VALIDATE_BODY_ERR,
 		vErr.GetErrors()[0].GetMessage(),
-		"Se o corpo da requisição conter dados inválidos, getEncodedJsonBody deveria retornar a mensagem: " + VALIDATE_BODY_ERR)
+		"Se o corpo da requisição conter dados inválidos, getEncodedJsonBody deveria retornar a mensagem: " + VALIDATE_BODY_ERR.Other)
 
 	assert.ElementsMatch(
 		vErr.GetErrors()[0].GetErrors(),

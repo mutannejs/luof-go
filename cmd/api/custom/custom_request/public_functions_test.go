@@ -88,7 +88,7 @@ func TestRequestParamsOperations_Error(t *testing.T) {
 	assert.Equal(
 		paramsErr[0].GetMessage(),
 		firstMsgErrs.GetMessage(),
-		"Se passado parâmetros inválidos na request, RequestParamsOperations deveria retornar a mensagem de erro: " + VALIDATE_PARAMS_ERR)
+		"Se passado parâmetros inválidos na request, RequestParamsOperations deveria retornar a mensagem de erro: " + VALIDATE_PARAMS_ERR.Other)
 
 	assert.ElementsMatch(
 		paramsErr[0].GetErrors(),
@@ -165,7 +165,7 @@ func TestRequestJSONOperations_Error(t *testing.T) {
 	assert.Equal(
 		jsonErr[0].GetMessage(),
 		firstMsgErrs.GetMessage(),
-		"Se passado um corpo json inválido na request, RequestJSONOperations deveria retornar a mensagem de erro: " + VALIDATE_BODY_ERR)
+		"Se passado um corpo json inválido na request, RequestJSONOperations deveria retornar a mensagem de erro: " + VALIDATE_BODY_ERR.Other)
 
 	assert.ElementsMatch(
 		jsonErr[0].GetErrors(),
@@ -255,7 +255,7 @@ func TestRequestOperations_ParamsError(t *testing.T) {
 	assert.Equal(
 		paramsErr[0].GetMessage(),
 		firstMsgErrs.GetMessage(),
-		"Se passado parâmetros inválidos na request, RequestJSONOperations deveria retornar a mensagem de erro: " + VALIDATE_PARAMS_ERR)
+		"Se passado parâmetros inválidos na request, RequestJSONOperations deveria retornar a mensagem de erro: " + VALIDATE_PARAMS_ERR.Other)
 
 	assert.ElementsMatch(
 		paramsErr[0].GetErrors(),
@@ -296,7 +296,7 @@ func TestRequestOperations_JsonError(t *testing.T) {
 	assert.Equal(
 		jsonErr[0].GetMessage(),
 		firstMsgErrs.GetMessage(),
-		"Se passado um corpo json inválido na request, RequestOperations deveria retornar a mensagem de erro: " + VALIDATE_BODY_ERR)
+		"Se passado um corpo json inválido na request, RequestOperations deveria retornar a mensagem de erro: " + VALIDATE_BODY_ERR.Other)
 
 	assert.ElementsMatch(
 		jsonErr[0].GetErrors(),
