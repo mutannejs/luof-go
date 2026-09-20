@@ -3,6 +3,7 @@ package belongs_to
 import (
 	"time"
 
+	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
@@ -30,7 +31,7 @@ func (btr *BelongsTo) Create(
 		insertedAt,
 		isMain)
 
-	return lerror.GetInternal(err)
+	return lerror.GetInternals(repository.WRITE_BELONGS_TO_CREATE_ERROR, err)
 }
 
 func (btr *BelongsTo) Delete(
@@ -44,7 +45,7 @@ func (btr *BelongsTo) Delete(
 		linkUid,
 		categoryUid)
 
-	return lerror.GetInternal(err)
+	return lerror.GetInternals(repository.WRITE_BELONGS_TO_DELETE_ERROR, err)
 }
 
 func (btr *BelongsTo) SetHasNoMainCategory(
@@ -58,7 +59,7 @@ func (btr *BelongsTo) SetHasNoMainCategory(
 		`,
 		linkUid)
 
-	return lerror.GetInternal(err)
+	return lerror.GetInternals(repository.WRITE_BELONGS_TO_SET_HAS_NO_MAIN_CATEGORY_ERROR, err)
 }
 
 func (btr *BelongsTo) Update(
@@ -76,5 +77,5 @@ func (btr *BelongsTo) Update(
 		linkUid,
 		categoryUid)
 
-	return lerror.GetInternal(err)
+	return lerror.GetInternals(repository.WRITE_BELONGS_TO_UPDATE_ERROR, err)
 }

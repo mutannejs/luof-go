@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
@@ -68,7 +69,7 @@ func (cr *Category) AreRelated(
 		err = nil
 	}
 
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_CATEGORY_ARE_RELATED_ERROR, err)
 	return
 }
 
@@ -83,7 +84,7 @@ func (cr *Category) Exists(uid uuid.UUID) (exists bool, vErr lerror.ValueError) 
 		err = nil
 	}
 	
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_CATEGORY_EXISTS_ERROR, err)
 	return
 }
 
@@ -107,8 +108,8 @@ func (cr *Category) GetByUid(uid uuid.UUID) (l domain.Category, vErr lerror.Valu
 	if err == nil {
 		l.SetUid(uid)
 	}
-	
-	vErr = lerror.GetInternal(err)
+
+	vErr = lerror.GetInternals(repository.READ_CATEGORY_GET_BY_UID_ERROR, err)
 	return
 }
 
@@ -129,7 +130,7 @@ func (cr *Category) GetAllRootCategories() (
 		`)
 
 	if err != nil {
-		vErr = lerror.GetInternal(err)
+		vErr = lerror.GetInternals(repository.READ_CATEGORY_GET_ALL_ROOT_CATEGORIES_ERROR, err)
 		return
 	}
 
@@ -164,8 +165,8 @@ func (cr *Category) GetAllRootCategories() (
 
 	err = rows.Err()
 	rows.Close()
-	
-	vErr = lerror.GetInternal(err)
+
+	vErr = lerror.GetInternals(repository.READ_CATEGORY_GET_ALL_ROOT_CATEGORIES_ERROR, err)
 	return
 }
 
@@ -187,7 +188,7 @@ func (cr *Category) GetSubcategories(
 		uid)
 
 	if err != nil {
-		vErr = lerror.GetInternal(err)
+		vErr = lerror.GetInternals(repository.READ_CATEGORY_GET_SUBCATEGORIES_ERROR, err)
 		return
 	}
 
@@ -223,7 +224,7 @@ func (cr *Category) GetSubcategories(
 	err = rows.Err()
 	rows.Close()
 
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_CATEGORY_GET_SUBCATEGORIES_ERROR, err)
 	return
 }
 
@@ -240,7 +241,7 @@ func (cr *Category) HasSubcategories(
 		err = nil
 	}
 	
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_CATEGORY_HAS_SUBCATEGORIES_ERROR, err)
 	return
 }
 
@@ -277,7 +278,7 @@ func (cr *Category) IsAncestor(
 		err = nil
 	}
 
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_CATEGORY_IS_ANCESTOR_ERROR, err)
 	return
 }
 
@@ -301,6 +302,6 @@ func (cr *Category) IsSubcategory(
 		err = nil
 	}
 
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_CATEGORY_IS_SUBCATEGORY_ERROR, err)
 	return
 }

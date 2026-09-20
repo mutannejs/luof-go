@@ -84,7 +84,7 @@ func NewCategory(
 
 	uid, err = luuid.New()
 	if err != nil {
-		vError = lerror.GetInternals(CATEGORY_ERROR_NEW, err.Error())
+		vError = lerror.GetInternals(CATEGORY_ERROR_NEW, err)
 		return
 	}
 

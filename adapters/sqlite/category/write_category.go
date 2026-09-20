@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
@@ -30,7 +31,7 @@ func (cr *Category) Create(l domain.Category) (lerror.ValueError) {
 		l.CreatedAt,
 		l.UpdatedAt)
 		
-	return lerror.GetInternal(err)
+	return lerror.GetInternals(repository.WRITE_CATEGORY_CREATE_ERROR, err)
 }
 
 func (cr *Category) Delete(uid uuid.UUID) (lerror.ValueError) {
@@ -38,7 +39,7 @@ func (cr *Category) Delete(uid uuid.UUID) (lerror.ValueError) {
 		`DELETE FROM category WHERE uid_category = ?`,
 		uid)
 		
-	return lerror.GetInternal(err)
+	return lerror.GetInternals(repository.WRITE_CATEGORY_DELETE_ERROR, err)
 }
 
 func (cr *Category) DeleteSubcategory(
@@ -52,7 +53,7 @@ func (cr *Category) DeleteSubcategory(
 		`,
 		childUid)
 		
-	return lerror.GetInternal(err)
+	return lerror.GetInternals(repository.WRITE_CATEGORY_DELETE_ERROR, err)
 }
 
 func (cr *Category) InsertSubcategory(
@@ -71,7 +72,7 @@ func (cr *Category) InsertSubcategory(
 		updatedAt,
 		childUid)
 		
-	return lerror.GetInternal(err)
+	return lerror.GetInternals(repository.WRITE_CATEGORY_INSERT_SUBCATEGORY_ERROR, err)
 }
 
 func (cr *Category) Update(
@@ -95,5 +96,5 @@ func (cr *Category) Update(
 		l.UpdatedAt,
 		uid)
 		
-	return lerror.GetInternal(err)
+	return lerror.GetInternals(repository.WRITE_CATEGORY_UPDATE_ERROR, err)
 }

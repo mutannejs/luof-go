@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
@@ -20,7 +21,7 @@ func (lr *Link) Exists(uid uuid.UUID) (exists bool, vErr lerror.ValueError) {
 		err = nil
 	}
 	
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_LINK_EXISTS_ERROR, err)
 	return
 }
 
@@ -47,6 +48,6 @@ func (lr *Link) GetByUid(uid uuid.UUID) (l domain.Link, vErr lerror.ValueError) 
 		l.SetUid(uid)
 	}
 
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_LINK_EXISTS_ERROR, err)
 	return
 }

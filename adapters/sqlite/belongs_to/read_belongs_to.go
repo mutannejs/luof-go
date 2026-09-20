@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lerror"
 
 	"github.com/google/uuid"
@@ -28,7 +29,7 @@ func (btr *BelongsTo) Exists(
 		err = nil
 	}
 
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_BELONGS_TO_EXISTS_ERROR, err)
 	return
 }
 
@@ -52,7 +53,7 @@ func (btr *BelongsTo) GetLinksByCategory(
 		uid)
 
 	if err != nil {
-		vErr = lerror.GetInternal(err)
+		vErr = lerror.GetInternals(repository.READ_BELONGS_TO_GET_LINKS_BY_CATEGORY_ERROR, err)
 		return
 	}
 
@@ -89,7 +90,7 @@ func (btr *BelongsTo) GetLinksByCategory(
 	err = rows.Err()
 	rows.Close()
 
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_BELONGS_TO_GET_LINKS_BY_CATEGORY_ERROR, err)
 	return
 }
 
@@ -106,6 +107,6 @@ func (btr *BelongsTo) HasLinks(
 		err = nil
 	}
 
-	vErr = lerror.GetInternal(err)
+	vErr = lerror.GetInternals(repository.READ_BELONGS_TO_HAS_LINKS_ERROR, err)
 	return
 }

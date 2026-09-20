@@ -51,7 +51,7 @@ func NewLink(
 
 	uid, err = luuid.New()
 	if err != nil {
-		vError = lerror.GetInternals(LINK_ERROR_NEW, err.Error())
+		vError = lerror.GetInternals(LINK_ERROR_NEW, err)
 		return
 	}
 
