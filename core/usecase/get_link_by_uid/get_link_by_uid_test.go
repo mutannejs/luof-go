@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -20,7 +19,7 @@ var (
 func TestGetLinkByUid_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewLinkMockRepository()
+	var repo = ltests.NewLinkMockRepository()
 	var glbu = New(repo)
 
 	repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
@@ -33,13 +32,13 @@ func TestGetLinkByUid_NotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		linkNotExists,
-		"Buscar um link que não existe deveria retornar erro contendo " + linkNotExists)
+		"Buscar um link que não existe deveria retornar erro contendo " + linkNotExists.Other)
 }
 
 func TestGetLinkByUid_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewLinkMockRepository()
+	var repo = ltests.NewLinkMockRepository()
 	var glbu = New(repo)
 
 	repo.On("Exists", mockUidLink).Return(true, nil)

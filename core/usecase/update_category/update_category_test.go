@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -20,7 +19,7 @@ var (
 func TestUpdateCategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewCategoryMockRepository()
+	var repo = ltests.NewCategoryMockRepository()
 	var uc = New(repo)
 
 	repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
@@ -38,14 +37,14 @@ func TestUpdateCategory_NotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		categoryNotExists,
-		"Tentar atualizar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists)
+		"Tentar atualizar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Other)
 }
 
 func TestUpdateCategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 	var category domain.Category
 
-	var repo = repository.NewCategoryMockRepository()
+	var repo = ltests.NewCategoryMockRepository()
 	var uc = New(repo)
 
 	repo.On("Exists", mockUidCategory).Return(true, nil)
@@ -61,7 +60,7 @@ func TestUpdateCategory_Exists(t *testing.T) {
 		mockCategory.Description.UseMarkdown,
 	)
 
-	// Testa se a categoria enviada para Repository.Update está de acordo
+	// Testa se a categoria enviada para ltests.Update está de acordo
 	// com os argumentos passados à função
 	// ! Pode estar errada, mesmo que NewCategory tenha sido corretamente
 	// implementada

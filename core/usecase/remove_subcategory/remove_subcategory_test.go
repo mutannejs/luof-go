@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -20,7 +19,7 @@ var (
 func TestRemoveSubcategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
 	var is = New(cRepo)
 
 	cRepo.
@@ -48,7 +47,7 @@ func TestRemoveSubcategory_Exists(t *testing.T) {
 func TestRemoveSubcategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
 	var is = New(cRepo)
 
 	cRepo.
@@ -71,5 +70,5 @@ func TestRemoveSubcategory_NotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		notIsSubcategory,
-		"Tentar remover uma categoria de outra, sem que ela seja uma subcategoria direta desta, deveria retornar erro contendo " + notIsSubcategory)
+		"Tentar remover uma categoria de outra, sem que ela seja uma subcategoria direta desta, deveria retornar erro contendo " + notIsSubcategory.Other)
 }

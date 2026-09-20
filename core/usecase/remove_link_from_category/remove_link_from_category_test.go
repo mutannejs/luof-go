@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -21,9 +20,9 @@ var (
 func TestRemoveLinkFromCategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var btRepo = repository.NewBelongsToMockRepository()
-	var cRepo = repository.NewCategoryMockRepository()
-	var lRepo = repository.NewLinkMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var lRepo = ltests.NewLinkMockRepository()
 	var rlfc = New(btRepo, cRepo, lRepo)
 
 	btRepo.
@@ -55,15 +54,15 @@ func TestRemoveLinkFromCategory_NotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		notBelongs,
-		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + notBelongs)
+		"Tentar remover um link de uma categoria, ambos não relacionados, deveria retornar erro contendo " + notBelongs.Other)
 }
 
 func TestRemoveLinkFromCategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 	
-	var btRepo = repository.NewBelongsToMockRepository()
-	var cRepo = repository.NewCategoryMockRepository()
-	var lRepo = repository.NewLinkMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var lRepo = ltests.NewLinkMockRepository()
 	var rlfc = New(btRepo, cRepo, lRepo)
 
 	btRepo.

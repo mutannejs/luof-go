@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -19,7 +18,7 @@ var (
 func TestDeleteLink_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewLinkMockRepository()
+	var repo = ltests.NewLinkMockRepository()
 	var dl = New(repo)
 
 	repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
@@ -32,13 +31,13 @@ func TestDeleteLink_NotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		linkNotExists,
-		"Tentativa de deletar um link que não existe deveria retornar erro contendo " + linkNotExists)
+		"Tentativa de deletar um link que não existe deveria retornar erro contendo " + linkNotExists.Other)
 }
 
 func TestDeleteLink_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewLinkMockRepository()
+	var repo = ltests.NewLinkMockRepository()
 	var dl = New(repo)
 
 	repo.On("Exists", mockUidLink).Return(true, nil)

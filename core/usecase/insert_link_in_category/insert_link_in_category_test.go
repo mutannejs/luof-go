@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -22,9 +21,9 @@ var (
 func TestInsertLinkInCategory_CategoryNotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var btRepo = repository.NewBelongsToMockRepository()
-	var cRepo = repository.NewCategoryMockRepository()
-	var lRepo = repository.NewLinkMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var lRepo = ltests.NewLinkMockRepository()
 	var ilic = New(btRepo, cRepo, lRepo)
 
 	btRepo.
@@ -62,15 +61,15 @@ func TestInsertLinkInCategory_CategoryNotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		categoryNotExists,
-		"Tentar inserir um link em uma categoria que não existe deveria retornar erro contendo " + categoryNotExists)
+		"Tentar inserir um link em uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Other)
 }
 
 func TestInsertLinkInCategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var btRepo = repository.NewBelongsToMockRepository()
-	var cRepo = repository.NewCategoryMockRepository()
-	var lRepo = repository.NewLinkMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var lRepo = ltests.NewLinkMockRepository()
 	var ilic = New(btRepo, cRepo, lRepo)
 
 	btRepo.
@@ -108,15 +107,15 @@ func TestInsertLinkInCategory_Exists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		alreadyBelongs,
-		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + alreadyBelongs)
+		"Tentar inserir um link em uma categoria, ambos já relacionados, deveria retornar erro contendo " + alreadyBelongs.Other)
 }
 
 func TestInsertLinkInCategory_LinkNotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var btRepo = repository.NewBelongsToMockRepository()
-	var cRepo = repository.NewCategoryMockRepository()
-	var lRepo = repository.NewLinkMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var lRepo = ltests.NewLinkMockRepository()
 	var ilic = New(btRepo, cRepo, lRepo)
 
 	btRepo.
@@ -154,15 +153,15 @@ func TestInsertLinkInCategory_LinkNotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		linkNotExists,
-		"Tentar inserir um link que não existe em uma categoria válida deveria retornar erro contendo " + linkNotExists)
+		"Tentar inserir um link que não existe em uma categoria válida deveria retornar erro contendo " + linkNotExists.Other)
 }
 
 func TestInsertLinkInCategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var btRepo = repository.NewBelongsToMockRepository()
-	var cRepo = repository.NewCategoryMockRepository()
-	var lRepo = repository.NewLinkMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var lRepo = ltests.NewLinkMockRepository()
 	var ilic = New(btRepo, cRepo, lRepo)
 
 	btRepo.

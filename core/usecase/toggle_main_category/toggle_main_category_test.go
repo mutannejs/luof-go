@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -20,9 +19,9 @@ var (
 func TestToggleMainCategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 	
-	var btRepo = repository.NewBelongsToMockRepository()
-	var cRepo = repository.NewCategoryMockRepository()
-	var lRepo = repository.NewLinkMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var lRepo = ltests.NewLinkMockRepository()
 	var tmc = New(btRepo, cRepo, lRepo)
 
 	btRepo.
@@ -55,15 +54,15 @@ func TestToggleMainCategory_NotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		notBelongs,
-		"Tentar alterar a importância da categoria de um link, tal que a relação entre eles não existe, deveria retornar erro contendo " + notBelongs)
+		"Tentar alterar a importância da categoria de um link, tal que a relação entre eles não existe, deveria retornar erro contendo " + notBelongs.Other)
 }
 
 func TestToggleMainCategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var btRepo = repository.NewBelongsToMockRepository()
-	var cRepo = repository.NewCategoryMockRepository()
-	var lRepo = repository.NewLinkMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var lRepo = ltests.NewLinkMockRepository()
 	var tmc = New(btRepo, cRepo, lRepo)
 
 	btRepo.

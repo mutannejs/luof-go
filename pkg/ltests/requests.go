@@ -127,5 +127,5 @@ func TrimResponse(mes, resp []byte) (string, string) {
 }
 
 func GetMsgError(vErr lerror.ValueError) string {
-	return vErr.GetErrors()[0].GetMessage()
+	return vErr.GetErrors()[0].GetMessage().Other
 }

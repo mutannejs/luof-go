@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -21,8 +20,8 @@ var (
 func TestDeleteCategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
-	var btRepo = repository.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
 	var dc = New(btRepo, cRepo)
 
 	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
@@ -35,14 +34,14 @@ func TestDeleteCategory_NotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		categoryNotExists,
-		"Tentativa de deletar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists)
+		"Tentativa de deletar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Other)
 }
 
 func TestDeleteCategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
-	var btRepo = repository.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
 	var dc = New(btRepo, cRepo)
 
 	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(true, nil)
@@ -60,8 +59,8 @@ func TestDeleteCategory_Exists(t *testing.T) {
 func TestDeleteCategory_HasLinks(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
-	var btRepo = repository.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
 	var dc = New(btRepo, cRepo)
 
 	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(true, nil)
@@ -74,14 +73,14 @@ func TestDeleteCategory_HasLinks(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		hasLinks,
-		"Tentativa de deletar uma categoria que possui links deveria retornar erro contendo " + hasLinks)
+		"Tentativa de deletar uma categoria que possui links deveria retornar erro contendo " + hasLinks.Other)
 }
 
 func TestDeleteCategory_HasSubcategories(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
-	var btRepo = repository.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
 	var dc = New(btRepo, cRepo)
 
 	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(true, nil)
@@ -94,5 +93,5 @@ func TestDeleteCategory_HasSubcategories(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		hasSubcategories,
-		"Tentativa de deletar uma categoria que possui subcategorias deveria retornar erro contendo " + hasSubcategories)
+		"Tentativa de deletar uma categoria que possui subcategorias deveria retornar erro contendo " + hasSubcategories.Other)
 }

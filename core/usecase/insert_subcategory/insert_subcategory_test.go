@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -24,7 +23,7 @@ var (
 func TestInsertSubcategory_AncestorBecomeASubcategory(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
 	var is = New(cRepo)
 
 	cRepo.
@@ -54,13 +53,13 @@ func TestInsertSubcategory_AncestorBecomeASubcategory(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		isAncestor,
-		"Tentar inserir uma subcategoria em outra categoria, a primeira sendo ancestral da outra, deveria retornar erro contendo " + isAncestor)
+		"Tentar inserir uma subcategoria em outra categoria, a primeira sendo ancestral da outra, deveria retornar erro contendo " + isAncestor.Other)
 }
 
 func TestInsertSubcategory_ChildNotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
 	var is = New(cRepo)
 
 	cRepo.
@@ -94,13 +93,13 @@ func TestInsertSubcategory_ChildNotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		childNotExists,
-		"Tentar inserir uma subcategoria que não existe em uma categoria válida deveria retornar erro contendo " + childNotExists)
+		"Tentar inserir uma subcategoria que não existe em uma categoria válida deveria retornar erro contendo " + childNotExists.Other)
 }
 
 func TestInsertSubcategory_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
 	var is = New(cRepo)
 
 	cRepo.
@@ -130,13 +129,13 @@ func TestInsertSubcategory_Exists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		isSubcategory,
-		"Tentar inserir uma subcategoria em outra categoria, ambas já relacionadas, deveria retornar erro contendo " + isSubcategory)
+		"Tentar inserir uma subcategoria em outra categoria, ambas já relacionadas, deveria retornar erro contendo " + isSubcategory.Other)
 }
 
 func TestInsertSubcategory_FatherNotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
 	var is = New(cRepo)
 
 	cRepo.
@@ -170,13 +169,13 @@ func TestInsertSubcategory_FatherNotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		fatherNotExists,
-		"Tentar inserir uma subcategoria válida em uma categoria que não existe deveria retornar erro contendo " + fatherNotExists)
+		"Tentar inserir uma subcategoria válida em uma categoria que não existe deveria retornar erro contendo " + fatherNotExists.Other)
 }
 
 func TestInsertSubcategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
 	var is = New(cRepo)
 
 	cRepo.
@@ -211,7 +210,7 @@ func TestInsertSubcategory_NotExists(t *testing.T) {
 func TestInsertSubcategory_SubcategoryOfItself(t *testing.T) {
 	var assert = assert.New(t)
 
-	var cRepo = repository.NewCategoryMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
 	var is = New(cRepo)
 
 	cRepo.
@@ -241,5 +240,5 @@ func TestInsertSubcategory_SubcategoryOfItself(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		isSameCategory,
-		"Tentar inserir uma subcategoria nela mesma deveria retornar erro contendo " + isSameCategory)
+		"Tentar inserir uma subcategoria nela mesma deveria retornar erro contendo " + isSameCategory.Other)
 }

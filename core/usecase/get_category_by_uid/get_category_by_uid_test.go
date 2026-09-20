@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -20,7 +19,7 @@ var (
 func TestGetCategoryByUid_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewCategoryMockRepository()
+	var repo = ltests.NewCategoryMockRepository()
 	var gcbu = New(repo)
 
 	repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
@@ -33,13 +32,13 @@ func TestGetCategoryByUid_NotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		categoryNotExists,
-		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists)
+		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Other)
 }
 
 func TestGetCategoryByUid_Exists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewCategoryMockRepository()
+	var repo = ltests.NewCategoryMockRepository()
 	var gcbu = New(repo)
 
 	repo.On("Exists", mockUidCategory).Return(true, nil)

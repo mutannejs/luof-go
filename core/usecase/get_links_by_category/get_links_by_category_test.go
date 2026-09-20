@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -20,8 +19,8 @@ var (
 func TestGetLinksByCategory_CategoryNotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var btRepo = repository.NewBelongsToMockRepository()
-	var cRepo = repository.NewCategoryMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
 	var glbc = New(btRepo, cRepo)
 
 	cRepo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
@@ -34,14 +33,14 @@ func TestGetLinksByCategory_CategoryNotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		categoryNotExists,
-		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists)
+		"Buscar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Other)
 }
 
 func TestGetLinksByCategory_CategoryExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var btRepo = repository.NewBelongsToMockRepository()
-	var cRepo = repository.NewCategoryMockRepository()
+	var btRepo = ltests.NewBelongsToMockRepository()
+	var cRepo = ltests.NewCategoryMockRepository()
 	var glbc = New(btRepo, cRepo)
 
 	cRepo.On("Exists", mockUidCategory).Return(true, nil)

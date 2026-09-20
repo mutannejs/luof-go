@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -15,7 +15,7 @@ func TestCreateCategory(t *testing.T) {
 	var mockCategory = domain.MockCategory
 	var category domain.Category
 
-	var repo = repository.NewCategoryMockRepository()
+	var repo = ltests.NewCategoryMockRepository()
 	var cc = New(repo)
 
 	repo.On("Create", mock.MatchedBy(func(c domain.Category) bool {

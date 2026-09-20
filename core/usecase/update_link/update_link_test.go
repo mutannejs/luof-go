@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
@@ -20,7 +19,7 @@ var (
 func TestUpdateLink_NotExists(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewLinkMockRepository()
+	var repo = ltests.NewLinkMockRepository()
 	var ul = New(repo)
 
 	repo.On("Exists", mock.AnythingOfType("uuid.UUID")).Return(false, nil)
@@ -39,14 +38,14 @@ func TestUpdateLink_NotExists(t *testing.T) {
 	assert.Equal(
 		ltests.GetMsgError(err),
 		linkNotExists,
-		"Tentar atualizar um link que não existe deveria retornar erro contendo " + linkNotExists)
+		"Tentar atualizar um link que não existe deveria retornar erro contendo " + linkNotExists.Other)
 }
 
 func TestUpdateLink_Exists(t *testing.T) {
 	var assert = assert.New(t)
 	var link domain.Link
 
-	var repo = repository.NewLinkMockRepository()
+	var repo = ltests.NewLinkMockRepository()
 	var ul = New(repo)
 
 	repo.On("Exists", mockUidLink).Return(true, nil)
@@ -63,7 +62,7 @@ func TestUpdateLink_Exists(t *testing.T) {
 		mockLink.Description.UseMarkdown,
 	)
 
-	// Testa se o link enviado para Repository.Update está de acordo com os
+	// Testa se o link enviado para ltests.Update está de acordo com os
 	// argumentos passados à função
 	// ! Pode estar errada, mesmo que NewLink tenha sido corretamente
 	// implementada

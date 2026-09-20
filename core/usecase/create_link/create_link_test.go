@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -15,7 +15,7 @@ func TestCreateLink(t *testing.T) {
 	var mockLink = domain.MockLink
 	var link domain.Link
 
-	var repo = repository.NewLinkMockRepository()
+	var repo = ltests.NewLinkMockRepository()
 	var cl = New(repo)
 
 	repo.On("Create", mock.MatchedBy(func(l domain.Link) bool {

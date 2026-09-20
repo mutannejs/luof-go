@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/mutannejs/luof-go/core/domain"
-	"github.com/mutannejs/luof-go/core/repository"
+	"github.com/mutannejs/luof-go/pkg/ltests"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -16,7 +16,7 @@ var (
 func TestGetAllRootCategories_Empty(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewCategoryMockRepository()
+	var repo = ltests.NewCategoryMockRepository()
 	var alrc = New(repo)
 
 	repo.On("GetAllRootCategories").Return(make([]domain.Category, 0), nil)
@@ -34,7 +34,7 @@ func TestGetAllRootCategories_Empty(t *testing.T) {
 func TestGetAllRootCategories_NoEmpty(t *testing.T) {
 	var assert = assert.New(t)
 
-	var repo = repository.NewCategoryMockRepository()
+	var repo = ltests.NewCategoryMockRepository()
 	var alrc = New(repo)
 
 	var mockCategories = []domain.Category{mockCategory}
