@@ -31,7 +31,11 @@ func (lr *Link) Create(l domain.Link) (lerror.ValueError) {
 		l.CreatedAt,
 		l.UpdatedAt)
 
-	return lerror.GetInternals(repository.WRITE_LINK_CREATE_ERROR, err)
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_LINK_CREATE_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }
 
 func (lr *Link) Delete(uid uuid.UUID) (lerror.ValueError) {
@@ -39,7 +43,11 @@ func (lr *Link) Delete(uid uuid.UUID) (lerror.ValueError) {
 		`DELETE FROM link WHERE uid_link = ?`,
 		uid)
 
-	return lerror.GetInternals(repository.WRITE_LINK_DELETE_ERROR, err)
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_LINK_DELETE_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }
 
 func (lr *Link) Update(uid uuid.UUID, l domain.Link) (lerror.ValueError) {
@@ -62,5 +70,9 @@ func (lr *Link) Update(uid uuid.UUID, l domain.Link) (lerror.ValueError) {
 		l.UpdatedAt,
 		uid)
 
-	return lerror.GetInternals(repository.WRITE_LINK_UPDATE_ERROR, err)
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_LINK_UPDATE_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }

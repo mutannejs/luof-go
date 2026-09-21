@@ -127,6 +127,10 @@ func TrimResponse(mes, resp []byte) (string, string) {
 	return strings.TrimSpace(string(mes)), strings.TrimSpace(string(resp))
 }
 
-func GetMsgError(vErr lerror.ValueError) string {
+func GetValueErrorMessage(vErr lerror.ValueError) string {
 	return vErr.GetErrors()[0].GetMessage().Other
+}
+
+func GetMsgError(vErr lerror.ValueError) string {
+	return vErr.GetErrors()[0].GetErrors()[0]
 }

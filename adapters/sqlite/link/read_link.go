@@ -20,8 +20,13 @@ func (lr *Link) Exists(uid uuid.UUID) (exists bool, vErr lerror.ValueError) {
 	if err == sql.ErrNoRows {
 		err = nil
 	}
-	
-	vErr = lerror.GetInternals(repository.READ_LINK_EXISTS_ERROR, err)
+
+	if err != nil {
+		vErr = lerror.GetInternals(repository.READ_LINK_EXISTS_ERROR, err)
+	} else {
+		vErr = lerror.ValueError{}
+	}
+
 	return
 }
 
@@ -48,6 +53,11 @@ func (lr *Link) GetByUid(uid uuid.UUID) (l domain.Link, vErr lerror.ValueError) 
 		l.SetUid(uid)
 	}
 
-	vErr = lerror.GetInternals(repository.READ_LINK_EXISTS_ERROR, err)
+	if err != nil {
+		vErr = lerror.GetInternals(repository.READ_LINK_GET_BY_UID_ERROR, err)
+	} else {
+		vErr = lerror.ValueError{}
+	}
+
 	return
 }

@@ -57,7 +57,7 @@ func (ts *GetLinkTestSuite) TestGetLink_ParamRequired() {
 		res.StatusCode(),
 		"Tentar recuperar um link passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]any{"linkUid"}, ltests.GetFirstErrorKeys(res.Body())) 
+	ts.ElementsMatch([]any{"linkUid"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func (ts *GetLinkTestSuite) TestGetLink_NotExists() {

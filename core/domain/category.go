@@ -5,7 +5,7 @@ import (
 
 	"github.com/mutannejs/luof-go/pkg/lerror"
 	"github.com/mutannejs/luof-go/pkg/luuid"
-	
+
 	"github.com/google/uuid"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 )

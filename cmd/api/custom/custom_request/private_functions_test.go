@@ -68,7 +68,7 @@ func TestSetValidateErr_Success(t *testing.T) {
 		getGetParam(categoryUid),
 		nil,
 		nil)
-		
+
 	var validations = interfaces.GetCategorySchema
 	var gc = interfaces.GetCategory{}
 	var vErr = lerror.ValueError{}

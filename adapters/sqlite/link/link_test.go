@@ -6,6 +6,7 @@ import (
 
 	"github.com/mutannejs/luof-go/adapters/sqlite"
 	"github.com/mutannejs/luof-go/core/domain"
+	"github.com/mutannejs/luof-go/core/repository"
 	"github.com/mutannejs/luof-go/pkg/lenv"
 	"github.com/mutannejs/luof-go/pkg/lmigration"
 	"github.com/mutannejs/luof-go/pkg/ltests"
@@ -53,7 +54,7 @@ func (ts *TestSuite) TearDownSuite() {
 func (ts *TestSuite) TestCreate() {
 	err := ts.lr.Create(mockLink)
 
-	ts.Empty(err, "Tentar criar um link válido não deveria retornar erro")
+	ts.True(err.IsNil(), "Tentar criar um link válido não deveria retornar erro")
 }
 
 func (ts *TestSuite) TestGetByUid_Exists() {
@@ -61,7 +62,7 @@ func (ts *TestSuite) TestGetByUid_Exists() {
 
 	link, err := ts.lr.GetByUid(mockUidLink)
 
-	ts.Empty(err, "Tentar recuperar um link informando um uid válido não deveria retornar erro")
+	ts.True(err.IsNil(), "Tentar recuperar um link informando um uid válido não deveria retornar erro")
 	ts.Equal(mockUidLink, link.GetUid())
 	ts.Equal(mockLink.Url, link.Url)
 	ts.Equal(mockLink.Name, link.Name)
@@ -77,6 +78,12 @@ func (ts *TestSuite) TestGetByUid_NotExists() {
 	link, err := ts.lr.GetByUid(uid)
 
 	ts.Empty(link, "Tentar recuperar um link informando um uid inválido deveria retornar um Link vazio")
+
+	ts.Equal(
+		ltests.GetValueErrorMessage(err),
+		repository.READ_LINK_GET_BY_UID_ERROR.Other,
+		"Tentar recuperar um link informando um uid inválido deveria retornar " + repository.READ_LINK_GET_BY_UID_ERROR.Other)
+
 	ts.Equal(
 		ltests.GetMsgError(err),
 		sql.ErrNoRows.Error(),
@@ -88,7 +95,7 @@ func (ts *TestSuite) TestExists() {
 
 	exists, err := ts.lr.Exists(mockUidLink)
 
-	ts.Empty(err, "Exists se informado um uid válido não deveria retornar erro")
+	ts.True(err.IsNil(), "Exists se informado um uid válido não deveria retornar erro")
 	ts.True( exists, "Exists deveria retornar verdadeiro para um uid válido")
 }
 
@@ -97,7 +104,7 @@ func (ts *TestSuite) TestNotExists() {
 
 	exists, err := ts.lr.Exists(uid)
 
-	ts.Empty(err, "Exists se informado um uid inválido não deveria retornar erro")
+	ts.True(err.IsNil(), "Exists se informado um uid inválido não deveria retornar erro")
 	ts.False( exists, "Exists deveria retornar falso para um uid válido")
 }
 
@@ -106,7 +113,7 @@ func (ts *TestSuite) TestUpdate() {
 
 	err := ts.lr.Update(mockUidLink, alternativeMockLink)
 
-	ts.Empty(err, "Tentar atualizar um link com uid válido não deveria retornar erro")
+	ts.True(err.IsNil(), "Tentar atualizar um link com uid válido não deveria retornar erro")
 
 	link, _ := ts.lr.GetByUid(mockUidLink)
 
@@ -121,9 +128,14 @@ func (ts *TestSuite) TestDelete() {
 
 	err := ts.lr.Delete(mockUidLink)
 
-	ts.Empty(err, "Tentar deletar um link válido não deveria retornar erro")
+	ts.True(err.IsNil(), "Tentar deletar um link válido não deveria retornar erro")
 
 	_, err = ts.lr.GetByUid(mockUidLink)
+
+	ts.Equal(
+		ltests.GetValueErrorMessage(err),
+		repository.READ_LINK_GET_BY_UID_ERROR.Other,
+		"Tentar recuperar um link previamente deletado deveria retornar " + repository.READ_LINK_GET_BY_UID_ERROR.Other)
 
 	ts.Equal(
 		ltests.GetMsgError(err),

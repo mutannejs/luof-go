@@ -5,8 +5,8 @@ import (
 )
 
 type MsgErrors struct {
-	Message *i18n.Message `json:"message"`
-	Errors []string `json:"errors"`
+	Message *i18n.Message
+	Errors []string
 }
 
 func (m *MsgErrors) GetMessage() *i18n.Message {

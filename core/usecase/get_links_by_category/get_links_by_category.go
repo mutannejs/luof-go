@@ -21,7 +21,7 @@ func (glbcUseCase *GetLinksByCategory) Execute(
 	uid uuid.UUID,
 ) (links []domain.Link, vErr lerror.ValueError) {
 	var exists bool
-	
+
 	exists, vErr = glbcUseCase.CategoryRepo.Exists(uid)
 
 	if !vErr.IsNil() {

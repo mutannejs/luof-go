@@ -51,7 +51,7 @@ func (ts *CreateCategoryTestSuite) TestCreateCategory_Error() {
 		res.StatusCode(),
 		"Tentar criar uma categoria passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]any{"name", "useMarkdown"}, ltests.GetFirstErrorKeys(res.Body())) 
+	ts.ElementsMatch([]any{"name", "useMarkdown"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func TestCreateCategoryAllTests(t *testing.T) {

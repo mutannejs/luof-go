@@ -33,10 +33,18 @@ func GetConflict(errMsg *i18n.Message) ValueError {
 const INTERNAL_SERVER_ERROR = 500
 
 func GetInternals(errMsg *i18n.Message, errors ...error) ValueError {
-	var errs []string = make([]string, len(errors))
-	for i, err := range errors {
-		errs[i] = err.Error()
+	if errors == nil {
+		return getErrors(INTERNAL_SERVER_ERROR, errMsg)
 	}
+
+	var errs []string = make([]string, 0, len(errors))
+
+	for _, err := range errors {
+		if err != nil {
+			errs = append(errs, err.Error())
+		}
+	}
+
 	return getErrors(INTERNAL_SERVER_ERROR, errMsg, errs...)
 }
 

@@ -24,16 +24,25 @@ func (repo *CategoryMockRepository[T]) AreRelated(
 	childUid uuid.UUID,
 ) (bool, lerror.ValueError) {
 	args := repo.Called(fatherUid, childUid)
+	if args.Error(1) == nil {
+		return args.Bool(0), lerror.ValueError{}
+	}
 	return args.Bool(0), lerror.GetInternals(repository.READ_CATEGORY_ARE_RELATED_ERROR, args.Error(1))
 }
 
 func (repo *CategoryMockRepository[T]) Create(item T) lerror.ValueError {
 	args := repo.Called(item)
+	if args.Error(0) == nil {
+		return lerror.ValueError{}
+	}
 	return lerror.GetInternals(repository.WRITE_CATEGORY_CREATE_ERROR, args.Error(0))
 }
 
 func (repo *CategoryMockRepository[T]) Delete(uid uuid.UUID) lerror.ValueError {
 	args := repo.Called(uid)
+	if args.Error(0) == nil {
+		return lerror.ValueError{}
+	}
 	return lerror.GetInternals(repository.WRITE_CATEGORY_DELETE_ERROR, args.Error(0))
 }
 
@@ -41,21 +50,33 @@ func (repo *CategoryMockRepository[T]) DeleteSubcategory(
 	childUid uuid.UUID,
 ) lerror.ValueError {
 	args := repo.Called(childUid)
+	if args.Error(0) == nil {
+		return lerror.ValueError{}
+	}
 	return lerror.GetInternals(repository.WRITE_CATEGORY_DELETE_SUBCATEGORY_ERROR, args.Error(0))
 }
 
 func (repo *CategoryMockRepository[T]) Exists(uid uuid.UUID) (bool, lerror.ValueError) {
 	args := repo.Called(uid)
+	if args.Error(1) == nil {
+		return args.Bool(0), lerror.ValueError{}
+	}
 	return args.Bool(0), lerror.GetInternals(repository.READ_CATEGORY_EXISTS_ERROR, args.Error(1))
 }
 
 func (repo *CategoryMockRepository[T]) GetAllRootCategories() ([]T, lerror.ValueError) {
 	args := repo.Called()
+	if args.Error(1) == nil {
+		return args.Get(0).([]T), lerror.ValueError{}
+	}
 	return args.Get(0).([]T), lerror.GetInternals(repository.READ_CATEGORY_GET_ALL_ROOT_CATEGORIES_ERROR, args.Error(1))
 }
 
 func (repo *CategoryMockRepository[T]) GetByUid(uid uuid.UUID) (T, lerror.ValueError) {
 	args := repo.Called(uid)
+	if args.Error(1) == nil {
+		return args.Get(0).(T), lerror.ValueError{}
+	}
 	return args.Get(0).(T), lerror.GetInternals(repository.READ_CATEGORY_GET_BY_UID_ERROR, args.Error(1))
 }
 
@@ -63,11 +84,17 @@ func (repo *CategoryMockRepository[T]) GetSubcategories(
 	uid uuid.UUID,
 ) ([]T, lerror.ValueError) {
 	args := repo.Called(uid)
+	if args.Error(1) == nil {
+		return args.Get(0).([]T), lerror.ValueError{}
+	}
 	return args.Get(0).([]T), lerror.GetInternals(repository.READ_CATEGORY_GET_SUBCATEGORIES_ERROR, args.Error(1))
 }
 
 func (repo *CategoryMockRepository[T]) HasSubcategories(uid uuid.UUID) (bool, lerror.ValueError) {
 	args := repo.Called(uid)
+	if args.Error(1) == nil {
+		return args.Bool(0), lerror.ValueError{}
+	}
 	return args.Bool(0), lerror.GetInternals(repository.READ_CATEGORY_HAS_SUBCATEGORIES_ERROR, args.Error(1))
 }
 
@@ -77,6 +104,9 @@ func (repo *CategoryMockRepository[T]) InsertSubcategory(
 	updatedAt time.Time,
 ) lerror.ValueError {
 	args := repo.Called(fatherUid, childUid, updatedAt)
+	if args.Error(0) == nil {
+		return lerror.ValueError{}
+	}
 	return lerror.GetInternals(repository.WRITE_CATEGORY_INSERT_SUBCATEGORY_ERROR, args.Error(0))
 }
 
@@ -85,6 +115,9 @@ func (repo *CategoryMockRepository[T]) IsAncestor(
 	categoryUid uuid.UUID,
 ) (bool, lerror.ValueError) {
 	args := repo.Called(ancestorUid, categoryUid)
+	if args.Error(1) == nil {
+		return args.Bool(0), lerror.ValueError{}
+	}
 	return args.Bool(0), lerror.GetInternals(repository.READ_CATEGORY_IS_ANCESTOR_ERROR, args.Error(1))
 }
 
@@ -93,10 +126,16 @@ func (repo *CategoryMockRepository[T]) IsSubcategory(
 	childUid uuid.UUID,
 ) (bool, lerror.ValueError) {
 	args := repo.Called(fatherUid, childUid)
+	if args.Error(1) == nil {
+		return args.Bool(0), lerror.ValueError{}
+	}
 	return args.Bool(0), lerror.GetInternals(repository.READ_CATEGORY_IS_SUBCATEGORY_ERROR, args.Error(1))
 }
 
 func (repo *CategoryMockRepository[T]) Update(uid uuid.UUID, item T) lerror.ValueError {
 	args := repo.Called(uid, item)
+	if args.Error(0) == nil {
+		return lerror.ValueError{}
+	}
 	return lerror.GetInternals(repository.READ_CATEGORY_ARE_RELATED_ERROR, args.Error(0))
 }

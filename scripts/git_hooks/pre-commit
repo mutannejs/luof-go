@@ -8,7 +8,7 @@ function testRepositoriesInternalError()
         return
     fi
 
-    LERROR_INTERNAL="lerror.GetInternal"
+    LERROR_INTERNALS="lerror.GetInternals"
 
     CHANGED_REPOSITORIES=$(git diff HEAD --name-only \
         | grep '^adapters/sqlite/.*\.go$' \
@@ -20,11 +20,11 @@ function testRepositoriesInternalError()
         readarray -t RETURNS_LIST < <(grep return "$REP")
         RETURNS_COUNT=${#RETURNS_LIST[@]}
 
-        readarray -t SET_INTERNAL_ERROR_LIST < <(grep "$LERROR_INTERNAL" "$REP")
+        readarray -t SET_INTERNAL_ERROR_LIST < <(grep "$LERROR_INTERNALS" "$REP")
         SET_INTERNAL_ERROR_COUNT=${#SET_INTERNAL_ERROR_LIST[@]}
 
-        if [ "$RETURNS_COUNT" -gt "$SET_INTERNAL_ERROR_COUNT" ]; then
-            echo "Erro: $REP tem $RETURNS_COUNT chamada(s) à 'return', porém, tem $SET_INTERNAL_ERROR_COUNT chamada(s) à '$LERROR_INTERNAL'"
+        if [ "$RETURNS_COUNT" -ne "$((SET_INTERNAL_ERROR_COUNT * 2))" ]; then
+            echo "Erro: $REP tem $RETURNS_COUNT chamada(s) à 'return', porém, tem $SET_INTERNAL_ERROR_COUNT chamada(s) à '$LERROR_INTERNALS'"
             HAS_ERRORS=1
         fi
     done
@@ -64,7 +64,7 @@ function testUuidError()
         return
     fi
 
-    LERROR_INTERNALF="lerror.GetInternals"
+    LERROR_INTERNALS="lerror.GetInternals"
 
     CHANGED_FILES=$(git diff HEAD --name-only)
 
@@ -73,11 +73,11 @@ function testUuidError()
         readarray -t LUUID_NEW_LIST < <(grep "luuid.New()" "$FILE")
         LUUID_NEW_COUNT=${#LUUID_NEW_LIST[@]}
 
-        readarray -t SET_INTERNALF_ERROR_LIST < <(grep "$LERROR_INTERNALF" "$FILE")
+        readarray -t SET_INTERNALF_ERROR_LIST < <(grep "$LERROR_INTERNALS" "$FILE")
         SET_INTERNALF_ERROR_COUNT=${#SET_INTERNALF_ERROR_LIST[@]}
 
         if [ "$LUUID_NEW_COUNT" -gt "$SET_INTERNALF_ERROR_COUNT" ]; then
-            echo "Erro: $FILE tem $LUUID_NEW_COUNT chamada(s) à 'luuid.New', porém, tem $SET_INTERNALF_ERROR_COUNT chamada(s) à '$LERROR_INTERNALF'"
+            echo "Erro: $FILE tem $LUUID_NEW_COUNT chamada(s) à 'luuid.New', porém, tem $SET_INTERNALF_ERROR_COUNT chamada(s) à '$LERROR_INTERNALS'"
             HAS_ERRORS=1
         fi
     done

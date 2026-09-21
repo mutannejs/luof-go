@@ -29,7 +29,12 @@ func (btr *BelongsTo) Exists(
 		err = nil
 	}
 
-	vErr = lerror.GetInternals(repository.READ_BELONGS_TO_EXISTS_ERROR, err)
+	if err != nil {
+		vErr = lerror.GetInternals(repository.READ_BELONGS_TO_EXISTS_ERROR, err)
+	} else {
+		vErr = lerror.ValueError{}
+	}
+
 	return
 }
 
@@ -90,7 +95,12 @@ func (btr *BelongsTo) GetLinksByCategory(
 	err = rows.Err()
 	rows.Close()
 
-	vErr = lerror.GetInternals(repository.READ_BELONGS_TO_GET_LINKS_BY_CATEGORY_ERROR, err)
+	if err != nil {
+		vErr = lerror.GetInternals(repository.READ_BELONGS_TO_GET_LINKS_BY_CATEGORY_ERROR, err)
+	} else {
+		vErr = lerror.ValueError{}
+	}
+
 	return
 }
 
@@ -107,6 +117,11 @@ func (btr *BelongsTo) HasLinks(
 		err = nil
 	}
 
-	vErr = lerror.GetInternals(repository.READ_BELONGS_TO_HAS_LINKS_ERROR, err)
+	if err != nil {
+		vErr = lerror.GetInternals(repository.READ_BELONGS_TO_HAS_LINKS_ERROR, err)
+	} else {
+		vErr = lerror.ValueError{}
+	}
+
 	return
 }

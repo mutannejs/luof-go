@@ -7,7 +7,7 @@
 - [X] Baixar `github.com/nicksnyder/go-i18n`
 - [X] Criar li18n
 - [X] Separar arquivos de tradução em diretório separado
-- [ ] Chamar li18n em todos lugares que estão utilizando textos mockados
+- [X] Chamar li18n em todos lugares que estão utilizando textos mockados
 - [ ] Documentar
 
 ## A fazer

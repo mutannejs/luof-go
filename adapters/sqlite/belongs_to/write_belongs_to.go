@@ -31,7 +31,11 @@ func (btr *BelongsTo) Create(
 		insertedAt,
 		isMain)
 
-	return lerror.GetInternals(repository.WRITE_BELONGS_TO_CREATE_ERROR, err)
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_BELONGS_TO_CREATE_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }
 
 func (btr *BelongsTo) Delete(
@@ -45,7 +49,11 @@ func (btr *BelongsTo) Delete(
 		linkUid,
 		categoryUid)
 
-	return lerror.GetInternals(repository.WRITE_BELONGS_TO_DELETE_ERROR, err)
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_BELONGS_TO_DELETE_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }
 
 func (btr *BelongsTo) SetHasNoMainCategory(
@@ -59,7 +67,11 @@ func (btr *BelongsTo) SetHasNoMainCategory(
 		`,
 		linkUid)
 
-	return lerror.GetInternals(repository.WRITE_BELONGS_TO_SET_HAS_NO_MAIN_CATEGORY_ERROR, err)
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_BELONGS_TO_SET_HAS_NO_MAIN_CATEGORY_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }
 
 func (btr *BelongsTo) Update(
@@ -77,5 +89,9 @@ func (btr *BelongsTo) Update(
 		linkUid,
 		categoryUid)
 
-	return lerror.GetInternals(repository.WRITE_BELONGS_TO_UPDATE_ERROR, err)
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_BELONGS_TO_UPDATE_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }

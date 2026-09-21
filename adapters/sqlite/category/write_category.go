@@ -30,16 +30,24 @@ func (cr *Category) Create(l domain.Category) (lerror.ValueError) {
 		l.Description.UseMarkdown,
 		l.CreatedAt,
 		l.UpdatedAt)
-		
-	return lerror.GetInternals(repository.WRITE_CATEGORY_CREATE_ERROR, err)
+
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_CATEGORY_CREATE_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }
 
 func (cr *Category) Delete(uid uuid.UUID) (lerror.ValueError) {
 	var _, err = cr.DB.Exec(
 		`DELETE FROM category WHERE uid_category = ?`,
 		uid)
-		
-	return lerror.GetInternals(repository.WRITE_CATEGORY_DELETE_ERROR, err)
+
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_CATEGORY_DELETE_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }
 
 func (cr *Category) DeleteSubcategory(
@@ -52,8 +60,12 @@ func (cr *Category) DeleteSubcategory(
 			WHERE uid_category = ?
 		`,
 		childUid)
-		
-	return lerror.GetInternals(repository.WRITE_CATEGORY_DELETE_ERROR, err)
+
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_CATEGORY_DELETE_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }
 
 func (cr *Category) InsertSubcategory(
@@ -71,8 +83,12 @@ func (cr *Category) InsertSubcategory(
 		fatherUid,
 		updatedAt,
 		childUid)
-		
-	return lerror.GetInternals(repository.WRITE_CATEGORY_INSERT_SUBCATEGORY_ERROR, err)
+
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_CATEGORY_INSERT_SUBCATEGORY_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }
 
 func (cr *Category) Update(
@@ -95,6 +111,10 @@ func (cr *Category) Update(
 		l.CreatedAt,
 		l.UpdatedAt,
 		uid)
-		
-	return lerror.GetInternals(repository.WRITE_CATEGORY_UPDATE_ERROR, err)
+
+	if err != nil {
+		return lerror.GetInternals(repository.WRITE_CATEGORY_UPDATE_ERROR, err)
+	} else {
+		return lerror.ValueError{}
+	}
 }

@@ -94,7 +94,7 @@ func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_Error() {
 		res.StatusCode(),
 		"Tentar recuperar todos os links de uma categoria passando parâmetros errados deveria retornar status 400")
 
-	ts.ElementsMatch([]any{"categoryUid"}, ltests.GetFirstErrorKeys(res.Body())) 
+	ts.ElementsMatch([]any{"categoryUid"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_NotExists() {
@@ -116,7 +116,7 @@ func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_NotExists() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar recuperar os link de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS) 
+		"Tentar recuperar os link de uma categoria inválida deveria retornar erro contendo " + domain.CATEGORY_NOT_EXISTS)
 }
 
 func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_Empty() {
@@ -138,7 +138,7 @@ func (ts *GetLinksByCategoryTestSuite) TestGetLinksByCategory_Empty() {
 	ts.Equal(
 		expectedJson,
 		resBody,
-		"Tentar recuperar os link de uma categoria vazia deveria retornar um array vazio") 
+		"Tentar recuperar os link de uma categoria vazia deveria retornar um array vazio")
 }
 
 func TestGetLinksByCategoryAllTests(t *testing.T) {

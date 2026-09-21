@@ -18,7 +18,7 @@ var (
 
 func TestToggleMainCategory_NotExists(t *testing.T) {
 	var assert = assert.New(t)
-	
+
 	var btRepo = ltests.NewBelongsToMockRepository()
 	var cRepo = ltests.NewCategoryMockRepository()
 	var lRepo = ltests.NewLinkMockRepository()

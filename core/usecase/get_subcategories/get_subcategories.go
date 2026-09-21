@@ -20,7 +20,7 @@ func (gsUseCase *GetSubcategories) Execute(
 	uid uuid.UUID,
 ) (subcategories []domain.Category, vErr lerror.ValueError) {
 	var exists bool
-	
+
 	exists, vErr = gsUseCase.CategoryRepo.Exists(uid)
 
 	if !vErr.IsNil() {

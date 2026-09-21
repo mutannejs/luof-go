@@ -53,7 +53,7 @@ func (ts *CreateLinkTestSuite) TestCreateLink_Error() {
 		res.StatusCode(),
 		"Tentar criar um link passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]any{"url", "name", "useMarkdown"}, ltests.GetFirstErrorKeys(res.Body())) 
+	ts.ElementsMatch([]any{"url", "name", "useMarkdown"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func TestCreateLinkAllTests(t *testing.T) {

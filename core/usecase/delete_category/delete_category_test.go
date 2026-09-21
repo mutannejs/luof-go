@@ -33,7 +33,7 @@ func TestDeleteCategory_NotExists(t *testing.T) {
 
 	assert.Equal(
 		ltests.GetMsgError(err),
-		categoryNotExists,
+		categoryNotExists.Other,
 		"Tentativa de deletar uma categoria que não existe deveria retornar erro contendo " + categoryNotExists.Other)
 }
 
@@ -72,7 +72,7 @@ func TestDeleteCategory_HasLinks(t *testing.T) {
 
 	assert.Equal(
 		ltests.GetMsgError(err),
-		hasLinks,
+		hasLinks.Other,
 		"Tentativa de deletar uma categoria que possui links deveria retornar erro contendo " + hasLinks.Other)
 }
 
@@ -92,6 +92,6 @@ func TestDeleteCategory_HasSubcategories(t *testing.T) {
 
 	assert.Equal(
 		ltests.GetMsgError(err),
-		hasSubcategories,
+		hasSubcategories.Other,
 		"Tentativa de deletar uma categoria que possui subcategorias deveria retornar erro contendo " + hasSubcategories.Other)
 }

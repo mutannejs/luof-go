@@ -58,7 +58,7 @@ func (ts *DeleteCategoryTestSuite) TestDeleteCategory_ParamRequired() {
 		res.StatusCode(),
 		"Tentar deletar uma categoria passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]any{"categoryUid"}, ltests.GetFirstErrorKeys(res.Body())) 
+	ts.ElementsMatch([]any{"categoryUid"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func (ts *DeleteCategoryTestSuite) TestDeleteCategory_NotExists() {

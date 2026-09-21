@@ -57,7 +57,7 @@ func (ts *GetCategoryTestSuite) TestGetCategory_ParamRequired() {
 		res.StatusCode(),
 		"Tentar recuperar uma categoria passando parâmetros inválidos deveria retornar status 400")
 
-	ts.ElementsMatch([]any{"categoryUid"}, ltests.GetFirstErrorKeys(res.Body())) 
+	ts.ElementsMatch([]any{"categoryUid"}, ltests.GetFirstErrorKeys(res.Body()))
 }
 
 func (ts *GetCategoryTestSuite) TestGetCategory_NotExists() {
